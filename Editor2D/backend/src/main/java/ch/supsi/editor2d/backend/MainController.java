@@ -1,6 +1,6 @@
-package ch.supsi.editor2d.controller;
+package ch.supsi.editor2d.backend;
 
-import ch.supsi.editor2d.controller.model.ImagePBM;
+import ch.supsi.editor2d.backend.model.ImagePBM;
 
 import java.awt.*;
 

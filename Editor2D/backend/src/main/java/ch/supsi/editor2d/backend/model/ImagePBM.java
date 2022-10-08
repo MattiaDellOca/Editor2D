@@ -1,4 +1,4 @@
-package ch.supsi.editor2d.controller.model;
+package ch.supsi.editor2d.backend.model;
 
 import java.awt.*;
 
