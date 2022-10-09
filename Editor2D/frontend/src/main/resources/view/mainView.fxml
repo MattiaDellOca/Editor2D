@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 
-<VBox xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="ch.supsi.editor2d.frontend.gui.controller.MainViewController"
-            prefHeight="400.0" prefWidth="600.0">
-    <Label text="Hello world!" />
-</VBox>
+<BorderPane prefHeight="297.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.supsi.editor2d.frontend.gui.controller.MainViewController">
+   <top>
+      <Label text="Hello world!" BorderPane.alignment="CENTER" />
+   </top>
+   <left>
+      <Label text="Label" BorderPane.alignment="CENTER" />
+   </left>
+   <right>
+      <Label text="Label" BorderPane.alignment="CENTER" />
+   </right>
+   <bottom>
+      <Label text="Label" BorderPane.alignment="CENTER" />
+   </bottom>
+   <center>
+      <AnchorPane fx:id="imagePane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+   </center>
+</BorderPane>

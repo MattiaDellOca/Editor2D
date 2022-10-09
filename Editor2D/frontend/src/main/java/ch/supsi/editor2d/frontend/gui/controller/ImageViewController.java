@@ -2,24 +2,18 @@ package ch.supsi.editor2d.frontend.gui.controller;
 
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 
-import java.io.IOException;
-import java.util.Objects;
-
-public class MainViewController {
+public class ImageViewController {
 
     private DataModel model;
 
     @FXML
-    private AnchorPane imagePane;
+    private ImageView imageView;
 
-    public AnchorPane getImagePane() {
-        return imagePane;
-    }
+    @FXML
+    private Button button;
 
     public void initModel(DataModel model){
         // ensure model is only set once

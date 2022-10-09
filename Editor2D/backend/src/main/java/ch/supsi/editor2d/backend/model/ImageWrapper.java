@@ -29,4 +29,16 @@ abstract public class ImageWrapper {
         this.height = height;
         this.data = data;
     }
+
+    public Color[][] getData() {
+        return data;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 }

@@ -2,7 +2,7 @@ package ch.supsi.editor2d.backend.repository;
 
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 
-public interface IImageRepository<T extends ImageWrapper> {
+public interface IImageRepository {
 
-    public T loadImage();
+    public ImageWrapper loadImage(String path);
 }

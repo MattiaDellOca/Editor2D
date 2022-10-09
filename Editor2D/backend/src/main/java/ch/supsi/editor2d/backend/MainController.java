@@ -1,6 +1,10 @@
 package ch.supsi.editor2d.backend;
 
+import ch.supsi.editor2d.backend.controller.IImageController;
+import ch.supsi.editor2d.backend.controller.PBM.ImagePBMController;
 import ch.supsi.editor2d.backend.model.ImagePBM;
+import ch.supsi.editor2d.backend.model.ImageWrapper;
+import ch.supsi.editor2d.backend.repository.PBM.ImagePBMRepository;
 
 import java.awt.*;
 
@@ -12,18 +16,22 @@ public class MainController {
 
     public static void main(String[] args) {
 
-        int width = 10;
-        int height = 15;
-        Color[][] dataImage = new Color[height][width];
+        String path = "/home/manuelenolli/Desktop/img1.pbm";/*
+        ImagePBMController imagePBMController = new ImagePBMController();
+        ImagePBM myImage = imagePBMController.getImage(path);
 
-        for (int h = 0; h < height; h++) {
-            for (int w = 0; w < width; w++) {
-                dataImage[h][w] = new Color(100 + w + h, 100 + w + h, 100 + w + h);
-                System.out.print(dataImage[h][w] + " ");
+        Color[][] temp = myImage.getData();
+        for (int h = 0; h < myImage.getHeight(); h++) {
+            for (int w = 0; w < myImage.getWidth(); w++) {
+                System.out.print(temp[h][w]);
             }
             System.out.println();
-        }
-        ImagePBM imagePGM = new ImagePBM(10, 10, dataImage);
+        }*/
+
+
+        IImageController iImageController = new ImagePBMController();
+
+        ImageWrapper a = iImageController.getImage(path);
 
 
     }
