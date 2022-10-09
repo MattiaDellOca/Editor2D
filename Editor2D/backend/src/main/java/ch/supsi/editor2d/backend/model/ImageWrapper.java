@@ -1,6 +1,7 @@
 package ch.supsi.editor2d.backend.model;
 
-import java.awt.*;
+
+import javafx.scene.paint.Color;
 
 abstract public class ImageWrapper {
 

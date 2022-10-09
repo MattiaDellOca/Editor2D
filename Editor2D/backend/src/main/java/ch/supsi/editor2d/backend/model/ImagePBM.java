@@ -1,7 +1,6 @@
 package ch.supsi.editor2d.backend.model;
 
-import java.awt.*;
-
+import javafx.scene.paint.Color;
 public class ImagePBM extends ImageWrapper{
 
 

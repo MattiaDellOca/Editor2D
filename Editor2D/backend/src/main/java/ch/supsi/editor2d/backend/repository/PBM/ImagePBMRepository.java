@@ -3,8 +3,8 @@ package ch.supsi.editor2d.backend.repository.PBM;
 import ch.supsi.editor2d.backend.model.ImagePBM;
 import ch.supsi.editor2d.backend.repository.IImageRepository;
 import ch.supsi.editor2d.backend.service.PBM.IImagePBMService;
+import javafx.scene.paint.Color;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -51,20 +51,24 @@ public class ImagePBMRepository implements IImageRepository, IImagePBMService {
             //width and height reading
             String[] widthHeight = tempLine.split(" ");
             int width = Integer.parseInt(widthHeight[0]);
-            int height = Integer.parseInt(widthHeight[0]);
+            int height = Integer.parseInt(widthHeight[1]);
 
             //data reading
+            System.out.println("Backend");
             Color[][] data = new Color[height][width];
-            tempLine = bufferedReader.readLine();
             for(int h = 0; h < height; h++){
+                tempLine = bufferedReader.readLine();
                 tempLine = tempLine.replace(" ", ""); //remove spaces
+                System.out.println(tempLine);
                 for(int w = 0; w < width; w++){
                     if(tempLine.charAt(w) == '1'){
-                        data[h][w] = Color.black;
+                        data[h][w] = Color.BLACK;
                     } else{
-                        data[h][w] = Color.white;
+                        data[h][w] = Color.WHITE;
                     }
+                    System.out.print(tempLine.charAt(w) + " ");
                 }
+                System.out.println();
             }
 
             return new ImagePBM(width,height,data);

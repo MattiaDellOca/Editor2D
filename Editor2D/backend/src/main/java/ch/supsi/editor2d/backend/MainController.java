@@ -16,7 +16,7 @@ public class MainController {
 
     public static void main(String[] args) {
 
-        String path = "/home/manuelenolli/Desktop/img1.pbm";/*
+        String path = "/home/manuelenolli/Desktop/cat.pbm";/*
         ImagePBMController imagePBMController = new ImagePBMController();
         ImagePBM myImage = imagePBMController.getImage(path);
 
