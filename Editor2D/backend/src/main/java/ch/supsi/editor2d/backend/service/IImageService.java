@@ -2,6 +2,9 @@ package ch.supsi.editor2d.backend.service;
 
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 
+/**
+ * Interface for every image service
+ */
 public interface IImageService {
-    public ImageWrapper getImage(String path);
+    ImageWrapper getImage(String path);
 }

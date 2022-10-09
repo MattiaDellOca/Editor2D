@@ -5,10 +5,14 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 
 public class ImageViewController {
 
     private DataModel model;
+
+    @FXML
+    private AnchorPane containerImage;
 
     @FXML
     private ImageView imageView;
@@ -28,5 +32,7 @@ public class ImageViewController {
     public void buttonPress(ActionEvent actionEvent) {
         model.loadImage();
         imageView.setImage(model.getImage().getImage());
+        imageView.setPreserveRatio(true);
+        imageView.setFitWidth(containerImage.getWidth());
     }
 }

@@ -1,6 +1,4 @@
 package ch.supsi.editor2d.backend.model;
-
-
 import javafx.scene.paint.Color;
 
 abstract public class ImageWrapper {
@@ -21,9 +19,9 @@ abstract public class ImageWrapper {
 
     /**
      * Constructor
-     * @param width
-     * @param height
-     * @param data
+     * @param width image width
+     * @param height image height
+     * @param data image pixel=color matrix
      */
     public ImageWrapper(int width, int height, Color[][] data) {
         this.width = width;
