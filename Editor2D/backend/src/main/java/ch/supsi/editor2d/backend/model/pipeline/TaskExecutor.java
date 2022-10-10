@@ -34,4 +34,8 @@ public abstract class TaskExecutor<T, K extends TaskResult<?>> implements Execut
     public void remove(Task<T, K> task) {
         this.tasks.remove(task);
     }
+
+    public boolean isEmpty () {
+        return this.tasks.isEmpty();
+    }
 }
