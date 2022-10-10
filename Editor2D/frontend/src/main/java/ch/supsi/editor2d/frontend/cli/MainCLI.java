@@ -2,9 +2,11 @@ package ch.supsi.editor2d.frontend.cli;
 
 import ch.supsi.editor2d.backend.helper.FilterPipeline;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
+import ch.supsi.editor2d.backend.model.filter.IdentityFilter;
 import ch.supsi.editor2d.backend.model.pipeline.PipelineObserver;
 import ch.supsi.editor2d.backend.model.task.FilterTask;
 import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
+import javafx.scene.paint.Color;
 
 import java.util.Arrays;
 
@@ -13,21 +15,18 @@ public class MainCLI implements PipelineObserver {
         MainCLI mainCLI = new MainCLI();
 
         // Image to edit
-        ImageWrapper wrapper = new ImageWrapper();
+        ImageWrapper wrapper = new ImageWrapper(10, 10, new Color[10][10]);
 
         // Create FilterPipeline
         FilterPipeline pipeline = new FilterPipeline();
         pipeline.addObserver(mainCLI);
 
         // add tasks to pipeline
-        FilterTask task1 = new FilterTask();
-        FilterTask task2 = new FilterTask();
-        FilterTask task3 = new FilterTask();
-        FilterTask task4 = new FilterTask();
+        FilterTask task1 = new FilterTask(new IdentityFilter());
+        FilterTask task2 = new FilterTask(new IdentityFilter());
+        FilterTask task3 = new FilterTask(new IdentityFilter());
+        FilterTask task4 = new FilterTask(new IdentityFilter());
         pipeline.add(Arrays.asList(task1, task2, task3, task4));
-
-        // Print start value
-        System.out.println("START: " + wrapper.exampleData);
 
         // Start pipeline
         FilterTaskResult result = pipeline.run(wrapper);

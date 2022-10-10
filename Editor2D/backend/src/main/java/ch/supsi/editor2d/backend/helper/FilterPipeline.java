@@ -23,7 +23,7 @@ public final class FilterPipeline extends Pipeline<ImageWrapper, FilterTaskResul
             FilterTaskResult result = tasks.poll().execute(image);
 
             // TODO: check if result is error
-            System.out.println("RESULT " + i + ": " + result.getResult().exampleData);
+            System.out.println("RESULT " + i + ": " + result.getResult());
 
             // Update progress
             notifyObserversProgress((float) i / NTASKS);
