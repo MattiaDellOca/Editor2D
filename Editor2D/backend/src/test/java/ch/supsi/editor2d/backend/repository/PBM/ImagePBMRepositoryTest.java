@@ -1,6 +1,7 @@
 package ch.supsi.editor2d.backend.repository.PBM;
 
 import ch.supsi.editor2d.backend.model.ImagePBM;
+import ch.supsi.editor2d.backend.repository.ImagePBMRepository;
 import org.junit.jupiter.api.*;
 import static org.junit.jupiter.api.Assertions.*;
 import javafx.scene.paint.Color;

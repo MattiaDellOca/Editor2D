@@ -1,15 +1,15 @@
-package ch.supsi.editor2d.backend.repository.PGM;
+package ch.supsi.editor2d.backend.repository;
 
 import ch.supsi.editor2d.backend.model.ImagePBM;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
-import ch.supsi.editor2d.backend.repository.IImageRepository;
+import ch.supsi.editor2d.backend.service.IImageService;
 import javafx.scene.paint.Color;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class ImagePGMRepository implements IImageRepository {
+public class ImagePGMRepository implements IImageService {
 
 
     /**

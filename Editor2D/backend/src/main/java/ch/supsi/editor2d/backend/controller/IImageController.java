@@ -3,7 +3,7 @@ package ch.supsi.editor2d.backend.controller;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 
 /**
- * Interface for every image controller
+ * Interface implemented in ImageService for Dependency Inversion
  */
 public interface IImageController {
 

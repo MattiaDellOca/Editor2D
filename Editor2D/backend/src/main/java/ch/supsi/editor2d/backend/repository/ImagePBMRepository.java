@@ -1,8 +1,7 @@
-package ch.supsi.editor2d.backend.repository.PBM;
+package ch.supsi.editor2d.backend.repository;
 
 import ch.supsi.editor2d.backend.model.ImagePBM;
-import ch.supsi.editor2d.backend.repository.IImageRepository;
-import ch.supsi.editor2d.backend.service.PBM.IImagePBMService;
+import ch.supsi.editor2d.backend.service.IImageService;
 import javafx.scene.paint.Color;
 
 import java.io.BufferedReader;
@@ -29,7 +28,7 @@ P1
 /**
  * Image PBM repository
  */
-public class ImagePBMRepository implements IImageRepository, IImagePBMService {
+public class ImagePBMRepository implements IImageService {
     
 
     //TODO exceptions handler

@@ -1,12 +1,7 @@
 package ch.supsi.editor2d.backend;
 
 import ch.supsi.editor2d.backend.controller.IImageController;
-import ch.supsi.editor2d.backend.controller.PBM.ImagePBMController;
-import ch.supsi.editor2d.backend.model.ImagePBM;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
-import ch.supsi.editor2d.backend.repository.PBM.ImagePBMRepository;
-
-import java.awt.*;
 
 public class MainController {
 
@@ -27,12 +22,6 @@ public class MainController {
             }
             System.out.println();
         }*/
-
-
-        IImageController iImageController = new ImagePBMController();
-
-        ImageWrapper a = iImageController.getImage(path);
-
 
     }
 }

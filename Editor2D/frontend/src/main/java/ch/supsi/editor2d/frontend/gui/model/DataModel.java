@@ -2,10 +2,8 @@ package ch.supsi.editor2d.frontend.gui.model;
 
 
 import ch.supsi.editor2d.backend.controller.IImageController;
-import ch.supsi.editor2d.backend.controller.PBM.ImagePBMController;
-import ch.supsi.editor2d.backend.model.ImagePPM;
+import ch.supsi.editor2d.backend.controller.ImageController;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
-import ch.supsi.editor2d.backend.repository.PGM.ImagePGMRepository;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -16,7 +14,7 @@ public class DataModel {
      * Interface imageController
      * the right controller (ImagePBMController, ImagePPMController, ...) will be assigned on run time
      */
-    private IImageController imageController;
+    private ImageController imageController;
 
     /**
      * Image showed
@@ -29,11 +27,11 @@ public class DataModel {
     }
 
     public void loadImage(){
-        //imageController = new ImagePBMController();
-        //ImageWrapper img = imageController.getImage("/home/manuelenolli/Desktop/Image/img1.pbm"); //TODO feature 20542
+        imageController = new ImageController();
+        ImageWrapper img = imageController.getImage("/home/manuelenolli/Desktop/Image/img1.pbm"); //TODO feature 20542
 
-        ImagePGMRepository imagePGMRepository = new ImagePGMRepository();
-        ImageWrapper img = imagePGMRepository.loadImage("/home/manuelenolli/Desktop/Image/img2.pgm");
+        //ImagePGMRepository imagePGMRepository = new ImagePGMRepository();
+        //ImageWrapper img = imagePGMRepository.loadImage("/home/manuelenolli/Desktop/Image/img2.pgm");
 
         WritableImage writableImage = new WritableImage(img.getWidth(), img.getHeight());
         PixelWriter pixelWriter = writableImage.getPixelWriter();
