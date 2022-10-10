@@ -6,18 +6,18 @@ public class ImageWrapper {
 
     private final int width;
     private final int height;
-    private final Color[][] pixels;
+    private final Color[][] data;
 
     public ImageWrapper (ImageWrapper wrapper) {
         this.width = wrapper.getWidth();
         this.height = wrapper.getHeight();
-        this.pixels = wrapper.getPixels();
+        this.data = wrapper.getData();
     }
 
-    public ImageWrapper (int width, int height, Color[][] pixels) {
+    public ImageWrapper (int width, int height, Color[][] data) {
         this.width = width;
         this.height = height;
-        this.pixels = pixels;
+        this.data = data;
     }
 
     public int getWidth() {
@@ -28,7 +28,7 @@ public class ImageWrapper {
         return height;
     }
 
-    public Color[][] getPixels() {
-        return pixels;
+    public Color[][] getData() {
+        return data;
     }
 }
