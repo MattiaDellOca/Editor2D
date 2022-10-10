@@ -13,13 +13,7 @@ public class FilterTask implements Task<ImageWrapper, FilterTaskResult> {
 
     @Override
     public FilterTaskResult execute(ImageWrapper input) {
-        // Read last letter of exampleData + compute next letter
-        /*
-            char lastLetter = input.exampleData.charAt(input.exampleData.length() - 1);
-            char nextLetter = (char) (lastLetter + 1);
-            input.exampleData += nextLetter;
-            return new FilterTaskResult(input);
-         */
+        // Apply filter using filter applicator
         return new FilterTaskResult(input);
     }
 }

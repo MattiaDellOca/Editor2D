@@ -1,7 +1,7 @@
-package ch.supsi.editor2d.backend.service;
+package ch.supsi.editor2d.backend.helper;
 
 import ch.supsi.editor2d.backend.model.ImageWrapper;
-import ch.supsi.editor2d.backend.model.MatrixFilter;
+import ch.supsi.editor2d.backend.model.filter.MatrixFilter;
 import javafx.scene.paint.Color;
 
 public class MatrixMultiplier {

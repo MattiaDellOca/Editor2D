@@ -1,5 +1,6 @@
 package ch.supsi.editor2d.backend.model;
 
+import ch.supsi.editor2d.backend.model.filter.FlipFilter;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

@@ -1,7 +1,9 @@
-package ch.supsi.editor2d.backend.model;
+package ch.supsi.editor2d.backend.model.filter;
 
-// TODO: 10/10/22 abstract factory 
-public class FlipFilter extends MatrixFilter {
+import ch.supsi.editor2d.backend.model.filter.MatrixFilter;
+
+// TODO: 10/10/22 abstract factory
+public class FlipFilter extends MatrixFilter implements ScalarFilterApplicator {
     public FlipFilter(int width) {
         super(generateMatrix(width));
     }

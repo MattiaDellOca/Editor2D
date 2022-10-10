@@ -2,18 +2,12 @@ package ch.supsi.editor2d.backend.model.filter;
 
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 
-public class IdentityFilter extends MatrixFilter implements Applicable {
-
+public class IdentityFilter extends MatrixFilter implements ScalarFilterApplicator {
     public IdentityFilter() {
-        super(new float[][]{
+        super(new double[][]{
                 {1, 0, 0},
                 {0, 1, 0},
                 {0, 0, 1}
         });
-    }
-
-    @Override
-    public ImageWrapper apply(MatrixFilter filter, ImageWrapper image) {
-        return null;
     }
 }

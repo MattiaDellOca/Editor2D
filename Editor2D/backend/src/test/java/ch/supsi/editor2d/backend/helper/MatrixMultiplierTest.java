@@ -1,6 +1,6 @@
-package ch.supsi.editor2d.backend.service;
+package ch.supsi.editor2d.backend.helper;
 
-import ch.supsi.editor2d.backend.model.FlipFilter;
+import ch.supsi.editor2d.backend.model.filter.FlipFilter;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import javafx.scene.paint.Color;
 import org.junit.jupiter.api.Test;
