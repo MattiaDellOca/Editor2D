@@ -1,4 +1,4 @@
-package ch.supsi.editor2d.frontend.gui.controller;
+package ch.supsi.editor2d.backend.frontend.gui.controller;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

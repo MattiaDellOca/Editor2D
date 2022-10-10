@@ -1,5 +1,8 @@
-package ch.supsi.editor2d.service;
+package ch.supsi.editor2d.backend.service;
 
+import ch.supsi.editor2d.backend.model.FlipFilter;
+import ch.supsi.editor2d.backend.model.ImageWrapper;
+import javafx.scene.paint.Color;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -7,7 +10,6 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MatrixMultiplierTest {
-
     @Test
     void multiplyMatrices() {
         double[][] A = new double[][] { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
@@ -21,5 +23,12 @@ class MatrixMultiplierTest {
         B = new double[][] { {0, 1}, {1, 0} };
         R = new double[][] { {5, 6}, {6, 3}, {1, 7} };
         assertTrue(Arrays.deepEquals(R, MatrixMultiplier.multiplyMatrices(A, B)));
+    }
+
+    @Test
+    void applyScalarFilter() {
+        ImageWrapper imageWrapper = new ImageWrapper(2, 3, new Color[][] { {Color.BEIGE, Color.ANTIQUEWHITE}, {Color.BLACK, Color.ALICEBLUE}, {Color.AQUA, Color.AQUAMARINE}});
+        assertTrue(Arrays.deepEquals(new Color[][] { {Color.ANTIQUEWHITE, Color.BEIGE}, {Color.ALICEBLUE, Color.BLACK}, {Color.AQUAMARINE, Color.AQUA} },
+                MatrixMultiplier.applyScalarFilter(imageWrapper, new FlipFilter(imageWrapper.getWidth())).getData()));
     }
 }

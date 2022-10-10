@@ -54,7 +54,7 @@
                     <archive>
                         <manifest>
                             <mainClass>
-                                ch.supsi.editor2d.frontend.gui.MainGUI
+                                ch.supsi.editor2d.backend.frontend.gui.MainGUI
                             </mainClass>
                         </manifest>
                     </archive>

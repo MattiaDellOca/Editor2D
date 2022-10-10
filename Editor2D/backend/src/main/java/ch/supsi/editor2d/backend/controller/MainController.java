@@ -1,4 +1,4 @@
-package ch.supsi.editor2d.controller;
+package ch.supsi.editor2d.backend.controller;
 
 public class MainController {
 
