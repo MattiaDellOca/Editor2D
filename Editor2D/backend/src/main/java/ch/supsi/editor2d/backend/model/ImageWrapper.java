@@ -8,12 +8,6 @@ public class ImageWrapper {
     private final int height;
     private final Color[][] pixels;
 
-    // CHAIN RESPONSABILITY
-    // COMMAND PATTERN (ZOOM-IN/ZOOM-OUT)
-    // REDO/UNDO (MEMENTO)
-    // Abstract Factory / Factory
-    // Pipeline: Strategy
-
     public ImageWrapper (ImageWrapper wrapper) {
         this.width = wrapper.getWidth();
         this.height = wrapper.getHeight();
