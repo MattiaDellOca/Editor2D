@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
+// FIXME: Add tests for observers
 public class FilterPipelineTest {
 
     private FilterPipeline pipeline;
@@ -24,7 +25,7 @@ public class FilterPipelineTest {
 
     @Test
     void addTasksIntoQueue() {
-        // Try to add couple of tasks into the pipeline
+        // Try to add a couple of tasks into the pipeline
         // and check if the queue is not empty
         pipeline.add(new FilterTask(new FlipFilter(10)));
         pipeline.add(new FilterTask(new GrayscaleFilter()));
@@ -35,7 +36,7 @@ public class FilterPipelineTest {
 
     @Test
     void emptyTasksQueue() {
-        // Try to add couple of tasks into the pipeline
+        // Try to add a couple of tasks into the pipeline
         // and check if the queue is not empty
         pipeline.add(new FilterTask(new FlipFilter(10)));
         pipeline.add(new FilterTask(new GrayscaleFilter()));
