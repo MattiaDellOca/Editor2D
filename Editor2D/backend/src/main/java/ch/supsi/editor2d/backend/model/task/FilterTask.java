@@ -13,7 +13,6 @@ public class FilterTask implements Task<ImageWrapper, FilterTaskResult> {
 
     @Override
     public FilterTaskResult execute(ImageWrapper input) {
-        // Apply filter using filter applicator
-        return new FilterTaskResult(input);
+        return new FilterTaskResult(filter.apply(input));
     }
 }
