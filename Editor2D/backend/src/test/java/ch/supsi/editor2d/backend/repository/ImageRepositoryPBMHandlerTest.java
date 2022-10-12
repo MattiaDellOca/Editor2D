@@ -1,8 +1,8 @@
 package ch.supsi.editor2d.backend.repository;
 
 import ch.supsi.editor2d.backend.exception.FileReadingException;
+import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
-import javafx.scene.paint.Color;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,13 +29,13 @@ public class ImageRepositoryPBMHandlerTest {
         //result desired creation
         int widthDesiredResult = 10;
         int heightDesiredResult = 6;
-        Color[][] data = new Color[heightDesiredResult][widthDesiredResult];
+        ColorWrapper[][] data = new ColorWrapper[heightDesiredResult][widthDesiredResult];
         for (int h = 0; h < heightDesiredResult; h++) {
             for (int w = 0; w < widthDesiredResult; w++) {
                 if (h % 2 == 0) {
-                    data[h][w] = Color.BLACK;
+                    data[h][w] = new ColorWrapper(0.f,0.f,0.f); //black
                 } else {
-                    data[h][w] = Color.WHITE;
+                    data[h][w] = new ColorWrapper(1.f,1.f,1.f); //white;
                 }
             }
         }
@@ -46,7 +46,9 @@ public class ImageRepositoryPBMHandlerTest {
             assertEquals(obtainedResult.getHeight(), heightDesiredResult);
             for (int h = 0; h < heightDesiredResult; h++) {
                 for (int w = 0; w < widthDesiredResult; w++) {
-                    assertEquals(obtainedResult.getData()[h][w].toString(), data[h][w].toString());
+                    assertEquals(obtainedResult.getData()[h][w].getRed(), data[h][w].getRed());
+                    assertEquals(obtainedResult.getData()[h][w].getGreen(), data[h][w].getGreen());
+                    assertEquals(obtainedResult.getData()[h][w].getBlue(), data[h][w].getBlue());
                 }
             }
         } catch (FileReadingException e) {

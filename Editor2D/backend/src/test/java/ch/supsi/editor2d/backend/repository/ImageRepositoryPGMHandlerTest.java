@@ -1,8 +1,10 @@
 package ch.supsi.editor2d.backend.repository;
 
 import ch.supsi.editor2d.backend.exception.FileReadingException;
+import ch.supsi.editor2d.backend.model.ColorWrapper;
+import ch.supsi.editor2d.backend.model.ImagePGM;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
-import javafx.scene.paint.Color;
+import ch.supsi.editor2d.backend.repository.utils.InterpolateRGB;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -31,22 +33,22 @@ class ImageRepositoryPGMHandlerTest {
         int heightDesiredResult = 6;
         int scaleOfGray = 15;
 
-        int grayColorValue1 = 255 / scaleOfGray;
-        int grayColorValue5 = (255 / scaleOfGray) * 5;
-        int grayColorValue10 = (255 / scaleOfGray) * 10;
+        float grayColorValue1 = InterpolateRGB.interpolateRGBtoFloat(255 / scaleOfGray);
+        float grayColorValue5 = InterpolateRGB.interpolateRGBtoFloat((255 / scaleOfGray) * 5);
+        float grayColorValue10 = InterpolateRGB.interpolateRGBtoFloat((255 / scaleOfGray) * 10);
 
-        Color[][] data = new Color[heightDesiredResult][widthDesiredResult];
+        ColorWrapper[][] data = new ColorWrapper[heightDesiredResult][widthDesiredResult];
         for (int h = 0; h < heightDesiredResult; h++) {
             for (int w = 0; w < widthDesiredResult; w++) {
                 if (h == 0) {
-                    data[h][w] = Color.rgb(grayColorValue1,grayColorValue1,grayColorValue1);
+                    data[h][w] = new ColorWrapper(grayColorValue1,grayColorValue1,grayColorValue1);
                 } else if(h == 2){
-                    data[h][w] = Color.rgb(grayColorValue5,grayColorValue5,grayColorValue5);
+                    data[h][w] = new ColorWrapper(grayColorValue5,grayColorValue5,grayColorValue5);
                 }else if(h == 4){
-                    data[h][w] = Color.rgb(grayColorValue10,grayColorValue10,grayColorValue10);
+                    data[h][w] = new ColorWrapper(grayColorValue10,grayColorValue10,grayColorValue10);
                 }
                 else {
-                    data[h][w] = Color.rgb(0,0,0);
+                    data[h][w] = new ColorWrapper(0.f,0.f,0.f);
                 }
             }
         }
@@ -55,9 +57,12 @@ class ImageRepositoryPGMHandlerTest {
             ImageWrapper obtainedResult = imageRepositoryPGMHandler.handleLoad("PGM", pathImageTestPGMOk);
             assertEquals(obtainedResult.getWidth(), widthDesiredResult);
             assertEquals(obtainedResult.getHeight(), heightDesiredResult);
+            assertEquals(((ImagePGM) obtainedResult).getScaleGray(), scaleOfGray);
             for (int h = 0; h < heightDesiredResult; h++) {
                 for (int w = 0; w < widthDesiredResult; w++) {
-                    assertEquals(obtainedResult.getData()[h][w].toString(), data[h][w].toString());
+                    assertEquals(obtainedResult.getData()[h][w].getRed(), data[h][w].getRed());
+                    assertEquals(obtainedResult.getData()[h][w].getGreen(), data[h][w].getGreen());
+                    assertEquals(obtainedResult.getData()[h][w].getBlue(), data[h][w].getBlue());
                 }
             }
         } catch (FileReadingException e) {
