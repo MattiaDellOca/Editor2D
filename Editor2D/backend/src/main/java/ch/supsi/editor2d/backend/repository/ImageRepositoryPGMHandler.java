@@ -1,7 +1,6 @@
 package ch.supsi.editor2d.backend.repository;
 
 import ch.supsi.editor2d.backend.exception.FileReadingException;
-import ch.supsi.editor2d.backend.model.ImagePBM;
 import ch.supsi.editor2d.backend.model.ImagePGM;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import javafx.scene.paint.Color;
@@ -32,7 +31,7 @@ public class ImageRepositoryPGMHandler extends ImageRepositoryHandler {
 
     @Override
     public ImageWrapper handleLoad(String extension, String path) throws FileReadingException {
-        if (extension.equals("PGM")) {
+        if (extension.equalsIgnoreCase("PGM")) {
 
             try (FileReader fileReader = new FileReader(path);
                  BufferedReader bufferedReader = new BufferedReader(fileReader)

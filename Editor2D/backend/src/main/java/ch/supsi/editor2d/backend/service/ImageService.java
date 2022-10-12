@@ -5,7 +5,6 @@ import ch.supsi.editor2d.backend.exception.FileReadingException;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.repository.*;
 
-//TODO apply chain responsibility
 public class ImageService implements IImageController {
     private final IImageService repositoryLayer;
 

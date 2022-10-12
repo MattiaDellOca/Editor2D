@@ -1,18 +1,11 @@
 package ch.supsi.editor2d.backend.repository.utils;
 
-import ch.supsi.editor2d.backend.exception.FileReadingException;
-import ch.supsi.editor2d.backend.model.ImagePBM;
-import javafx.scene.paint.Color;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
-import static ch.supsi.editor2d.backend.repository.utils.LineChecker.checkAndGetLine;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LineCheckerTest {
@@ -39,7 +32,7 @@ class LineCheckerTest {
         try {
             LineChecker.checkAndGetLine('#', bufferedReader);
             fail();
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
     }
 

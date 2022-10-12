@@ -1,9 +1,10 @@
 package ch.supsi.editor2d.frontend.gui.model;
 
 
-import ch.supsi.editor2d.backend.controller.IImageController;
 import ch.supsi.editor2d.backend.controller.ImageController;
+import ch.supsi.editor2d.backend.exception.FileReadingException;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
+import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -14,34 +15,39 @@ public class DataModel {
      * Interface imageController
      * the right controller (ImagePBMController, ImagePPMController, ...) will be assigned on run time
      */
-    private ImageController imageController;
+    private final ImageController imageController;
 
     /**
      * Image showed
      */
-    private ImageView image;
+    private final ImageView image;
 
 
     public DataModel() {
         this.image = new ImageView();
+        this.imageController = new ImageController();
+
     }
 
-    public void loadImage(){
-        imageController = new ImageController();
-        //ImageWrapper img = imageController.getImage("/home/manuelenolli/Desktop/Image/img1.pbm"); //TODO feature 20542
-        ImageWrapper img = imageController.getImage("/home/manuelenolli/Desktop/Image/img2.pgm"); //TODO feature 20542
+    public void loadImage(String path) {
 
-        WritableImage writableImage = new WritableImage(img.getWidth(), img.getHeight());
-        PixelWriter pixelWriter = writableImage.getPixelWriter();
+        try {
+            ImageWrapper img = imageController.getImage(path);
+            WritableImage writableImage = new WritableImage(img.getWidth(), img.getHeight());
+            PixelWriter pixelWriter = writableImage.getPixelWriter();
 
 
-        for(int h = 0; h < img.getHeight(); h++){
-            for(int w = 0; w < img.getWidth(); w++){
-                pixelWriter.setColor(w,h,img.getData()[h][w]);
+            for (int h = 0; h < img.getHeight(); h++) {
+                for (int w = 0; w < img.getWidth(); w++) {
+                    pixelWriter.setColor(w, h, img.getData()[h][w]);
+                }
             }
+            image.setImage(writableImage);
+        } catch (FileReadingException e) {
+            //Show Alert
+            System.err.println(e.getMessage());
+            ErrorAlert.showError(e.getMessage());
         }
-
-        image.setImage(writableImage);
     }
 
     public ImageView getImage() {

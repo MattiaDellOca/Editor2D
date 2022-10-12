@@ -13,9 +13,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class ImageRepositoryPGMHandlerTest {
 
     private ImageRepositoryPGMHandler imageRepositoryPGMHandler;
-    private final String pathImageTestPGMOk = Objects.requireNonNull(getClass().getClassLoader().getResource("PGM/testPGMOk.pbm")).getPath();
-    private final String pathImageTestPGMWrongMagicNumber = Objects.requireNonNull(getClass().getClassLoader().getResource("PGM/testPGMWrongMagicNumber.pbm")).getPath();
-    private final String pathImageTestPGMMalformedBody = Objects.requireNonNull(getClass().getClassLoader().getResource("PGM/testPGMMalformedBody.pbm")).getPath();
+    private final String pathImageTestPGMOk = Objects.requireNonNull(getClass().getClassLoader().getResource("PGM/testPGMOk.pgm")).getPath();
+    private final String pathImageTestPGMWrongMagicNumber = Objects.requireNonNull(getClass().getClassLoader().getResource("PGM/testPGMWrongMagicNumber.pgm")).getPath();
+    private final String pathImageTestPGMMalformedBody = Objects.requireNonNull(getClass().getClassLoader().getResource("PGM/testPGMMalformedBody.pgm")).getPath();
 
     @BeforeEach
     void init(){

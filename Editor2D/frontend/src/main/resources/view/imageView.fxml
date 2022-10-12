@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 
 <BorderPane prefHeight="634.0" prefWidth="854.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.supsi.editor2d.frontend.gui.controller.ImageViewController">
-   <bottom>
-      <Button fx:id="button" mnemonicParsing="false" onAction="#buttonPress" text="Button" BorderPane.alignment="CENTER" />
-   </bottom>
    <center>
       <AnchorPane fx:id="containerImage" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -16,4 +15,12 @@
          </children>
       </AnchorPane>
    </center>
+   <bottom>
+      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="textField" />
+            <Button fx:id="button" mnemonicParsing="false" onAction="#buttonPress" text="Load" />
+         </children>
+      </HBox>
+   </bottom>
 </BorderPane>
