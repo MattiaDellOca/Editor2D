@@ -1,6 +1,7 @@
 package ch.supsi.editor2d.backend.repository;
 
 
+import ch.supsi.editor2d.backend.exception.FileReadingException;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.service.IImageService;
 
@@ -14,7 +15,8 @@ public abstract class ImageRepositoryHandler implements IImageService {
         this.successor = successor;
     }
 
-    public abstract ImageWrapper handleLoad(String path);
+    @Override
+    public abstract ImageWrapper handleLoad(String extension, String path) throws FileReadingException;
 
 }
 
