@@ -3,7 +3,6 @@ package ch.supsi.editor2d.backend.repository;
 import ch.supsi.editor2d.backend.exception.FileReadingException;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import javafx.scene.paint.Color;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,15 +13,14 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ImageRepositoryPBMHandlerTest {
 
     private ImageRepositoryPBMHandler imageRepositoryPBMHandler;
-    private final String pathImageTestPBMOk = Objects.requireNonNull(getClass().getClassLoader().getResource("testPBMOk.pbm")).getPath();
-    private final String pathImageTestWrongMagicNumber = Objects.requireNonNull(getClass().getClassLoader().getResource("testPBMWrongMagicNumber.pbm")).getPath();
-    private final String pathImageTestMalformedBody = Objects.requireNonNull(getClass().getClassLoader().getResource("testPBMMalformedBody.pbm")).getPath();
+    private final String pathImageTestPBMOk = Objects.requireNonNull(getClass().getClassLoader().getResource("PBM/testPBMOk.pbm")).getPath();
+    private final String pathImageTestPBMWrongMagicNumber = Objects.requireNonNull(getClass().getClassLoader().getResource("PBM/testPBMWrongMagicNumber.pbm")).getPath();
+    private final String pathImageTestPBMMalformedBody = Objects.requireNonNull(getClass().getClassLoader().getResource("PBM/testPBMMalformedBody.pbm")).getPath();
 
     @BeforeEach
     void init(){
         imageRepositoryPBMHandler = new ImageRepositoryPBMHandler();
     }
-
 
 
     @Test
@@ -58,13 +56,13 @@ public class ImageRepositoryPBMHandlerTest {
 
     @Test
     void handleLoadWrongMagicNumber(){
-        Exception ex = assertThrows(FileReadingException.class, () -> imageRepositoryPBMHandler.handleLoad("PBM",pathImageTestWrongMagicNumber));
+        Exception ex = assertThrows(FileReadingException.class, () -> imageRepositoryPBMHandler.handleLoad("PBM", pathImageTestPBMWrongMagicNumber));
         assertEquals("Magic number is incorrect",ex.getMessage());
     }
 
     @Test
     void handleLoadMalformedBody(){
-        Exception ex = assertThrows(FileReadingException.class, () -> imageRepositoryPBMHandler.handleLoad("PBM",pathImageTestMalformedBody));
+        Exception ex = assertThrows(FileReadingException.class, () -> imageRepositoryPBMHandler.handleLoad("PBM", pathImageTestPBMMalformedBody));
         assertEquals("Error during image loading",ex.getMessage());
 
     }

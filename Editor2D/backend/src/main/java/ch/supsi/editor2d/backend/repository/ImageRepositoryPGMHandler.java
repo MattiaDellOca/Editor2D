@@ -66,7 +66,7 @@ public class ImageRepositoryPGMHandler extends ImageRepositoryHandler {
 
                 return new ImagePGM(width, height, data, scaleOfGray);
 
-            } catch (IOException | NumberFormatException e) {
+            } catch (IOException | NumberFormatException | StringIndexOutOfBoundsException e) {
                 throw new FileReadingException("Error during image loading");
             }
 
