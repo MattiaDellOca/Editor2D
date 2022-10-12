@@ -1,9 +1,9 @@
 package ch.supsi.editor2d.backend.repository;
 
 import ch.supsi.editor2d.backend.exception.FileReadingException;
+import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImagePBM;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
-import javafx.scene.paint.Color;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -56,15 +56,15 @@ public class ImageRepositoryPBMHandler extends ImageRepositoryHandler {
                 int height = Integer.parseInt(widthHeight[1]);
 
                 //data reading
-                Color[][] data = new Color[height][width];
+                ColorWrapper[][] data = new ColorWrapper[height][width];
                 for (int h = 0; h < height; h++) {
                     tempLine = checkAndGetLine('#', bufferedReader);
                     tempLine = tempLine.replace(" ", ""); //remove spaces
                     for (int w = 0; w < width; w++) {
                         if (tempLine.charAt(w) == '1') {
-                            data[h][w] = Color.BLACK;
+                            data[h][w] = new ColorWrapper(0.f,0.f,0.f); //black
                         } else if (tempLine.charAt(w) == '0'){
-                            data[h][w] = Color.WHITE;
+                            data[h][w] = new ColorWrapper(1.f,1.f,1.f); //white;
                         } else {
                             throw new IOException();
                         }

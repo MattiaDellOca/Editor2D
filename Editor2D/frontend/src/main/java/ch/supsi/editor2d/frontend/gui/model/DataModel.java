@@ -3,11 +3,13 @@ package ch.supsi.editor2d.frontend.gui.model;
 
 import ch.supsi.editor2d.backend.controller.ImageController;
 import ch.supsi.editor2d.backend.exception.FileReadingException;
+import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
 
 public class DataModel {
 
@@ -39,7 +41,8 @@ public class DataModel {
 
             for (int h = 0; h < img.getHeight(); h++) {
                 for (int w = 0; w < img.getWidth(); w++) {
-                    pixelWriter.setColor(w, h, img.getData()[h][w]);
+                    ColorWrapper tempColor = img.getData()[h][w];
+                    pixelWriter.setColor(w, h, Color.color(tempColor.getRed(),tempColor.getGreen(),tempColor.getBlue()));
                 }
             }
             image.setImage(writableImage);

@@ -1,9 +1,10 @@
 package ch.supsi.editor2d.backend.repository;
 
 import ch.supsi.editor2d.backend.exception.FileReadingException;
+import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImagePGM;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
-import javafx.scene.paint.Color;
+import ch.supsi.editor2d.backend.repository.utils.InterpolateRGB;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -52,14 +53,14 @@ public class ImageRepositoryPGMHandler extends ImageRepositoryHandler {
                 int scaleOfGray = Integer.parseInt(tempLine);
 
                 //data reading
-                Color[][] data = new Color[height][width];
+                ColorWrapper[][] data = new ColorWrapper[height][width];
                 for (int h = 0; h < height; h++) {
                     tempLine = checkAndGetLine('#', bufferedReader);
                     String tempLineReplaced = tempLine.replaceAll("\s+", " ");//starting with whitespace one or more
                     String[] tempLineArray = tempLineReplaced.split(" ");
                     for (int w = 0; w < width; w++) {
-                        int grayColor = (255 / scaleOfGray) * Integer.parseInt(tempLineArray[w]);
-                        data[h][w] = Color.rgb(grayColor, grayColor, grayColor);
+                        float grayColorInterpolated = InterpolateRGB.interpolateRGBtoFloat(255 / scaleOfGray) * Integer.parseInt(tempLineArray[w]);
+                        data[h][w] = new ColorWrapper(grayColorInterpolated, grayColorInterpolated, grayColorInterpolated);
                     }
                 }
 
