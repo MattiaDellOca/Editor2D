@@ -28,10 +28,8 @@ public class DataModel {
 
     public void loadImage(){
         imageController = new ImageController();
-        ImageWrapper img = imageController.getImage("/home/manuelenolli/Desktop/Image/img1.pbm"); //TODO feature 20542
-
-        //ImagePGMRepository imagePGMRepository = new ImagePGMRepository();
-        //ImageWrapper img = imagePGMRepository.loadImage("/home/manuelenolli/Desktop/Image/img2.pgm");
+        //ImageWrapper img = imageController.getImage("/home/manuelenolli/Desktop/Image/img1.pbm"); //TODO feature 20542
+        ImageWrapper img = imageController.getImage("/home/manuelenolli/Desktop/Image/img2.pgm"); //TODO feature 20542
 
         WritableImage writableImage = new WritableImage(img.getWidth(), img.getHeight());
         PixelWriter pixelWriter = writableImage.getPixelWriter();

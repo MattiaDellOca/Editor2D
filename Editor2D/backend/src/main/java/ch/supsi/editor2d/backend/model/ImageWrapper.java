@@ -1,7 +1,7 @@
 package ch.supsi.editor2d.backend.model;
 import javafx.scene.paint.Color;
 
-abstract public class ImageWrapper {
+public class ImageWrapper {
 
     /**
      *  Image width

@@ -28,7 +28,7 @@ P1
 /**
  * Image PBM repository
  */
-public class ImagePBMRepository implements IImageService {
+public class ImagePBMRepository {
     
 
     //TODO exceptions handler
@@ -37,7 +37,6 @@ public class ImagePBMRepository implements IImageService {
      * @param path path of the file to load
      * @return an ImagePBM with the data
      */
-    @Override
     public ImagePBM loadImage(String path) {
 
         try (FileReader fileReader = new FileReader(path);

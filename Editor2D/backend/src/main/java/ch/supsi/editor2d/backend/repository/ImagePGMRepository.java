@@ -9,14 +9,14 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class ImagePGMRepository implements IImageService {
 
+public class ImagePGMRepository  {
 
+    //TODO create method for remove all comment
     /**
      * @param path 
      * @return
      */
-    @Override
     public ImageWrapper loadImage(String path) {
 
         try (FileReader fileReader = new FileReader(path);
