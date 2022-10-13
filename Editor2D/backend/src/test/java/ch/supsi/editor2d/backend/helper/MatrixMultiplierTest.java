@@ -3,6 +3,7 @@ package ch.supsi.editor2d.backend.helper;
 import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.filter.FlipFilter;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
+import ch.supsi.editor2d.backend.model.filter.GrayscaleFilter;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -11,26 +12,37 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MatrixMultiplierTest {
     @Test
-    void multiplyMatrices() {
-        double[][] A = new double[][] { {1, 2, 3}, {4, 5, 6}, {7, 8, 9} };
-        double[][] B = new double[][] { {1, 1, 1}, {1, 1, 1}, {1, 1, 1} };
-        double[][] R = new double[][] { {6, 6, 6}, {15, 15, 15}, {24, 24, 24} };
-        assertTrue(Arrays.deepEquals(R, MatrixMultiplier.multiplyMatrices(A, B)));
-        B = new double[][] { {0, 0, 1}, {0, 1, 0}, {1, 0, 0} };
-        R = new double[][] { {3, 2, 1}, {6, 5, 4}, {9, 8, 7} };
-        assertTrue(Arrays.deepEquals(R, MatrixMultiplier.multiplyMatrices(A, B)));
-        A = new double[][] { {6, 5}, {3, 6}, {7, 1} };
-        B = new double[][] { {0, 1}, {1, 0} };
-        R = new double[][] { {5, 6}, {6, 3}, {1, 7} };
-        assertTrue(Arrays.deepEquals(R, MatrixMultiplier.multiplyMatrices(A, B)));
+    void applyScalarFilter() {
+        ImageWrapper sample = new ImageWrapper(2, 3, new ColorWrapper[][] { {ColorWrapper.CYAN, ColorWrapper.BLUE},
+                {ColorWrapper.BLACK, ColorWrapper.WHITE}, {ColorWrapper.YELLOW, ColorWrapper.ORANGE} } );
+        ImageWrapper expected = new ImageWrapper(2, 3, new ColorWrapper[][] { {ColorWrapper.BLUE, ColorWrapper.CYAN}, {
+                ColorWrapper.WHITE, ColorWrapper.BLACK}, {ColorWrapper.ORANGE, ColorWrapper.YELLOW} });
+        ImageWrapper actual = MatrixMultiplier.applyScalarFilter(sample, new FlipFilter(sample.getWidth()));
+
+        assert actual != null;
+        assert expected.getWidth() == actual.getWidth();
+        assert expected.getHeight() == actual.getHeight();
+
+        assert Arrays.deepEquals(expected.getData(), actual.getData());
     }
 
     @Test
-    void applyScalarFilter() {
-        ImageWrapper imageWrapper = new ImageWrapper(2, 3, new ColorWrapper[][] { {ColorWrapper.CYAN, ColorWrapper.BLUE},
-                {ColorWrapper.BLACK, ColorWrapper.WHITE}, {ColorWrapper.YELLOW, ColorWrapper.ORANGE}});
-        assertTrue(Arrays.deepEquals(new ColorWrapper[][] { {ColorWrapper.BLUE, ColorWrapper.CYAN}, {
-            ColorWrapper.WHITE, ColorWrapper.BLACK}, {ColorWrapper.ORANGE, ColorWrapper.YELLOW} },
-                MatrixMultiplier.applyScalarFilter(imageWrapper, new FlipFilter(imageWrapper.getWidth())).getData()));
+    void applyColorFilter() {
+        ImageWrapper sample = new ImageWrapper(3, 2, new ColorWrapper[][] { { ColorWrapper.ORANGE, ColorWrapper.CYAN, ColorWrapper.DARK_GRAY },
+                { ColorWrapper.RED, ColorWrapper.BLUE, ColorWrapper.YELLOW } });
+        ImageWrapper expected = new ImageWrapper(3, 2, new ColorWrapper[][] { { new ColorWrapper(194, 194, 194),
+                new ColorWrapper(179, 179, 179), new ColorWrapper(64, 64, 64) }, { new ColorWrapper(76, 76, 76),
+                new ColorWrapper(29, 29, 29), new ColorWrapper(226, 226, 226) }});
+        ImageWrapper actual = MatrixMultiplier.applyColorFilter(sample, new GrayscaleFilter());
+
+        assert actual != null;
+        assert expected.getWidth() == actual.getWidth();
+        assert expected.getHeight() == actual.getHeight();
+
+        for(int i = 0; i < expected.getHeight(); i ++) {
+            for(int t = 0; t < expected.getWidth(); t ++) {
+                assertArrayEquals(expected.getData()[i][t].getRGB(), actual.getData()[i][t].getRGB(), 0.005f);
+            }
+        }
     }
 }

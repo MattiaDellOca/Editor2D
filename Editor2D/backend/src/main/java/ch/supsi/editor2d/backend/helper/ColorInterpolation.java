@@ -1,13 +1,13 @@
 package ch.supsi.editor2d.backend.helper;
 
-public class ColorInterpolation {
-    private static float valueRGBMax = 255.0f;
+public final class ColorInterpolation {
+    private static final float VALUE_RGB_MAX = 255.0f;
 
     public static float interpolateRGBtoFloat(int valueRGB){
-        return valueRGB / valueRGBMax;
+        return valueRGB / VALUE_RGB_MAX;
     }
 
-    public static float interpolateRGBtoInt(float valueRGB){
-        return valueRGB * valueRGBMax;
+    public static int interpolateRGBtoInt(float valueRGB){
+        return (int) (valueRGB * VALUE_RGB_MAX);
     }
 }

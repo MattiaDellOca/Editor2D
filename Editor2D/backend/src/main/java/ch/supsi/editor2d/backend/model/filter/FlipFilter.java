@@ -1,7 +1,7 @@
 package ch.supsi.editor2d.backend.model.filter;
 
 // TODO: 10/10/22 abstract factory
-public class FlipFilter extends ScalarMatrixFilter {
+public class FlipFilter extends GeometricMatrixFilter {
     public FlipFilter(int width) {
         super(generateMatrix(width));
     }

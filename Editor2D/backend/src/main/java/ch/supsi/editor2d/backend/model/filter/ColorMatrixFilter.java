@@ -10,7 +10,6 @@ public abstract class ColorMatrixFilter extends MatrixFilter {
 
     @Override
     public ImageWrapper apply(ImageWrapper image) {
-        // TODO: 13/10/22 create algorithm for applying pixel color manipulation 
-        return MatrixMultiplier.applyScalarFilter(image, this);
+        return MatrixMultiplier.applyColorFilter(image, this);
     }
 }

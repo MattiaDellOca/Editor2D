@@ -74,6 +74,10 @@ public class ColorWrapper {
         return b;
     }
 
+    public float[] getRGB() {
+        return new float[] { r, g, b };
+    }
+
     static {
         WHITE = white;
         lightGray = new ColorWrapper(192, 192, 192);
