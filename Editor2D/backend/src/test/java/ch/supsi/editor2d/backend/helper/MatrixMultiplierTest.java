@@ -1,8 +1,8 @@
 package ch.supsi.editor2d.backend.helper;
 
+import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.filter.FlipFilter;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
-import javafx.scene.paint.Color;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -27,8 +27,10 @@ class MatrixMultiplierTest {
 
     @Test
     void applyScalarFilter() {
-        ImageWrapper imageWrapper = new ImageWrapper(2, 3, new Color[][] { {Color.BEIGE, Color.ANTIQUEWHITE}, {Color.BLACK, Color.ALICEBLUE}, {Color.AQUA, Color.AQUAMARINE}});
-        assertTrue(Arrays.deepEquals(new Color[][] { {Color.ANTIQUEWHITE, Color.BEIGE}, {Color.ALICEBLUE, Color.BLACK}, {Color.AQUAMARINE, Color.AQUA} },
+        ImageWrapper imageWrapper = new ImageWrapper(2, 3, new ColorWrapper[][] { {ColorWrapper.CYAN, ColorWrapper.BLUE},
+                {ColorWrapper.BLACK, ColorWrapper.WHITE}, {ColorWrapper.YELLOW, ColorWrapper.ORANGE}});
+        assertTrue(Arrays.deepEquals(new ColorWrapper[][] { {ColorWrapper.BLUE, ColorWrapper.CYAN}, {
+            ColorWrapper.WHITE, ColorWrapper.BLACK}, {ColorWrapper.ORANGE, ColorWrapper.YELLOW} },
                 MatrixMultiplier.applyScalarFilter(imageWrapper, new FlipFilter(imageWrapper.getWidth())).getData()));
     }
 }

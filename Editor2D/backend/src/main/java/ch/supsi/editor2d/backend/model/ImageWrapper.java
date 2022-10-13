@@ -1,12 +1,10 @@
 package ch.supsi.editor2d.backend.model;
 
-import javafx.scene.paint.Color;
-
 public class ImageWrapper {
 
     private final int width;
     private final int height;
-    private final Color[][] data;
+    private final ColorWrapper[][] data;
 
     public ImageWrapper (ImageWrapper wrapper) {
         this.width = wrapper.getWidth();
@@ -14,7 +12,7 @@ public class ImageWrapper {
         this.data = wrapper.getData();
     }
 
-    public ImageWrapper (int width, int height, Color[][] data) {
+    public ImageWrapper (int width, int height, ColorWrapper[][] data) {
         this.width = width;
         this.height = height;
         this.data = data;
@@ -28,7 +26,7 @@ public class ImageWrapper {
         return height;
     }
 
-    public Color[][] getData() {
+    public ColorWrapper[][] getData() {
         return data;
     }
 }

@@ -1,12 +1,12 @@
 package ch.supsi.editor2d.backend.helper;
 
+import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.model.filter.FlipFilter;
 import ch.supsi.editor2d.backend.model.filter.GrayscaleFilter;
 import ch.supsi.editor2d.backend.model.filter.SepiaFilter;
 import ch.supsi.editor2d.backend.model.task.FilterTask;
 import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
-import javafx.scene.paint.Color;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -55,10 +55,10 @@ public class FilterPipelineTest {
         pipeline.add(new FilterTask(new FlipFilter(sample.getWidth())));
 
         // Expected result
-        final Color[][] expectedData = new Color[][]{
-                {Color.WHITE, Color.VIOLET, Color.BLACK},
-                {Color.WHITE, Color.RED, Color.BLACK},
-                {Color.WHITE, Color.VIOLET, Color.BLACK}
+        final ColorWrapper[][] expectedData = new ColorWrapper[][]{
+                {ColorWrapper.WHITE, ColorWrapper.YELLOW, ColorWrapper.BLACK},
+                {ColorWrapper.WHITE, ColorWrapper.RED, ColorWrapper.BLACK},
+                {ColorWrapper.WHITE, ColorWrapper.YELLOW, ColorWrapper.BLACK}
         };
 
         // Run the pipeline using the
@@ -68,10 +68,10 @@ public class FilterPipelineTest {
 
 
     public ImageWrapper getImageWrapperSample () {
-        return new ImageWrapper(3,3, new Color[][]{
-            {Color.BLACK, Color.VIOLET, Color.WHITE},
-            {Color.BLACK, Color.RED, Color.WHITE},
-            {Color.BLACK, Color.VIOLET, Color.WHITE}
+        return new ImageWrapper(3,3, new ColorWrapper[][]{
+            {ColorWrapper.BLACK, ColorWrapper.YELLOW, ColorWrapper.WHITE},
+            {ColorWrapper.BLACK, ColorWrapper.RED, ColorWrapper.WHITE},
+            {ColorWrapper.BLACK, ColorWrapper.YELLOW, ColorWrapper.WHITE}
         });
     }
 }
