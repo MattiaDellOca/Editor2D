@@ -1,23 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="297.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.supsi.editor2d.frontend.gui.controller.MainViewController">
-   <top>
-      <Label text="Hello world!" BorderPane.alignment="CENTER" />
-   </top>
-   <left>
-      <Label text="Label" BorderPane.alignment="CENTER" />
-   </left>
-   <right>
-      <Label text="Label" BorderPane.alignment="CENTER" />
-   </right>
-   <bottom>
-      <Label text="Label" BorderPane.alignment="CENTER" />
-   </bottom>
-   <center>
-      <AnchorPane fx:id="imagePane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
-   </center>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+            prefWidth="600.0" xmlns="http://javafx.com/javafx/18"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ch.supsi.editor2d.frontend.gui.controller.MainViewController"
+>
+    <top>
+        <Pane prefHeight="40.0" prefWidth="600.0"
+              style="-fx-background-color: lightblue; -fx-max-height: 50px;" BorderPane.alignment="CENTER">
+            <Text layoutX="14.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Editor 2D">
+                <font>
+                    <Font name="Arial Bold" size="24.0"/>
+                </font>
+            </Text>
+            <Text layoutX="121.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="v0.1">
+                <font>
+                    <Font name="System Bold Italic" size="13.0"/>
+                </font>
+            </Text>
+        </Pane>
+    </top>
+    <bottom>
+        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: gray; -fx-max-height: 30px;"
+                    BorderPane.alignment="CENTER"/>
+    </bottom>
+    <right>
+        <ScrollPane prefHeight="330.0" prefWidth="154.0" BorderPane.alignment="CENTER">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0"/>
+        </ScrollPane>
+    </right>
+    <center>
+        <AnchorPane fx:id="imagePane" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER"/>
+    </center>
 </BorderPane>
