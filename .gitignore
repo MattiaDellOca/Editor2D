@@ -1,2 +1,4 @@
-# General gitignore
+.idea
+*.iml
+target
 .DS_Store
