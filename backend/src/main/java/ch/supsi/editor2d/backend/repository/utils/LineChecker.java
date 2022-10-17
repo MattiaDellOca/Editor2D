@@ -30,6 +30,9 @@ public class LineChecker {
 
         //no information in this line, return the next one
         return checkAndGetLine(commentType, bufferedReader);
+
+        // TODO: 17/10/22 add case comment as last line 
+        // TODO: 17/10/22 manage case space at the end of the line 
     }
 
 }

@@ -12,7 +12,9 @@ public class ImageService implements IImageController {
         //Creation of the Chain Responsibility patter for loading image
         ImageRepositoryHandler h1 = new ImageRepositoryPBMHandler();
         ImageRepositoryHandler h2 = new ImageRepositoryPGMHandler();
+        ImageRepositoryHandler h3 = new ImageRepositoryPPMHandler();
         h1.setSuccessor(h2);
+        h2.setSuccessor(h3);
         repositoryLayer = h1;
     }
 
