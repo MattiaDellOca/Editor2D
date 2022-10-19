@@ -2,7 +2,7 @@ package ch.supsi.editor2d.backend.model.filter;
 
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 
-public abstract class KernelMatrixFilter extends  MatrixFilter implements Applicable{
+public abstract class KernelMatrixFilter extends  MatrixFilter{
 
     public KernelMatrixFilter(double[][] matrix) {
         super(matrix);
