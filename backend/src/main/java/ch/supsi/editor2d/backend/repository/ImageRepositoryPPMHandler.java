@@ -26,6 +26,7 @@ import ch.supsi.editor2d.backend.helper.ColorInterpolation;
 import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImagePPM;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
+import ch.supsi.editor2d.backend.repository.utils.DataValuesParser;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -49,6 +50,9 @@ public class ImageRepositoryPPMHandler extends ImageRepositoryHandler {
 
                 //width and height reading
                 tempLine = checkAndGetLine('#', bufferedReader);
+                tempLine = tempLine.replaceAll("\s+", " ");
+                if(tempLine.startsWith(" "))
+                    tempLine = tempLine.substring(1);
                 String[] widthHeight = tempLine.split(" ");
                 int width = Integer.parseInt(widthHeight[0]);
                 int height = Integer.parseInt(widthHeight[1]);
@@ -59,14 +63,13 @@ public class ImageRepositoryPPMHandler extends ImageRepositoryHandler {
 
                 //data reading
                 ColorWrapper[][] data = new ColorWrapper[height][width];
+                float[] rgb = new float[3];
+                DataValuesParser parser = new DataValuesParser(bufferedReader);
+
                 for (int h = 0; h < height; h++) {
                     for(int w = 0; w < width; w ++) {
-                        tempLine = checkAndGetLine('#', bufferedReader);
-                        String tempLineReplaced = tempLine.replaceAll("\s+", " ");//starting with whitespace one or more
-                        String[] tempLineArray = tempLineReplaced.split(" ");
-                        float[] rgb = new float[3];
-                        for (int c = 0; c < width; c++) {
-                            rgb[c] = ColorInterpolation.interpolateRGBtoFloat(255 / scaleOfRGB) * Integer.parseInt(tempLineArray[c]);
+                        for (int c = 0; c < 3; c++) {
+                            rgb[c] = ColorInterpolation.interpolateRGBtoFloat(255 / scaleOfRGB) * Integer.parseInt(parser.getNext());
                         }
                         data[h][w] = new ColorWrapper(rgb[0], rgb[1], rgb[2]);
                     }

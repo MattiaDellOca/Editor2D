@@ -22,7 +22,7 @@ public class ImageService implements IImageController {
     public ImageWrapper getImage(String path) throws FileReadingException {
         // The chain handler check if they are the responsible for loading the image with a specific extension
 
-        int indexDot = path.indexOf('.');
+        int indexDot = path.lastIndexOf('.');
         if (indexDot == -1) {//dot not found
             throw new FileReadingException("This file does not have an extension");
         }
