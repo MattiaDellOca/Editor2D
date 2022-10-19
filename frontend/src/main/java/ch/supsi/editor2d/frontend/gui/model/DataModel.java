@@ -24,20 +24,16 @@ public class DataModel {
      */
     private final ImageView image;
 
-
     public DataModel() {
         this.image = new ImageView();
         this.imageController = new ImageController();
-
     }
 
     public void loadImage(String path) {
-
         try {
             ImageWrapper img = imageController.getImage(path);
             WritableImage writableImage = new WritableImage(img.getWidth(), img.getHeight());
             PixelWriter pixelWriter = writableImage.getPixelWriter();
-
 
             for (int h = 0; h < img.getHeight(); h++) {
                 for (int w = 0; w < img.getWidth(); w++) {
