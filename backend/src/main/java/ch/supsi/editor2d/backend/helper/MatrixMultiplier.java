@@ -50,46 +50,39 @@ public final class MatrixMultiplier {
     public static ImageWrapper applyKernelFilter(ImageWrapper image, KernelMatrixFilter filter) {
 
         ColorWrapper[][] originalImage = image.getData();
-        ColorWrapper[][] newImage = new ColorWrapper[image.getWidth() - 1][image.getHeight() - 1];
+        ColorWrapper[][] newImage = new ColorWrapper[image.getHeight()-2][image.getWidth()-2];
 
-        for (int w = 1; w < image.getWidth() - 1; w++) {
+
+
+        double[][] filterMatrix = filter.getMatrix();
+
+        for (int w = 1; w < image.getWidth() -1; w++) {
             for (int h = 1; h < image.getHeight() - 1; h++) {
-
-                /*ColorWrapper w_1h_1 = originalImage[h - 1][w - 1];
-                ColorWrapper wh_1 = originalImage[h][w - 1];
-                ColorWrapper w1h_1 = originalImage[h + 1][w - 1];
-                ColorWrapper w_1h = originalImage[h - 1][w];
-                ColorWrapper wh = originalImage[h][w];
-                ColorWrapper w1h = originalImage[h + 1][w];
-                ColorWrapper w_1h1 = originalImage[h - 1][w + 1];
-                ColorWrapper wh1 = originalImage[h][w + 1];
-                ColorWrapper w1h1 = originalImage[h + 1][w + 1];*/
 
                 ColorWrapper[][] nearColors = new ColorWrapper[3][3];
                 nearColors[0][0] = originalImage[h - 1][w - 1];
-                nearColors[0][1] = originalImage[h][w - 1];
-                nearColors[0][2] = originalImage[h + 1][w - 1];
-                nearColors[1][0] = originalImage[h - 1][w];
+                nearColors[0][1] = originalImage[h-1][w];
+                nearColors[0][2] = originalImage[h - 1][w + 1];
+                nearColors[1][0] = originalImage[h][w-1];
                 nearColors[1][1] = originalImage[h][w];
-                nearColors[1][2] = originalImage[h + 1][w];
-                nearColors[2][0] = originalImage[h - 1][w + 1];
-                nearColors[2][1] = originalImage[h][w + 1];
+                nearColors[1][2] = originalImage[h][w+1];
+                nearColors[2][0] = originalImage[h + 1][w - 1];
+                nearColors[2][1] = originalImage[h+1][w];
                 nearColors[2][2] = originalImage[h + 1][w + 1];
 
                 float red = 0, green = 0, blue = 0;
                 for (int i = 0; i < nearColors.length; i++) {
                     for(int j = 0; j< nearColors[i].length; j++){
-                        red += nearColors[i][j].getRed();
-                        green += nearColors[i][j].getRed();
-                        blue += nearColors[i][j].getRed();
+                        red += nearColors[i][j].getRed() * filterMatrix[i][j];
+                        green += nearColors[i][j].getGreen() * filterMatrix[i][j];
+                        blue += nearColors[i][j].getBlue() * filterMatrix[i][j];
                     }
                 }
 
-                newImage[h][w] = new ColorWrapper(red/9,green/9,blue/9);
+                newImage[h-1][w-1] = new ColorWrapper(red,green,blue);
             }
         }
-
-        return new ImageWrapper(newImage.length, newImage[0].length, newImage);
+        return new ImageWrapper(newImage[0].length, newImage.length, newImage);
     }
 
     private static ColorWrapper dotProduct(ColorWrapper[] row, double[] column) {

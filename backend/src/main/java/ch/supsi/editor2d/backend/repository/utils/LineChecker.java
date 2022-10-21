@@ -15,6 +15,12 @@ public class LineChecker {
             throw new IOException();
         }
 
+        line = line.replaceAll("\s+", " ");
+
+        // Remove the first char if it's a space
+        if(line.startsWith(" "))
+            line = line.substring(1);
+
         int indexComment = line.indexOf(commentType);
         if (indexComment == -1) {
             //no comment present
@@ -32,4 +38,22 @@ public class LineChecker {
         return checkAndGetLine(commentType, bufferedReader);
     }
 
+    public static String checkLine(String line, char commentType) {
+        // Replace multiple spaces with only one
+        line = line.replaceAll("\s+", " ");
+
+        // Remove the first char if it's a space
+        if(line.startsWith(" "))
+            line = line.substring(1);
+
+
+        int indexComment = line.indexOf(commentType);
+        if (indexComment == -1) {
+            //no comment present
+            return line;
+        }
+
+        //create a substring
+        return line.substring(0, indexComment);
+    }
 }

@@ -12,7 +12,9 @@ public class ImageService implements IImageController {
         //Creation of the Chain Responsibility patter for loading image
         ImageRepositoryHandler h1 = new ImageRepositoryPBMHandler();
         ImageRepositoryHandler h2 = new ImageRepositoryPGMHandler();
+        ImageRepositoryHandler h3 = new ImageRepositoryPPMHandler();
         h1.setSuccessor(h2);
+        h2.setSuccessor(h3);
         repositoryLayer = h1;
     }
 
@@ -20,7 +22,7 @@ public class ImageService implements IImageController {
     public ImageWrapper getImage(String path) throws FileReadingException {
         // The chain handler check if they are the responsible for loading the image with a specific extension
 
-        int indexDot = path.indexOf('.');
+        int indexDot = path.lastIndexOf('.');
         if (indexDot == -1) {//dot not found
             throw new FileReadingException("This file does not have an extension");
         }
