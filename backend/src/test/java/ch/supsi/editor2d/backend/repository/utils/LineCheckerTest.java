@@ -17,7 +17,7 @@ class LineCheckerTest {
         BufferedReader bufferedReader = new BufferedReader(reader);
 
         try {
-            String result = LineChecker.checkAndGetLine('#', bufferedReader);
+            String result = LineChecker.checkHeaderLine('#', bufferedReader);
             assertEquals(expected, result);
         } catch (IOException e) {
             fail();
@@ -30,7 +30,7 @@ class LineCheckerTest {
         BufferedReader bufferedReader = new BufferedReader(reader);
 
         try {
-            LineChecker.checkAndGetLine('#', bufferedReader);
+            LineChecker.checkHeaderLine('#', bufferedReader);
             fail();
         } catch (IOException ignored) {
         }
@@ -44,8 +44,8 @@ class LineCheckerTest {
         BufferedReader bufferedReader = new BufferedReader(reader);
 
         try {
-            String result1 = LineChecker.checkAndGetLine('#', bufferedReader);
-            String result2 = LineChecker.checkAndGetLine('#', bufferedReader);
+            String result1 = LineChecker.checkHeaderLine('#', bufferedReader);
+            String result2 = LineChecker.checkHeaderLine('#', bufferedReader);
             assertEquals(expected.get(0), result1);
             assertEquals(expected.get(1), result2);
         } catch (IOException e) {

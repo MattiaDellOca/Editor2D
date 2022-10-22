@@ -32,7 +32,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import static ch.supsi.editor2d.backend.repository.utils.LineChecker.checkAndGetLine;
+import static ch.supsi.editor2d.backend.repository.utils.LineChecker.checkHeaderLine;
 
 public class ImageRepositoryPPMHandler extends ImageRepositoryHandler {
 
@@ -43,22 +43,18 @@ public class ImageRepositoryPPMHandler extends ImageRepositoryHandler {
             try (FileReader fileReader = new FileReader(path);
                  BufferedReader bufferedReader = new BufferedReader(fileReader)
             ) {
-                String tempLine = checkAndGetLine('#', bufferedReader);
+                String tempLine = checkHeaderLine('#', bufferedReader);
                 if (!tempLine.equals("P3")) {
                     throw new FileReadingException("Magic number is incorrect");
                 }
 
                 //width and height reading
-                tempLine = checkAndGetLine('#', bufferedReader);
-                tempLine = tempLine.replaceAll("\s+", " ");
-                if(tempLine.startsWith(" "))
-                    tempLine = tempLine.substring(1);
-                String[] widthHeight = tempLine.split(" ");
+                String[] widthHeight = checkHeaderLine('#', bufferedReader).split(" ");
                 int width = Integer.parseInt(widthHeight[0]);
                 int height = Integer.parseInt(widthHeight[1]);
 
                 //scale of rgb
-                tempLine = checkAndGetLine('#', bufferedReader);
+                tempLine = checkHeaderLine('#', bufferedReader);
                 int scaleOfRGB = Integer.parseInt(tempLine);
 
                 //data reading
@@ -69,7 +65,7 @@ public class ImageRepositoryPPMHandler extends ImageRepositoryHandler {
                 for (int h = 0; h < height; h++) {
                     for(int w = 0; w < width; w ++) {
                         for (int c = 0; c < 3; c++) {
-                            rgb[c] = ColorInterpolation.interpolateRGBtoFloat(255 / scaleOfRGB) * Integer.parseInt(parser.getNext());
+                            rgb[c] = ColorInterpolation.interpolateRGBtoFloat(255 / scaleOfRGB) * parser.getNext();
                         }
                         data[h][w] = new ColorWrapper(rgb[0], rgb[1], rgb[2]);
                     }
