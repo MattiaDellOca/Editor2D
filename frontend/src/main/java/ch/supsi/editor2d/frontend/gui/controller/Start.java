@@ -1,5 +1,7 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
+import ch.supsi.editor2d.backend.model.filter.FlipFilter;
+import ch.supsi.editor2d.backend.model.filter.SepiaFilter;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -37,6 +39,8 @@ public class Start extends Application {
         stage.setTitle("Editor2D");
         stage.setScene(new Scene(pipelineView));
         stage.show();
+
+        model.addFilterPipeline(new SepiaFilter());
     }
 
     public static void main(String[] args) {

@@ -38,4 +38,8 @@ public abstract class TaskExecutor<T, K extends TaskResult<?>> implements Execut
     public boolean isEmpty () {
         return this.tasks.isEmpty();
     }
+
+    public Queue<Task<T,K>> getQueue(){
+        return tasks;
+    }
 }
