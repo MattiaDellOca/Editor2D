@@ -28,8 +28,14 @@ public class Start extends Application {
         //Set imageView.fxml inside mainView.fxml
         mainViewController.getImagePane().getChildren().add(imageView);
 
+        //Pipeline View page
+        FXMLLoader pipelineViewLoader = new FXMLLoader(getClass().getResource("/view/pipelineView.fxml"));
+        Parent pipelineView = pipelineViewLoader.load();
+        PipelineViewController pipelineViewController = pipelineViewLoader.getController();
+        pipelineViewController.initModel(model);
+
         stage.setTitle("Editor2D");
-        stage.setScene(new Scene(mainView));
+        stage.setScene(new Scene(pipelineView));
         stage.show();
     }
 
