@@ -41,6 +41,9 @@ public class Start extends Application {
         stage.show();
 
         model.addFilterPipeline(new SepiaFilter());
+        model.addFilterPipeline(new SepiaFilter());
+        model.addFilterPipeline(new SepiaFilter());
+        model.addFilterPipeline(new SepiaFilter());
     }
 
     public static void main(String[] args) {

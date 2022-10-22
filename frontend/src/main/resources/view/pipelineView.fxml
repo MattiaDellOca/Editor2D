@@ -23,7 +23,7 @@
          <center>
             <AnchorPane prefHeight="550.0" prefWidth="300.0" BorderPane.alignment="CENTER">
                <children>
-                  <ListView fx:id="filterPipelineList" prefHeight="373.0" prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <ListView id="listView" fx:id="filterPipelineList" prefHeight="373.0" prefWidth="300.0" style="-fx-background-color: white;" stylesheets="@pipelineStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
             </AnchorPane>
          </center>
