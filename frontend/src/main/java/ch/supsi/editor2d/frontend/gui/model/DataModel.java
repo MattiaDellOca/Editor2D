@@ -5,7 +5,7 @@ import ch.supsi.editor2d.backend.controller.ImageController;
 import ch.supsi.editor2d.backend.exception.FileReadingException;
 import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
-import ch.supsi.editor2d.backend.model.filter.BoxBlurFilter;
+import ch.supsi.editor2d.backend.model.filter.SharpenFilter;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
@@ -37,7 +37,7 @@ public class DataModel {
         try {
             ImageWrapper img2 = imageController.getImage(path);
 
-            BoxBlurFilter filter = new BoxBlurFilter();
+            SharpenFilter filter = new SharpenFilter();
             ImageWrapper img = filter.apply(img2);
 
             WritableImage writableImage = new WritableImage(img.getWidth(), img.getHeight());

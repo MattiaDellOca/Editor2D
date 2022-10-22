@@ -1,7 +1,7 @@
 package ch.supsi.editor2d.backend.helper;
 
 import ch.supsi.editor2d.backend.model.ColorWrapper;
-import ch.supsi.editor2d.backend.model.filter.BoxBlurFilter;
+import ch.supsi.editor2d.backend.model.filter.SharpenFilter;
 import ch.supsi.editor2d.backend.model.filter.FlipFilter;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.model.filter.GrayscaleFilter;
@@ -50,17 +50,40 @@ class MatrixMultiplierTest {
 
     @Test
     void applyKernelFilter() {
-        ImageWrapper sample = new ImageWrapper(4, 4, new ColorWrapper[][]{
-                {new ColorWrapper(1f,1f,1f), new ColorWrapper(1f,0f,1f), new ColorWrapper(1f,1f,0f), new ColorWrapper(1f,0.54f,0.45f)},
-                {new ColorWrapper(0f,0.234f,1f), new ColorWrapper(0.3243f,0f,1f), new ColorWrapper(1f,0.314f,0f), new ColorWrapper(1f,.14f,0.45f)},
-                {new ColorWrapper(1f,0.3f,0f), new ColorWrapper(1f,0f,0.5f), new ColorWrapper(1f,1f,0.3f), new ColorWrapper(1f,0.1f,0.876f)},
-                {new ColorWrapper(1f,0.5f,1f), new ColorWrapper(1f,0f,0.32f), new ColorWrapper(1f,1f,0.4f), new ColorWrapper(0.56f,0f,0.45f)},
+        //assert null
+        ImageWrapper sample1 = new ImageWrapper(3, 2, new ColorWrapper[][]{
+                {new ColorWrapper(1.f, 1.f, 1.f), new ColorWrapper(1.f, 1.f, 1.f), new ColorWrapper(1.f, 1.f, 1.f)},
+                {new ColorWrapper(1.f, 1.f, 1.f), new ColorWrapper(1.f, 1.f, 1.f), new ColorWrapper(1.f, 1.f, 1.f)},
+        });
+        ImageWrapper nullReturn1 = MatrixMultiplier.applyKernelFilter(sample1, new SharpenFilter());
+        assertNull(nullReturn1);
+
+        ImageWrapper sample2 = new ImageWrapper(2, 3, new ColorWrapper[][]{
+                {new ColorWrapper(1.f, 1.f, 1.f), new ColorWrapper(1.f, 1.f, 1.f)},
+                {new ColorWrapper(1.f, 1.f, 1.f), new ColorWrapper(1.f, 1.f, 1.f)},
+                {new ColorWrapper(1.f, 1.f, 1.f), new ColorWrapper(1.f, 1.f, 1.f)},
         });
 
-        ImageWrapper actual = MatrixMultiplier.applyKernelFilter(sample,new BoxBlurFilter());
+        ImageWrapper nullReturn2 = MatrixMultiplier.applyKernelFilter(sample2, new SharpenFilter());
+        assertNull(nullReturn2);
 
-        assertEquals(sample.getWidth()-1,actual.getWidth());
-        assertEquals(sample.getHeight()-1,actual.getHeight());
+        //assert correct image return
+        ImageWrapper sample3 = new ImageWrapper(4, 4, new ColorWrapper[][]{
+                {new ColorWrapper(1.f, 0.f, 0.f), new ColorWrapper(1.f, 1.f, 0.f), new ColorWrapper(0.f, 1.f, 0.f), new ColorWrapper(0.f, 0.f, 1.f)},
+                {new ColorWrapper(1.f, 1.f, 0.f), new ColorWrapper(0.f, 0.5f, 0.f), new ColorWrapper(0.f, 1.f, 0.5f), new ColorWrapper(0.f, 1.f, 0.f)},
+                {new ColorWrapper(0.f, 1.f, 0.f), new ColorWrapper(0.5f, 0.f, 0.f), new ColorWrapper(0.f, 0.f, 0.5f), new ColorWrapper(1.f, 1.f, 0.f)},
+                {new ColorWrapper(0.f, 0.f, 1.f), new ColorWrapper(0.f, 1.f, 0.f), new ColorWrapper(1.f, 1.f, 0.f), new ColorWrapper(1.f, 0.f, 0.f)},
 
+        });
+
+        ImageWrapper actual = MatrixMultiplier.applyKernelFilter(sample3,new SharpenFilter());
+
+        assertNotNull(actual);
+        assertEquals(sample3.getWidth()-2,actual.getWidth());
+        assertEquals(sample3.getHeight()-2,actual.getHeight());
+        assertEquals(new ColorWrapper(0.f,0.f,0.f),actual.getData()[0][0]);
+        assertEquals(new ColorWrapper(0.f,1.f,1.f),actual.getData()[0][1]);
+        assertEquals(new ColorWrapper(1.f,0.f,0.f),actual.getData()[1][0]);
+        assertEquals(new ColorWrapper(0.f,0.f,1.f),actual.getData()[1][1]);
     }
 }
