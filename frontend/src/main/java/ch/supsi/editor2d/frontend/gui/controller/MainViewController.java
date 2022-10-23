@@ -218,10 +218,8 @@ public class MainViewController {
     /**
      * Handle the about menu action
      */
-    public void onAboutMenu() {
-        // Open a new window with about view
-        if (aboutStage != null)
-            aboutStage.show();
+    public void onAboutMenu(ActionEvent e) {
+        aboutClicked.handle(e);
     }
 
     public void onRunPipeline(ActionEvent actionEvent) {
@@ -258,11 +256,7 @@ public class MainViewController {
     /**
      * Handle image export action
      */
-    public void onExport() {
-        // Open custom file export dialog
-
-        // Open directory chooser
-        File file = directoryChooser.showDialog(imagePane.getScene().getWindow());
-        model.exportImage(file);
+    public void onExport(ActionEvent e) {
+        exportClicked.handle(e);
     }
 }
