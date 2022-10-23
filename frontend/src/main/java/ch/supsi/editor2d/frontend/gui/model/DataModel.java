@@ -6,6 +6,7 @@ import ch.supsi.editor2d.backend.exception.FileReadingException;
 import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -24,6 +25,8 @@ public class DataModel {
      */
     private final ImageView image;
 
+    private ImageWrapper imageLoaded;
+
     public DataModel() {
         this.image = new ImageView();
         this.imageController = new ImageController();
@@ -32,6 +35,8 @@ public class DataModel {
     public void loadImage(String path) {
         try {
             ImageWrapper img = imageController.getImage(path);
+            imageLoaded = img;
+
             WritableImage writableImage = new WritableImage(img.getWidth(), img.getHeight());
             PixelWriter pixelWriter = writableImage.getPixelWriter();
 
@@ -49,7 +54,26 @@ public class DataModel {
         }
     }
 
+    public void setImage(ImageWrapper imageWrapper) {
+        imageLoaded = imageWrapper;
+
+        WritableImage writableImage = new WritableImage(imageWrapper.getWidth(), imageWrapper.getHeight());
+        PixelWriter pixelWriter = writableImage.getPixelWriter();
+
+        for (int h = 0; h < imageWrapper.getHeight(); h++) {
+            for (int w = 0; w < imageWrapper.getWidth(); w++) {
+                ColorWrapper tempColor = imageWrapper.getData()[h][w];
+                pixelWriter.setColor(w, h, Color.color(tempColor.getRed(),tempColor.getGreen(),tempColor.getBlue()));
+            }
+        }
+        image.setImage(writableImage);
+    }
+
     public ImageView getImage() {
         return image;
+    }
+
+    public ImageWrapper getImageLoaded() {
+        return imageLoaded;
     }
 }
