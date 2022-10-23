@@ -51,17 +51,17 @@
    <top>
        <MenuBar BorderPane.alignment="CENTER">
            <Menu mnemonicParsing="false" text="File">
-               <MenuItem mnemonicParsing="false" text="Save"/>
-               <MenuItem mnemonicParsing="false" text="Open"/>
-               <MenuItem mnemonicParsing="false" text="Close"/>
+               <MenuItem mnemonicParsing="false" text="Save" onAction="#onSave"/>
+               <MenuItem mnemonicParsing="false" text="Open" onAction="#onOpen"/>
+               <MenuItem mnemonicParsing="false" text="Close" onAction="#onClose"/>
            </Menu>
            <Menu mnemonicParsing="false" text="Edit">
-               <MenuItem mnemonicParsing="false" text="Undo"/>
-               <MenuItem mnemonicParsing="false" text="Redo"/>
-               <MenuItem mnemonicParsing="false" text="Run pipeline"/>
+               <MenuItem mnemonicParsing="false" text="Undo" onAction="#onUndo"/>
+               <MenuItem mnemonicParsing="false" text="Redo" onAction="#onRedo"/>
+               <MenuItem mnemonicParsing="false" text="Run pipeline" onAction="#onRunPipeline"/>
            </Menu>
            <Menu mnemonicParsing="false" text="Help">
-               <MenuItem mnemonicParsing="false" text="About"/>
+               <MenuItem mnemonicParsing="false" text="About" onAction="#onAboutMenu"/>
            </Menu>
        </MenuBar>
    </top>
