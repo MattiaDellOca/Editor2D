@@ -1,13 +1,20 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
-import ch.supsi.editor2d.frontend.gui.event.FileDropEvent;
+import ch.supsi.editor2d.frontend.gui.event.FileOpenEvent;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Main view controller that handles the main view logic.
@@ -17,7 +24,7 @@ public class MainViewController {
     /**
      * List of supported file extensions
      */
-    private final String[] SUPPORTED_FORMATS = new String[] { "ppm", "pgm", "pbm", "tga" };
+    private final String[] SUPPORTED_FORMATS = new String[]{"ppm", "pgm", "pbm", "tga"};
 
     /**
      * Data model reference
@@ -27,12 +34,8 @@ public class MainViewController {
     /**
      * File drop event handler
      */
-    private EventHandler<FileDropEvent> fileDropped = event -> {};
-
-    /**
-     * About menu event handler
-     */
-    private EventHandler<ActionEvent> onAboutMenuClicked = event -> {};
+    private EventHandler<FileOpenEvent> fileOpened = event -> {
+    };
 
     /**
      * Image pane reference
@@ -41,95 +44,111 @@ public class MainViewController {
     private Pane imagePane;
 
     /**
-     * Initialize the model reference
+     * Loaded about view
+     */
+    private Parent aboutView;
+
+    /**
+     * File chooser reference
+     */
+    private FileChooser fileChooser;
+
+    /**
+     * Initialize the model reference and set all the event handlers
+     *
      * @param model Data model
      */
-    public void initModel(DataModel model){
+    public void init(DataModel model) {
 
         // ensure model is only set once
         if (this.model != null) {
             throw new IllegalStateException("Model can only be initialized once");
         }
+        this.model = model;
+
+        // set event handlers + load about view
+        try {
+            initEventHandlers();
+        } catch (IOException e) {
+            throw new IllegalStateException("Unable to load about view, please check the resources folder");
+        }
+    }
+
+    private void initEventHandlers() throws IOException {
+        // Load about page
+        FXMLLoader aboutLoader = new FXMLLoader(getClass().getResource("/view/aboutView.fxml"));
+        aboutView = aboutLoader.load();
+
+        // Load file chooser
+        fileChooser = new FileChooser();
+        fileChooser.setTitle("Open picture");
+        fileChooser.setInitialDirectory(
+                new File(System.getProperty("user.home"))
+        );
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter(
+                        "Image Files",
+                        Arrays.stream(SUPPORTED_FORMATS).map(s -> "*." + s).toArray(String[]::new)
+                )
+        );
 
         // Enable drag and drop to imagePane component
         imagePane.setOnDragOver(dragEvent -> {
-            if (dragEvent.getGestureSource() != imagePane && dragEvent.getDragboard().hasFiles()) {
-                // Check if file is supported
-                File file = dragEvent.getDragboard().getFiles().get(0);
-                String extension = file.getName().substring(file.getName().lastIndexOf(".") + 1);
-                for (String format : SUPPORTED_FORMATS) {
-                    if (extension.equals(format)) {
-                        dragEvent.acceptTransferModes(javafx.scene.input.TransferMode.COPY_OR_MOVE);
-                        break;
-                    }
-                }
+            if (
+                    dragEvent.getGestureSource() != imagePane
+                            && dragEvent.getDragboard().hasFiles()
+                            && isSupportedFormat(dragEvent.getDragboard().getFiles().get(0))
+            ) {
+                dragEvent.acceptTransferModes(javafx.scene.input.TransferMode.COPY_OR_MOVE);
             }
             dragEvent.consume();
         });
 
         // Handle image drop
         imagePane.setOnDragDropped(dragEvent -> {
-            boolean success = false;
-            if (dragEvent.getDragboard().hasFiles()) {
-                // Check if file has a valid extension
-                File actualFile = dragEvent.getDragboard().getFiles().get(0);
-                String fileName = actualFile.getName();
-                String extension = fileName.substring(fileName.lastIndexOf(".") + 1);
+            boolean success = dragEvent.getDragboard().hasFiles()
+                    && dragEvent.getDragboard().getFiles().size() == 1
+                    && isSupportedFormat(dragEvent.getDragboard().getFiles().get(0));
 
-                // Check if file format is supported
-                for (String format : SUPPORTED_FORMATS) {
-                    if (extension.equals(format)) {
-                        // If an image is already loaded, remove it
-                        getOnFileDropped().handle(new FileDropEvent(actualFile, imagePane));
-
-                        // Set success flag
-                        success = true;
-                        break;
-                    }
-                }
-            }
+            // handle response
             dragEvent.setDropCompleted(success);
+            if (success) {
+                // Fire file dropped event
+                fileOpened.handle(new FileOpenEvent(dragEvent.getDragboard().getFiles().get(0), imagePane));
+            }
+            // Consume event
             dragEvent.consume();
         });
-
-        this.model = model;
     }
 
+    /**
+     * Check if the file extension is supported
+     * @param file File to check
+     * @return true if the file extension is supported, false otherwise
+     */
+    private boolean isSupportedFormat(File file) {
+        // Check if file is supported
+        String extension = file.getName().substring(file.getName().lastIndexOf(".") + 1);
+        for (String format : SUPPORTED_FORMATS) {
+            if (extension.equals(format)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * Set the file dropped event handler
+     *
      * @param event File drop event
      */
-    public void setOnFileDropped(EventHandler<FileDropEvent> event) {
-        this.fileDropped = event;
-    }
-
-    /**
-     * Get the file dropped event handler
-     * @return File drop event handler
-     */
-    public EventHandler<FileDropEvent> getOnFileDropped() {
-        return this.fileDropped;
-    }
-
-    /**
-     * Set the about menu event handler
-     * @param event About menu event
-     */
-    public void setOnAboutMenuClicked(EventHandler<ActionEvent> event) {
-        this.onAboutMenuClicked = event;
-    }
-
-    /**
-     * Get the about menu event handler
-     * @return About menu event handler
-     */
-    public EventHandler<ActionEvent> getOnAboutMenuClicked() {
-        return this.onAboutMenuClicked;
+    public void setOnFileOpen(EventHandler<FileOpenEvent> event) {
+        this.fileOpened = event;
     }
 
     /**
      * Get the image pane reference
+     *
      * @return Image pane
      */
     public Pane getImagePane() {
@@ -138,6 +157,7 @@ public class MainViewController {
 
     /**
      * Handle the zoom out action
+     *
      * @param actionEvent Action event
      */
     public void zoomOut(ActionEvent actionEvent) {
@@ -146,6 +166,7 @@ public class MainViewController {
 
     /**
      * Handle the zoom in action
+     *
      * @param actionEvent Action event
      */
     public void zoomIn(ActionEvent actionEvent) {
@@ -154,11 +175,12 @@ public class MainViewController {
 
     /**
      * Handle the about menu action
-     * @param actionEvent Action event
      */
-    public void onAboutMenu(ActionEvent actionEvent) {
-        // Run related event handler
-        getOnAboutMenuClicked().handle(actionEvent);
+    public void onAboutMenu() {
+        // Open a new window with about view
+        Stage aboutStage = new Stage();
+        aboutStage.setScene(new Scene(aboutView));
+        aboutStage.show();
     }
 
     public void onRunPipeline(ActionEvent actionEvent) {
@@ -177,8 +199,15 @@ public class MainViewController {
         throw new RuntimeException("NOT IMPLEMENTED!");
     }
 
-    public void onOpen(ActionEvent actionEvent) {
-        throw new RuntimeException("NOT IMPLEMENTED!");
+    public void onOpen() {
+        // Open file browser
+        File file = fileChooser.showOpenDialog(imagePane.getScene().getWindow());
+
+        // additional file extension check
+        if (file != null && isSupportedFormat(file)) {
+            // Fire file dropped event
+            fileOpened.handle(new FileOpenEvent(file, imagePane));
+        }
     }
 
     public void onClose(ActionEvent actionEvent) {
