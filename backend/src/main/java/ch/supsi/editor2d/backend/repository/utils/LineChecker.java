@@ -5,15 +5,44 @@ import java.io.IOException;
 
 
 /**
- * Utility for checking if a comment is present in the bufferedReader next line
+ * Utility for checking if a comment is present in a given line.
+ * The information related to the header are read directly from the BufferedReader, while the data's information
+ * are passed by a DataValuesParser
  */
 public class LineChecker {
 
-    public static String checkAndGetLine(char commentType, BufferedReader bufferedReader) throws IOException {
+    public static String checkHeaderLine(char commentType, BufferedReader bufferedReader) throws IOException {
         String line = bufferedReader.readLine();
         if (line == null) {
             throw new IOException();
         }
+
+        line = line.replaceAll("\s+", " ");
+
+        // Remove the first char if it's a space
+        if(line.startsWith(" "))
+            line = line.substring(1);
+
+        if(line.startsWith("#"))
+            return checkHeaderLine(commentType, bufferedReader);
+
+        int indexComment = line.indexOf(commentType);
+        if (indexComment == -1) {
+            //no comment present
+            return line;
+        }
+
+        return line.substring(0, indexComment);
+    }
+
+    public static String checkDataLine(String line, char commentType) {
+        // Replace multiple spaces with only one
+        line = line.replaceAll("\s+", " ");
+
+        // Remove the first char if it's a space
+        if(line.startsWith(" "))
+            line = line.substring(1);
+
 
         int indexComment = line.indexOf(commentType);
         if (indexComment == -1) {
@@ -22,14 +51,6 @@ public class LineChecker {
         }
 
         //create a substring
-        String possibleResult = line.substring(0, indexComment);
-        if (possibleResult.length() > 0) {
-            //there is some information
-            return possibleResult;
-        }
-
-        //no information in this line, return the next one
-        return checkAndGetLine(commentType, bufferedReader);
+        return line.substring(0, indexComment);
     }
-
 }
