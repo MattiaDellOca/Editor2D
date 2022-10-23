@@ -6,9 +6,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -54,6 +54,11 @@ public class MainViewController {
     private FileChooser fileChooser;
 
     /**
+     * Directory chooser reference
+     */
+    private DirectoryChooser directoryChooser;
+
+    /**
      * Initialize the model reference and set all the event handlers
      *
      * @param model Data model
@@ -91,6 +96,13 @@ public class MainViewController {
                         "Image Files",
                         Arrays.stream(SUPPORTED_FORMATS).map(s -> "*." + s).toArray(String[]::new)
                 )
+        );
+
+        // Open directory chooser
+        directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Export location");
+        directoryChooser.setInitialDirectory(
+                new File(System.getProperty("user.home"))
         );
 
         // Enable drag and drop to imagePane component
@@ -212,5 +224,14 @@ public class MainViewController {
 
     public void onClose(ActionEvent actionEvent) {
         throw new RuntimeException("NOT IMPLEMENTED!");
+    }
+
+    /**
+     * Handle image export action
+     */
+    public void onExport() {
+        // Open directory chooser
+        File file = directoryChooser.showDialog(imagePane.getScene().getWindow());
+        model.exportImage(file);
     }
 }
