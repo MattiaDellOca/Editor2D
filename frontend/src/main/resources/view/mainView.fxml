@@ -53,6 +53,7 @@
            <Menu mnemonicParsing="false" text="File">
                <MenuItem mnemonicParsing="false" text="Save" onAction="#onSave"/>
                <MenuItem mnemonicParsing="false" text="Open" onAction="#onOpen"/>
+               <MenuItem mnemonicParsing="false" text="Export image" onAction="#onExport"/>
                <MenuItem mnemonicParsing="false" text="Close" onAction="#onClose"/>
            </Menu>
            <Menu mnemonicParsing="false" text="Edit">
