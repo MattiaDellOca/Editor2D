@@ -38,8 +38,15 @@ public class MainViewController {
         // Enable drag and drop to imagePane component
         imagePane.setOnDragOver(dragEvent -> {
             if (dragEvent.getGestureSource() != imagePane && dragEvent.getDragboard().hasFiles()) {
-                // Accept both copy and move, whatever user chooses
-                dragEvent.acceptTransferModes(javafx.scene.input.TransferMode.COPY_OR_MOVE);
+                // Check if file is supported
+                File file = dragEvent.getDragboard().getFiles().get(0);
+                String extension = file.getName().substring(file.getName().lastIndexOf(".") + 1);
+                for (String format : SUPPORTED_FORMATS) {
+                    if (extension.equals(format)) {
+                        dragEvent.acceptTransferModes(javafx.scene.input.TransferMode.COPY_OR_MOVE);
+                        break;
+                    }
+                }
             }
             dragEvent.consume();
         });
