@@ -1,13 +1,14 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
 import ch.supsi.editor2d.backend.model.ImageWrapper;
+import ch.supsi.editor2d.backend.model.task.FilterTask;
 import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.backend.model.task.Task;
+import ch.supsi.editor2d.backend.objectPresentation.FilterPresentable;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ListCell;
-import javafx.scene.layout.HBox;
 
 import java.io.IOException;
 
@@ -35,7 +36,8 @@ public class PipelineCell extends ListCell<Task<ImageWrapper, FilterTaskResult>>
             setGraphic(null);
         } else {
             pipelineCellViewController.setTask(task);
-            pipelineCellViewController.setFilterName("filterNAME");
+            FilterPresentable filterPresentable = new FilterPresentable();
+            pipelineCellViewController.setFilterName(filterPresentable.present(((FilterTask) task).getFilter())); //TODO not the best solution
             setGraphic(root);
         }
     }
