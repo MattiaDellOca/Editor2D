@@ -5,15 +5,15 @@ import javafx.event.EventType;
 
 import java.io.File;
 
-public class FileDropEvent extends Event {
+public class FileOpenEvent extends Event {
 
-    public static final EventType<FileDropEvent> FILE_DROPPED = new EventType<>(Event.ANY, "FILE_DROPPED");
+    public static final EventType<FileOpenEvent> FILE_DROPPED = new EventType<>(Event.ANY, "FILE_DROPPED");
 
     public File getFile() {
         return (File) getSource();
     }
 
-    public FileDropEvent(Object o, EventTarget eventTarget) {
+    public FileOpenEvent(Object o, EventTarget eventTarget) {
         super(o, eventTarget, FILE_DROPPED);
     }
 }
