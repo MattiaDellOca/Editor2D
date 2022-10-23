@@ -30,6 +30,10 @@ public class Start extends Application {
         ImageViewController imageViewController = imageViewLoader.getController();
         imageViewController.initModel(model);
 
+        // Load about page
+        FXMLLoader aboutLoader = new FXMLLoader(getClass().getResource("/view/aboutView.fxml"));
+        Parent aboutView = aboutLoader.load();
+
         // Set imageView.fxml inside mainView.fxml
         Pane imagePane = mainViewController.getImagePane();
         imagePane.getChildren().add(imageView);
@@ -42,6 +46,14 @@ public class Start extends Application {
             model.loadImage(e.getFile().getAbsolutePath());
             // Now, refresh image view to show the new image
             imageViewController.refresh();
+        });
+
+        // Menu event handling
+        mainViewController.setOnAboutMenuClicked(e -> {
+            // Create new window and show about page
+            Stage aboutStage = new Stage();
+            aboutStage.setScene(new Scene(aboutView));
+            aboutStage.show();
         });
 
         stage.setTitle("Editor2D");
