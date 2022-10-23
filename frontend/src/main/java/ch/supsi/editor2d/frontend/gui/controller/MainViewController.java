@@ -17,16 +17,10 @@ public class MainViewController {
 
     private EventHandler<FileDropEvent> fileDropped = event -> {};
 
+    private EventHandler<ActionEvent> onAboutMenuClicked = event -> {};
+
     @FXML
     private Pane imagePane;
-
-    public void setOnFileDropped(EventHandler<FileDropEvent> event) {
-        this.fileDropped = event;
-    }
-
-    public EventHandler<FileDropEvent> getOnFileDropped() {
-        return this.fileDropped;
-    }
 
     public void initModel(DataModel model){
 
@@ -79,6 +73,28 @@ public class MainViewController {
         this.model = model;
     }
 
+
+    public void setOnFileDropped(EventHandler<FileDropEvent> event) {
+        this.fileDropped = event;
+    }
+
+    public EventHandler<FileDropEvent> getOnFileDropped() {
+        return this.fileDropped;
+    }
+
+    public void setOnAboutMenuClicked(EventHandler<ActionEvent> event) {
+        this.onAboutMenuClicked = event;
+    }
+
+    public EventHandler<ActionEvent> getOnAboutMenuClicked() {
+        return this.onAboutMenuClicked;
+    }
+
+    public Pane getImagePane() {
+        return imagePane;
+    }
+
+
     public void zoomOut(ActionEvent actionEvent) {
         System.out.println("ZOOMING OUT: " + actionEvent);
     }
@@ -87,7 +103,32 @@ public class MainViewController {
         System.out.println("ZOOMING IN: " + actionEvent);
     }
 
-    public Pane getImagePane() {
-        return imagePane;
+    public void onAboutMenu(ActionEvent actionEvent) {
+        // Run related event handler
+        getOnAboutMenuClicked().handle(actionEvent);
+    }
+
+    public void onRunPipeline(ActionEvent actionEvent) {
+        throw new RuntimeException("NOT IMPLEMENTED!");
+    }
+
+    public void onRedo(ActionEvent actionEvent) {
+        throw new RuntimeException("NOT IMPLEMENTED!");
+    }
+
+    public void onUndo(ActionEvent actionEvent) {
+        throw new RuntimeException("NOT IMPLEMENTED!");
+    }
+
+    public void onSave(ActionEvent actionEvent) {
+        throw new RuntimeException("NOT IMPLEMENTED!");
+    }
+
+    public void onOpen(ActionEvent actionEvent) {
+        throw new RuntimeException("NOT IMPLEMENTED!");
+    }
+
+    public void onClose(ActionEvent actionEvent) {
+        throw new RuntimeException("NOT IMPLEMENTED!");
     }
 }
