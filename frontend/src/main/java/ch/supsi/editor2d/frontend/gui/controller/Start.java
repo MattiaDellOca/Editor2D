@@ -47,6 +47,11 @@ public class Start extends Application {
             aboutStage.show();
         });
 
+        // Export handling
+        mainViewController.setOnExportClicked(e -> {
+            // FIXME: continue implementing this pls
+        });
+
         stage.setTitle("Editor2D");
         stage.setScene(new Scene(mainView));
         stage.show();
