@@ -23,6 +23,9 @@ public class LineChecker {
         if(line.startsWith(" "))
             line = line.substring(1);
 
+        if(line.startsWith("#"))
+            return checkHeaderLine(commentType, bufferedReader);
+
         int indexComment = line.indexOf(commentType);
         if (indexComment == -1) {
             //no comment present
