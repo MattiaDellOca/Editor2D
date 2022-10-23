@@ -87,4 +87,10 @@ public class DataModel {
     public ObservableList<Task<ImageWrapper, FilterTaskResult>> getActualFiltersPipeline(){
         return actualFiltersPipeline;
     }
+
+    public void removeTaskFromPipeline(Task<ImageWrapper, FilterTaskResult> task) {
+        filterPipeline.remove(task);
+        actualFiltersPipeline.clear();
+        actualFiltersPipeline.addAll(filterPipeline.getQueue());
+    }
 }

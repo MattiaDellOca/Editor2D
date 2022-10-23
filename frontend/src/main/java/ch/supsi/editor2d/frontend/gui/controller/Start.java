@@ -36,6 +36,12 @@ public class Start extends Application {
         PipelineViewController pipelineViewController = pipelineViewLoader.getController();
         pipelineViewController.initModel(model);
 
+      /*  //PipelineCell View Controller
+        FXMLLoader pipelineCellViewLoader = new FXMLLoader(getClass().getResource("/view/pipelineCellView.fxml"));
+        Parent pipelineCellView = pipelineCellViewLoader.load();
+        PipelineCellViewController  pipelineCellViewController = pipelineCellViewLoader.getController();
+        pipelineCellViewController.initModel(model);
+*/
         stage.setTitle("Editor2D");
         stage.setScene(new Scene(pipelineView));
         stage.show();

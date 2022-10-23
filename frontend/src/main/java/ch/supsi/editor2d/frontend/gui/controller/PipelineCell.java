@@ -3,6 +3,7 @@ package ch.supsi.editor2d.frontend.gui.controller;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.backend.model.task.Task;
+import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ListCell;
@@ -15,26 +16,26 @@ public class PipelineCell extends ListCell<Task<ImageWrapper, FilterTaskResult>>
     private Parent root;
     private PipelineCellViewController pipelineCellViewController;
 
-    public PipelineCell() {
+
+    public PipelineCell(DataModel model) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/pipelineCellView.fxml"));
         try {
             root = loader.load();
             pipelineCellViewController = loader.getController();
-        } catch (IOException ignored) {
-            System.out.println("error");
-        }
+            pipelineCellViewController.initModel(model);
+        } catch (IOException ignored) {}
 
     }
 
     @Override
-    protected void updateItem(Task<ImageWrapper, FilterTaskResult> imageWrapperFilterTaskResultTask, boolean empty) {
-        super.updateItem(imageWrapperFilterTaskResultTask, empty);
+    protected void updateItem(Task<ImageWrapper, FilterTaskResult> task, boolean empty) {
+        super.updateItem(task, empty);
 
-        if(empty || imageWrapperFilterTaskResultTask == null){
+        if (empty || task == null) {
             setGraphic(null);
-        } else{
+        } else {
+            pipelineCellViewController.setTask(task);
             pipelineCellViewController.setFilterName("filterNAME");
-
             setGraphic(root);
         }
     }
