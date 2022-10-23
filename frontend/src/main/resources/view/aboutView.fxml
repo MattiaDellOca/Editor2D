@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<BorderPane prefHeight="251.0" prefWidth="430.0" xmlns="http://javafx.com/javafx/18">
+   <top>
+      <Label text="Editor 2D" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="Arial Bold" size="34.0" />
+         </font>
+      </Label>
+   </top>
+   <center>
+       <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+           <Separator prefWidth="200.0"/>
+           <GridPane gridLinesVisible="true" style="-fx-padding: 20px;">
+               <columnConstraints>
+                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="201.0" minWidth="10.0" prefWidth="176.0"/>
+                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="302.0" minWidth="10.0" prefWidth="214.0"/>
+               </columnConstraints>
+               <rowConstraints>
+                   <RowConstraints/>
+                   <RowConstraints/>
+                   <RowConstraints maxHeight="374.0" minHeight="10.0" prefHeight="192.0" vgrow="SOMETIMES"/>
+                   <RowConstraints maxHeight="409.0" minHeight="0.0" prefHeight="168.0" vgrow="SOMETIMES"/>
+                   <RowConstraints maxHeight="233.0" minHeight="10.0" prefHeight="197.0" vgrow="SOMETIMES"/>
+               </rowConstraints>
+               <Label alignment="CENTER" text="Luca Di Bello" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                   <font>
+                       <Font name="Arial Bold" size="13.0"/>
+                   </font>
+               </Label>
+               <Label text="Mattia Dell'Oca" GridPane.halignment="CENTER" GridPane.rowIndex="3"
+                      GridPane.valignment="CENTER">
+                   <font>
+                       <Font name="Arial Bold" size="13.0"/>
+                   </font>
+               </Label>
+               <Label text="Manuele Nolli" GridPane.halignment="CENTER" GridPane.rowIndex="4">
+                   <font>
+                       <Font name="Arial Bold" size="13.0"/>
+                   </font>
+               </Label>
+               <Label text="luca.dibello@student.supsi.ch" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                      GridPane.rowIndex="2" GridPane.valignment="CENTER">
+                   <GridPane.margin>
+                       <Insets/>
+                   </GridPane.margin>
+               </Label>
+               <Label text="mattia.delloca@student.supsi.ch" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                      GridPane.rowIndex="3"/>
+               <Label text="manuele.nolli@student.supsi.ch" GridPane.columnIndex="1" GridPane.halignment="CENTER"
+                      GridPane.rowIndex="4">
+                   <padding>
+                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+                   </padding>
+               </Label>
+           </GridPane>
+       </VBox>
+   </center>
+</BorderPane>
