@@ -1,11 +1,13 @@
 package ch.supsi.editor2d.backend.repository;
 
 import ch.supsi.editor2d.backend.exception.FileReadingException;
+import ch.supsi.editor2d.backend.exception.FileWritingException;
 import ch.supsi.editor2d.backend.helper.ColorInterpolation;
 import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImagePGM;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.repository.utils.DataValuesParser;
+import jdk.jshell.spi.ExecutionControl;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -29,8 +31,6 @@ import static ch.supsi.editor2d.backend.repository.utils.LineChecker.checkHeader
  */
 
 public class ImageRepositoryPGMHandler extends ImageRepositoryHandler {
-
-
     @Override
     public ImageWrapper handleLoad(String extension, String path) throws FileReadingException {
         if (extension.equalsIgnoreCase("PGM")) {
@@ -74,5 +74,10 @@ public class ImageRepositoryPGMHandler extends ImageRepositoryHandler {
             return successor.handleLoad(extension, path);
         }
         throw new FileReadingException("File extension not supported");
+    }
+
+    @Override
+    public void handleSave(String path, ImageWrapper data) throws FileWritingException {
+        throw new RuntimeException("Not implemented yet");
     }
 }

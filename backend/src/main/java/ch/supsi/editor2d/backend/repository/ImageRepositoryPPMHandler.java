@@ -22,6 +22,7 @@ package ch.supsi.editor2d.backend.repository;
  */
 
 import ch.supsi.editor2d.backend.exception.FileReadingException;
+import ch.supsi.editor2d.backend.exception.FileWritingException;
 import ch.supsi.editor2d.backend.helper.ColorInterpolation;
 import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImagePPM;
@@ -81,5 +82,10 @@ public class ImageRepositoryPPMHandler extends ImageRepositoryHandler {
             return successor.handleLoad(extension, path);
         }
         throw new FileReadingException("File extension not supported");
+    }
+
+    @Override
+    public void handleSave(String path, ImageWrapper data) throws FileWritingException {
+        throw new RuntimeException("Not implemented yet");
     }
 }

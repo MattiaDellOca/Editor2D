@@ -1,6 +1,7 @@
 package ch.supsi.editor2d.backend.repository;
 
 import ch.supsi.editor2d.backend.exception.FileReadingException;
+import ch.supsi.editor2d.backend.exception.FileWritingException;
 import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImagePBM;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
@@ -35,8 +36,6 @@ import static ch.supsi.editor2d.backend.repository.utils.LineChecker.checkHeader
 
 
 public class ImageRepositoryPBMHandler extends ImageRepositoryHandler {
-
-
     @Override
     public ImageWrapper handleLoad(String extension, String path) throws FileReadingException {
         if (extension.equalsIgnoreCase("PBM")) {
@@ -76,5 +75,9 @@ public class ImageRepositoryPBMHandler extends ImageRepositoryHandler {
 
         throw new FileReadingException("File extension not supported");
 
+    }
+
+    @Override
+    public void handleSave(String path, ImageWrapper data) throws FileWritingException {
     }
 }
