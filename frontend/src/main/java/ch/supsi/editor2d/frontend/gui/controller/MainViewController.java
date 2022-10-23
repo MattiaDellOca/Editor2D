@@ -38,6 +38,18 @@ public class MainViewController {
     };
 
     /**
+     * About view action event handler
+     */
+    private EventHandler<ActionEvent> aboutClicked = event -> {
+    };
+
+    /**
+     * Export file action event handler
+     */
+    private EventHandler<ActionEvent> exportClicked = event -> {
+    };
+
+    /**
      * Image pane reference
      */
     @FXML
@@ -159,6 +171,23 @@ public class MainViewController {
         this.fileOpened = event;
     }
 
+
+    /**
+     * Set the about clicked event handler
+     * @param event About clicked event
+     */
+    public void setOnAboutClicked(EventHandler<ActionEvent> event) {
+        this.aboutClicked = event;
+    }
+
+    /**
+     * Set the export clicked event handler
+     * @param event Export clicked event
+     */
+    public void setOnExportClicked(EventHandler<ActionEvent> event) {
+        this.exportClicked = event;
+    }
+
     /**
      * Get the image pane reference
      *
@@ -230,6 +259,8 @@ public class MainViewController {
      * Handle image export action
      */
     public void onExport() {
+        // Open custom file export dialog
+
         // Open directory chooser
         File file = directoryChooser.showDialog(imagePane.getScene().getWindow());
         model.exportImage(file);
