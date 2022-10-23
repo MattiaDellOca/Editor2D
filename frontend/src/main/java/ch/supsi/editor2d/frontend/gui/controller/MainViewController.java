@@ -44,9 +44,9 @@ public class MainViewController {
     private Pane imagePane;
 
     /**
-     * Loaded about view
+     * Loaded about stage
      */
-    private Parent aboutView;
+    private Stage aboutStage;
 
     /**
      * File chooser reference
@@ -77,7 +77,8 @@ public class MainViewController {
     private void initEventHandlers() throws IOException {
         // Load about page
         FXMLLoader aboutLoader = new FXMLLoader(getClass().getResource("/view/aboutView.fxml"));
-        aboutView = aboutLoader.load();
+        aboutStage = new Stage();
+        aboutStage.setScene(new Scene(aboutLoader.load()));
 
         // Load file chooser
         fileChooser = new FileChooser();
@@ -178,9 +179,8 @@ public class MainViewController {
      */
     public void onAboutMenu() {
         // Open a new window with about view
-        Stage aboutStage = new Stage();
-        aboutStage.setScene(new Scene(aboutView));
-        aboutStage.show();
+        if (aboutStage != null)
+            aboutStage.show();
     }
 
     public void onRunPipeline(ActionEvent actionEvent) {
