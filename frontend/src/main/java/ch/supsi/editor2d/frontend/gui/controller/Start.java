@@ -1,6 +1,7 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
 import ch.supsi.editor2d.backend.model.filter.FlipFilter;
+import ch.supsi.editor2d.backend.model.filter.GrayscaleFilter;
 import ch.supsi.editor2d.backend.model.filter.SepiaFilter;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.application.Application;
@@ -36,19 +37,13 @@ public class Start extends Application {
         PipelineViewController pipelineViewController = pipelineViewLoader.getController();
         pipelineViewController.initModel(model);
 
-      /*  //PipelineCell View Controller
-        FXMLLoader pipelineCellViewLoader = new FXMLLoader(getClass().getResource("/view/pipelineCellView.fxml"));
-        Parent pipelineCellView = pipelineCellViewLoader.load();
-        PipelineCellViewController  pipelineCellViewController = pipelineCellViewLoader.getController();
-        pipelineCellViewController.initModel(model);
-*/
         stage.setTitle("Editor2D");
         stage.setScene(new Scene(pipelineView));
         stage.show();
 
         model.addFilterPipeline(new SepiaFilter());
-        model.addFilterPipeline(new SepiaFilter());
-        model.addFilterPipeline(new SepiaFilter());
+        model.addFilterPipeline(new FlipFilter(2));
+        model.addFilterPipeline(new GrayscaleFilter());
         model.addFilterPipeline(new SepiaFilter());
     }
 

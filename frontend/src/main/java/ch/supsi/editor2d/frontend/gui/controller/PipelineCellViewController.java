@@ -21,9 +21,6 @@ public class PipelineCellViewController {
     private Task<ImageWrapper, FilterTaskResult> task;
 
 
-    public BorderPane getCell() {
-        return cell;
-    }
     public void initModel(DataModel model) {
         // ensure model is only set once
         if (this.model != null) {
@@ -33,14 +30,14 @@ public class PipelineCellViewController {
     }
 
     public void setFilterName(String label) {
-        this.filterName = new Label(label);
+        this.filterName.setText(label);
     }
 
     public void setTask(Task<ImageWrapper, FilterTaskResult> task){
         this.task = task;
     }
 
-
+    @FXML
     public void removeHandler(MouseEvent mouseEvent) {
         model.removeTaskFromPipeline(task);
     }
