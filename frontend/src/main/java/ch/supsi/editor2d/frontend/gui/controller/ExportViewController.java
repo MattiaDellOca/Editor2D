@@ -80,8 +80,10 @@ public class ExportViewController {
         browseDir.setOnAction(event -> {
             // Open a directory chooser
             destinationDir = chooser.showDialog(browseDir.getScene().getWindow());
-            // Update the filename field
-            exportDirectory.setText(destinationDir.getAbsolutePath());
+            if (destinationDir != null) {
+                // Update the filename field
+                exportDirectory.setText(destinationDir.getAbsolutePath());
+            }
         });
     }
 
