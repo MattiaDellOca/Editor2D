@@ -101,19 +101,16 @@ public class MainViewController {
         filtersSelectionView.getItems().addAll(filters);
         // Add ChangeListener to filtersSelectionView
         filtersSelectionView.getSelectionModel().selectedItemProperty().addListener((observableValue, s, filter) -> {
-            System.out.println("Applying " + filter);
             filtersSelectedView.getItems().add(filter);
             ImageWrapper image = model.getImageLoaded();
 
             switch (filter) {
-                case "Flip" -> filterPipeline.add(new FilterTask(new FlipFilter(image.getWidth())));
+                case "Flip" -> filterPipeline.add(new FilterTask(new FlipFilter()));
                 case "Grayscale" -> filterPipeline.add(new FilterTask(new GrayscaleFilter()));
                 case "Sepia" -> filterPipeline.add(new FilterTask(new SepiaFilter()));
             }
 
-            System.out.println("Calling pipeline: " + System.currentTimeMillis());
             ImageWrapper i = filterPipeline.run(image).getResult();
-            System.out.println("Pipeline result retrieve: " + System.currentTimeMillis());
 
             getOnImageUpdated().handle(new ImageUpdatedEvent(i, imagePane));
 
@@ -123,7 +120,6 @@ public class MainViewController {
         // Add ChangeListener to filtersSelectedView
         filtersSelectedView.getSelectionModel().selectedItemProperty().addListener((observableValue, s, t1) -> {
             String filter = filtersSelectedView.getSelectionModel().getSelectedItem();
-            System.out.println("Removing " + filter);
             filtersSelectionView.getItems().add(filter);
             //filtersSelectedView.getItems().remove(filter);
         });

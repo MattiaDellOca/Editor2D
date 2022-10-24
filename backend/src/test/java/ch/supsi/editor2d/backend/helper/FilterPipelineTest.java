@@ -27,7 +27,7 @@ public class FilterPipelineTest {
     void addTasksIntoQueue() {
         // Try to add a couple of tasks into the pipeline
         // and check if the queue is not empty
-        pipeline.add(new FilterTask(new FlipFilter(10)));
+        pipeline.add(new FilterTask(new FlipFilter()));
         pipeline.add(new FilterTask(new GrayscaleFilter()));
         pipeline.add(new FilterTask(new SepiaFilter()));
 
@@ -38,7 +38,7 @@ public class FilterPipelineTest {
     void emptyTasksQueue() {
         // Try to add a couple of tasks into the pipeline
         // and check if the queue is not empty
-        pipeline.add(new FilterTask(new FlipFilter(10)));
+        pipeline.add(new FilterTask(new FlipFilter()));
         pipeline.add(new FilterTask(new GrayscaleFilter()));
         pipeline.add(new FilterTask(new SepiaFilter()));
 
@@ -52,7 +52,7 @@ public class FilterPipelineTest {
     void runPipelineFlipFilter() {
         // Get image sample
         ImageWrapper sample = getImageWrapperSample();
-        pipeline.add(new FilterTask(new FlipFilter(sample.getWidth())));
+        pipeline.add(new FilterTask(new FlipFilter()));
 
         // Expected result
         final ColorWrapper[][] expectedData = new ColorWrapper[][]{

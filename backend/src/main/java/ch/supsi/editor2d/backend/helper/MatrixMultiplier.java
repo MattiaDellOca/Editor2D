@@ -2,7 +2,7 @@ package ch.supsi.editor2d.backend.helper;
 
 import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
-import ch.supsi.editor2d.backend.model.filter.MatrixFilter;
+import ch.supsi.editor2d.backend.model.filter.ColorMatrixFilter;
 
 import java.util.Arrays;
 
@@ -11,42 +11,8 @@ import java.util.Arrays;
  */
 public final class MatrixMultiplier {
 
-    // Apply a transformation filter to an image
-    public static ImageWrapper applyTransformFilter(ImageWrapper image, MatrixFilter filter) {
-        ColorWrapper[][] I = image.getData();
-        double[][] F = filter.getMatrix();
-
-        // Throws an exception if the width of the image is not equal to the height of the filter's matrix
-        if(I[0].length != F.length)
-            return null;
-
-        System.out.println("Start: " + System.currentTimeMillis());
-        // Create an RGB matrix where the value of the transformation are saved
-        ColorWrapper[][] R = new ColorWrapper[I.length][I[0].length];
-        for(int i = 0; i < I.length; i ++) {
-            for(int t = 0; t < I[0].length; t ++) {
-                // Generate a row containing RGB values
-                ColorWrapper[] row = new ColorWrapper[I[0].length];
-                System.arraycopy(I[i], 0, row, 0, row.length);
-
-                // Generate a column containing filter's values
-                double[] column = new double[F.length];
-                for(int k = 0; k < column.length; k ++)
-                    column[k] = F[k][t];
-
-                // Multiply row * column and save the result in R
-                R[i][t] = dotProduct(row, column);
-            }
-        }
-
-        System.out.println("Finish: " + System.currentTimeMillis());
-
-        // Return the new image
-        return new ImageWrapper(image.getWidth(), image.getHeight(), R);
-    }
-
     // Apply a color based filter to an image
-    public static ImageWrapper applyColorFilter(ImageWrapper image, MatrixFilter filter) {
+    public static ImageWrapper applyColorFilter(ImageWrapper image, ColorMatrixFilter filter) {
         ColorWrapper[][] I = image.getData();
         double[][] F = filter.getMatrix();
 
