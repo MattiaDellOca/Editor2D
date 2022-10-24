@@ -36,9 +36,6 @@ public final class MatrixMultiplier {
     public static ImageWrapper applyColorFilter(ImageWrapper image, MatrixFilter filter) throws FilterApplyException {
         ColorWrapper[][] I = image.getData();
         double[][] F = filter.getMatrix();
-        if (I[0].length != F.length){
-            throw new FilterApplyException("impossible to apply filter: ");
-        }
 
         ColorWrapper[][] R = new ColorWrapper[I.length][F[0].length];
         for (int i = 0; i < I.length; i++) {
