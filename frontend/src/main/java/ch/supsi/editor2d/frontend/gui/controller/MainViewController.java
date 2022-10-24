@@ -87,9 +87,6 @@ public class MainViewController {
     private void initEventHandlers() throws IOException {
         // Load about page
         FXMLLoader aboutLoader = new FXMLLoader(getClass().getResource("/view/aboutView.fxml"));
-        /**
-         * Loaded about stage
-         */
         Stage aboutStage = new Stage();
         aboutStage.setScene(new Scene(aboutLoader.load()));
 
@@ -107,9 +104,6 @@ public class MainViewController {
         );
 
         // Open directory chooser
-        /**
-         * Directory chooser reference
-         */
         DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Export location");
         directoryChooser.setInitialDirectory(
@@ -136,10 +130,13 @@ public class MainViewController {
 
             // handle response
             dragEvent.setDropCompleted(success);
+
+            // If drop was successful, open the file
             if (success) {
                 // Fire file dropped event
                 fileOpened.handle(new FileOpenEvent(dragEvent.getDragboard().getFiles().get(0), imagePane));
             }
+
             // Consume event
             dragEvent.consume();
         });
