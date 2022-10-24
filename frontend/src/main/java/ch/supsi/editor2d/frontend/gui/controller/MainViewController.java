@@ -7,6 +7,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
@@ -25,6 +26,12 @@ public class MainViewController {
      * List of supported file extensions
      */
     private Collection<String> SUPPORTED_FORMATS;
+
+    /**
+     * Scroll pane for pipeline FXML
+     */
+    @FXML
+    private AnchorPane pipelinePane;
 
     /**
      * Data model reference
@@ -144,6 +151,7 @@ public class MainViewController {
 
     /**
      * Check if the file extension is supported
+     *
      * @param file File to check
      * @return true if the file extension is supported, false otherwise
      */
@@ -192,6 +200,15 @@ public class MainViewController {
         return imagePane;
     }
 
+
+    /**
+     * Get the pipeline pane reference
+     * @return Pipeline Pane
+     */
+    public AnchorPane getPipelinePane() {
+        return pipelinePane;
+    }
+
     /**
      * Handle the zoom out action
      *
@@ -217,19 +234,19 @@ public class MainViewController {
         aboutClicked.handle(e);
     }
 
-    public void onRunPipeline(ActionEvent actionEvent) {
+    public void onRunPipeline() {
         throw new RuntimeException("NOT IMPLEMENTED!");
     }
 
-    public void onRedo(ActionEvent actionEvent) {
+    public void onRedo() {
         throw new RuntimeException("NOT IMPLEMENTED!");
     }
 
-    public void onUndo(ActionEvent actionEvent) {
+    public void onUndo() {
         throw new RuntimeException("NOT IMPLEMENTED!");
     }
 
-    public void onSave(ActionEvent actionEvent) {
+    public void onSave() {
         throw new RuntimeException("NOT IMPLEMENTED!");
     }
 
@@ -244,7 +261,7 @@ public class MainViewController {
         }
     }
 
-    public void onClose(ActionEvent actionEvent) {
+    public void onClose() {
         throw new RuntimeException("NOT IMPLEMENTED!");
     }
 

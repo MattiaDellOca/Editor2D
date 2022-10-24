@@ -1,0 +1,22 @@
+
+#listView {
+    -fx-padding: 0px;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+#listView .list-cell{
+    -fx-border-width:  0 0 0.2 0 ;
+    -fx-background-color: white;
+    -fx-border-color: gray;
+}
+
+#listView .list-cell .label{
+    -fx-text-fill: black;
+}
+
+
+#listView .list-cell:empty{
+    -fx-background-color: white;
+    -fx-border-width: 0;
+}

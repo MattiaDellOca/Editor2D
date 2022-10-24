@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
@@ -12,8 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<BorderPane prefHeight="500.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.supsi.editor2d.frontend.gui.controller.MainViewController">
+<BorderPane prefHeight="500.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.supsi.editor2d.frontend.gui.controller.MainViewController">
    <center>
       <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
           <top>
@@ -31,7 +29,7 @@
               </Pane>
           </top>
           <right>
-              <ScrollPane fitToHeight="true" fitToWidth="true" minWidth="150.0" prefHeight="0.0" prefWidth="0.0" BorderPane.alignment="CENTER" />
+            <AnchorPane fx:id="pipelinePane" prefWidth="300.0" BorderPane.alignment="CENTER" />
           </right>
          <center>
             <BorderPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -51,18 +49,18 @@
    <top>
        <MenuBar BorderPane.alignment="CENTER">
            <Menu mnemonicParsing="false" text="File">
-               <MenuItem mnemonicParsing="false" text="Save" onAction="#onSave"/>
-               <MenuItem mnemonicParsing="false" text="Open" onAction="#onOpen"/>
+               <MenuItem mnemonicParsing="false" onAction="#onSave" text="Save" />
+               <MenuItem mnemonicParsing="false" onAction="#onOpen" text="Open" />
                <MenuItem mnemonicParsing="false" text="Export image" onAction="#onExport"/>
-               <MenuItem mnemonicParsing="false" text="Close" onAction="#onClose"/>
+               <MenuItem mnemonicParsing="false" onAction="#onClose" text="Close" />
            </Menu>
            <Menu mnemonicParsing="false" text="Edit">
-               <MenuItem mnemonicParsing="false" text="Undo" onAction="#onUndo"/>
-               <MenuItem mnemonicParsing="false" text="Redo" onAction="#onRedo"/>
-               <MenuItem mnemonicParsing="false" text="Run pipeline" onAction="#onRunPipeline"/>
+               <MenuItem mnemonicParsing="false" onAction="#onUndo" text="Undo" />
+               <MenuItem mnemonicParsing="false" onAction="#onRedo" text="Redo" />
+               <MenuItem mnemonicParsing="false" onAction="#onRunPipeline" text="Run pipeline" />
            </Menu>
            <Menu mnemonicParsing="false" text="Help">
-               <MenuItem mnemonicParsing="false" text="About" onAction="#onAboutMenu"/>
+               <MenuItem mnemonicParsing="false" onAction="#onAboutMenu" text="About" />
            </Menu>
        </MenuBar>
    </top>
