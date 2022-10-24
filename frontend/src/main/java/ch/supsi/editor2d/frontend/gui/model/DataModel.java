@@ -7,12 +7,11 @@ import ch.supsi.editor2d.backend.exception.FileWritingException;
 import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
+import ch.supsi.editor2d.frontend.gui.event.util.FileExport;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
-
-import java.io.File;
 
 public class DataModel {
 
@@ -57,10 +56,10 @@ public class DataModel {
         }
     }
 
-    public void exportImage (File directory) {
+    public void exportImage (FileExport exportReq) {
         try {
             // Try to export image into selected directory
-            imageController.exportImage(directory, imageData);
+            imageController.exportImage(exportReq.getFilename(), exportReq.getExtension(), exportReq.getDestination(), imageData);
         } catch (FileWritingException e) {
             //Show Alert
             System.err.println(e.getMessage());
@@ -70,5 +69,9 @@ public class DataModel {
 
     public ImageView getImage() {
         return image;
+    }
+
+    public ImageWrapper getImageData() {
+        return imageData;
     }
 }
