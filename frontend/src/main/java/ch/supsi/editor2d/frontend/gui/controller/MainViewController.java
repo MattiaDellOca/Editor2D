@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Main view controller that handles the main view logic.
@@ -24,7 +24,7 @@ public class MainViewController {
     /**
      * List of supported file extensions
      */
-    private final String[] SUPPORTED_FORMATS = new String[]{"ppm", "pgm", "pbm", "tga"};
+    private Collection<String> SUPPORTED_FORMATS;
 
     /**
      * Data model reference
@@ -56,32 +56,25 @@ public class MainViewController {
     private Pane imagePane;
 
     /**
-     * Loaded about stage
-     */
-    private Stage aboutStage;
-
-    /**
      * File chooser reference
      */
     private FileChooser fileChooser;
 
     /**
-     * Directory chooser reference
-     */
-    private DirectoryChooser directoryChooser;
-
-    /**
      * Initialize the model reference and set all the event handlers
      *
      * @param model Data model
+     * @param supportedFormats List of supported file extensions
      */
-    public void init(DataModel model) {
-
+    public void init(DataModel model, final Collection<String> supportedFormats) {
         // ensure model is only set once
         if (this.model != null) {
             throw new IllegalStateException("Model can only be initialized once");
         }
         this.model = model;
+
+        // Setup supported formats
+        this.SUPPORTED_FORMATS = supportedFormats;
 
         // set event handlers + load about view
         try {
@@ -94,7 +87,10 @@ public class MainViewController {
     private void initEventHandlers() throws IOException {
         // Load about page
         FXMLLoader aboutLoader = new FXMLLoader(getClass().getResource("/view/aboutView.fxml"));
-        aboutStage = new Stage();
+        /**
+         * Loaded about stage
+         */
+        Stage aboutStage = new Stage();
         aboutStage.setScene(new Scene(aboutLoader.load()));
 
         // Load file chooser
@@ -106,12 +102,15 @@ public class MainViewController {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter(
                         "Image Files",
-                        Arrays.stream(SUPPORTED_FORMATS).map(s -> "*." + s).toArray(String[]::new)
+                        SUPPORTED_FORMATS.stream().map(s -> "*." + s).toArray(String[]::new)
                 )
         );
 
         // Open directory chooser
-        directoryChooser = new DirectoryChooser();
+        /**
+         * Directory chooser reference
+         */
+        DirectoryChooser directoryChooser = new DirectoryChooser();
         directoryChooser.setTitle("Export location");
         directoryChooser.setInitialDirectory(
                 new File(System.getProperty("user.home"))
@@ -170,7 +169,6 @@ public class MainViewController {
     public void setOnFileOpen(EventHandler<FileOpenEvent> event) {
         this.fileOpened = event;
     }
-
 
     /**
      * Set the about clicked event handler
