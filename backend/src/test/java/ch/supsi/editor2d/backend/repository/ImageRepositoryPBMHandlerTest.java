@@ -25,7 +25,6 @@ public class ImageRepositoryPBMHandlerTest {
 
     @Test
     void handleLoadResultCorrect() {
-
         //result desired creation
         int widthDesiredResult = 10;
         int heightDesiredResult = 6;
@@ -66,6 +65,10 @@ public class ImageRepositoryPBMHandlerTest {
     void handleLoadMalformedBody(){
         Exception ex = assertThrows(FileReadingException.class, () -> imageRepositoryPBMHandler.handleLoad("PBM", pathImageTestPBMMalformedBody));
         assertEquals("Error during image loading",ex.getMessage());
+    }
 
+    @Test
+    void handleSaveTest () {
+        //
     }
 }
