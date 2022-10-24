@@ -1,6 +1,9 @@
 package ch.supsi.editor2d.backend.model.filter;
 
-// TODO: 10/10/22 abstract factory
+/**
+ * This filter mirror the given image
+ * The related matrix has to be initialized based on the width of the image
+ */
 public class FlipFilter extends TransformMatrixFilter {
     public FlipFilter(int width) {
         super(generateMatrix(width));

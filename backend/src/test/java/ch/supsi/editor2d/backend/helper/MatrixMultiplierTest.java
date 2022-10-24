@@ -17,7 +17,7 @@ class MatrixMultiplierTest {
                 {ColorWrapper.BLACK, ColorWrapper.WHITE}, {ColorWrapper.YELLOW, ColorWrapper.ORANGE} } );
         ImageWrapper expected = new ImageWrapper(2, 3, new ColorWrapper[][] { {ColorWrapper.BLUE, ColorWrapper.CYAN}, {
                 ColorWrapper.WHITE, ColorWrapper.BLACK}, {ColorWrapper.ORANGE, ColorWrapper.YELLOW} });
-        ImageWrapper actual = MatrixMultiplier.applyScalarFilter(sample, new FlipFilter(sample.getWidth()));
+        ImageWrapper actual = MatrixMultiplier.applyTransformFilter(sample, new FlipFilter(sample.getWidth()));
 
         assert actual != null;
         assert expected.getWidth() == actual.getWidth();

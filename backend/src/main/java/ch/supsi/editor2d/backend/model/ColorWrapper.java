@@ -4,6 +4,11 @@ import ch.supsi.editor2d.backend.helper.ColorInterpolation;
 
 import java.util.Objects;
 
+/**
+ * Class used for representing an RGB color
+ * Some default colors are defined
+ * Colors are sorted in float values ranging from 0 to 1
+ */
 public class ColorWrapper {
     public static final ColorWrapper white = new ColorWrapper(255, 255, 255);
     public static final ColorWrapper WHITE;

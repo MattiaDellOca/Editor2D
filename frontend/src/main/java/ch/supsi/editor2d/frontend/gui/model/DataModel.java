@@ -6,7 +6,6 @@ import ch.supsi.editor2d.backend.exception.FileReadingException;
 import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -32,21 +31,19 @@ public class DataModel {
         this.imageController = new ImageController();
     }
 
+    public ImageView getImage() {
+        return image;
+    }
+
+    public ImageWrapper getImageLoaded() {
+        return imageLoaded;
+    }
+
+    // Load an image from a given path
     public void loadImage(String path) {
         try {
             ImageWrapper img = imageController.getImage(path);
-            imageLoaded = img;
-
-            WritableImage writableImage = new WritableImage(img.getWidth(), img.getHeight());
-            PixelWriter pixelWriter = writableImage.getPixelWriter();
-
-            for (int h = 0; h < img.getHeight(); h++) {
-                for (int w = 0; w < img.getWidth(); w++) {
-                    ColorWrapper tempColor = img.getData()[h][w];
-                    pixelWriter.setColor(w, h, Color.color(tempColor.getRed(),tempColor.getGreen(),tempColor.getBlue()));
-                }
-            }
-            image.setImage(writableImage);
+            drawImage(img);
         } catch (FileReadingException e) {
             //Show Alert
             System.err.println(e.getMessage());
@@ -54,7 +51,13 @@ public class DataModel {
         }
     }
 
+    // Set the image which has to be shown. Used after applying a filter
     public void setImage(ImageWrapper imageWrapper) {
+        drawImage(imageWrapper);
+    }
+
+    // Draw an ImageWrapper on ImageView
+    private void drawImage(ImageWrapper imageWrapper) {
         imageLoaded = imageWrapper;
 
         WritableImage writableImage = new WritableImage(imageWrapper.getWidth(), imageWrapper.getHeight());
@@ -66,14 +69,7 @@ public class DataModel {
                 pixelWriter.setColor(w, h, Color.color(tempColor.getRed(),tempColor.getGreen(),tempColor.getBlue()));
             }
         }
+
         image.setImage(writableImage);
-    }
-
-    public ImageView getImage() {
-        return image;
-    }
-
-    public ImageWrapper getImageLoaded() {
-        return imageLoaded;
     }
 }

@@ -9,9 +9,8 @@ import ch.supsi.editor2d.backend.model.pipeline.Pipeline;
 import ch.supsi.editor2d.backend.model.task.FilterTask;
 import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.frontend.gui.event.FileDropEvent;
+import ch.supsi.editor2d.frontend.gui.event.ImageUpdatedEvent;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -20,7 +19,6 @@ import javafx.scene.layout.Pane;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MainViewController {
@@ -30,6 +28,8 @@ public class MainViewController {
     private DataModel model;
 
     private EventHandler<FileDropEvent> fileDropped = event -> {};
+
+    private EventHandler<ImageUpdatedEvent> imageUpdated = event -> {};
 
     @FXML
     private Pane imagePane;
@@ -48,9 +48,13 @@ public class MainViewController {
         this.fileDropped = event;
     }
 
+    public void setOnImageUpdated(EventHandler<ImageUpdatedEvent> event) { this.imageUpdated = event; }
+
     public EventHandler<FileDropEvent> getOnFileDropped() {
         return this.fileDropped;
     }
+
+    public EventHandler<ImageUpdatedEvent> getOnImageUpdated() { return this.imageUpdated; }
 
     public void initModel(DataModel model){
 
@@ -95,35 +99,33 @@ public class MainViewController {
 
         // Add filters to filtersSelectionView
         filtersSelectionView.getItems().addAll(filters);
-        // Add ChangeListener to filtersSelectedView
-        filtersSelectionView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                String filter = filtersSelectionView.getSelectionModel().getSelectedItem();
-                System.out.println("Applying " + filter);
-                filtersSelectedView.getItems().add(filter);
-                //filtersSelectionView.getItems().remove(filter);
-                ImageWrapper image = model.getImageLoaded();
-                switch (filter) {
-                    case "Flip" -> filterPipeline.add(new FilterTask(new FlipFilter(image.getWidth())));
-                    case "Grayscale" -> filterPipeline.add(new FilterTask(new GrayscaleFilter()));
-                    case "Sepia" -> filterPipeline.add(new FilterTask(new SepiaFilter()));
-                }
+        // Add ChangeListener to filtersSelectionView
+        filtersSelectionView.getSelectionModel().selectedItemProperty().addListener((observableValue, s, filter) -> {
+            System.out.println("Applying " + filter);
+            filtersSelectedView.getItems().add(filter);
+            ImageWrapper image = model.getImageLoaded();
 
-                ImageWrapper i = filterPipeline.run(image).getResult();
-
-                model.setImage(i);
+            switch (filter) {
+                case "Flip" -> filterPipeline.add(new FilterTask(new FlipFilter(image.getWidth())));
+                case "Grayscale" -> filterPipeline.add(new FilterTask(new GrayscaleFilter()));
+                case "Sepia" -> filterPipeline.add(new FilterTask(new SepiaFilter()));
             }
+
+            System.out.println("Calling pipeline: " + System.currentTimeMillis());
+            ImageWrapper i = filterPipeline.run(image).getResult();
+            System.out.println("Pipeline result retrieve: " + System.currentTimeMillis());
+
+            getOnImageUpdated().handle(new ImageUpdatedEvent(i, imagePane));
+
         });
 
-        filtersSelectedView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
-                String filter = filtersSelectedView.getSelectionModel().getSelectedItem();
-                System.out.println("Removing " + filter);
-                filtersSelectionView.getItems().add(filter);
-                //filtersSelectedView.getItems().remove(filter);
-            }
+
+        // Add ChangeListener to filtersSelectedView
+        filtersSelectedView.getSelectionModel().selectedItemProperty().addListener((observableValue, s, t1) -> {
+            String filter = filtersSelectedView.getSelectionModel().getSelectedItem();
+            System.out.println("Removing " + filter);
+            filtersSelectionView.getItems().add(filter);
+            //filtersSelectedView.getItems().remove(filter);
         });
 
         this.model = model;

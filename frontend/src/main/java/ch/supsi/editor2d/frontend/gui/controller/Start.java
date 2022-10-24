@@ -44,6 +44,12 @@ public class Start extends Application {
             imageViewController.refresh();
         });
 
+        // Image updated handling
+        mainViewController.setOnImageUpdated(e -> {
+            model.setImage(e.getImage());
+            imageViewController.refresh();
+        });
+
         stage.setTitle("Editor2D");
         stage.setScene(new Scene(mainView));
         stage.show();

@@ -1,5 +1,8 @@
 package ch.supsi.editor2d.backend.model.filter;
 
+/**
+ * Abstract class that define a generic filter based on a matrix
+ */
 public abstract class MatrixFilter implements Applicable {
     protected final double[][] matrix;
 
