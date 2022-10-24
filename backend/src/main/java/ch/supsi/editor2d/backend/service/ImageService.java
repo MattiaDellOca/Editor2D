@@ -41,7 +41,7 @@ public class ImageService implements IImageController {
             throw new FileWritingException("The directory is not writable");
         } else {
             // Pass data to the repository layer
-            repositoryLayer.handleSave(filename, extension, directory.getAbsolutePath(), data);
+            repositoryLayer.handleSave(extension, filename, directory.getAbsolutePath(), data);
         }
     }
 }

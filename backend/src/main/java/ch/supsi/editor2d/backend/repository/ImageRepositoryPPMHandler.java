@@ -29,9 +29,7 @@ import ch.supsi.editor2d.backend.model.ImagePPM;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.repository.utils.DataValuesParser;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 import static ch.supsi.editor2d.backend.repository.utils.LineChecker.checkHeaderLine;
 
@@ -80,12 +78,28 @@ public class ImageRepositoryPPMHandler extends ImageRepositoryHandler {
 
         } else if (successor != null) {
             return successor.handleLoad(extension, path);
+        } else {
+            throw new FileReadingException("File extension not supported");
         }
-        throw new FileReadingException("File extension not supported");
     }
 
     @Override
     public void handleSave(String extension, String filename, String path, ImageWrapper data) throws FileWritingException {
-        throw new RuntimeException("Not implemented yet");
+        if (extension.equalsIgnoreCase("PPM")) {
+            try (FileWriter fileWriter = new FileWriter(path + filename + "." + extension);
+                 BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)
+            ) {
+                // FIXME: Write each pixel in the image
+
+                // Save the image
+                bufferedWriter.flush();
+            } catch (IOException e) {
+                throw new FileWritingException("Error during image saving");
+            }
+        } else if (successor != null) {
+            successor.handleSave(extension, filename, path, data);
+        } else {
+            throw new FileWritingException("File extension not supported");
+        }
     }
 }

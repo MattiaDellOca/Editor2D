@@ -24,10 +24,8 @@ class ImageRepositoryPGMHandlerTest {
         imageRepositoryPGMHandler = new ImageRepositoryPGMHandler();
     }
 
-
     @Test
     void handleLoadResultCorrect() {
-
         //result desired creation
         int widthDesiredResult = 10;
         int heightDesiredResult = 6;
@@ -80,7 +78,6 @@ class ImageRepositoryPGMHandlerTest {
     void handleLoadMalformedBody(){
         Exception ex = assertThrows(FileReadingException.class, () -> imageRepositoryPGMHandler.handleLoad("PGM",pathImageTestPGMMalformedBody));
         assertEquals("Error during image loading",ex.getMessage());
-
     }
 
 }
