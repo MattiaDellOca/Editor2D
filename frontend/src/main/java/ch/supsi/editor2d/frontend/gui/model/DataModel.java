@@ -3,10 +3,11 @@ package ch.supsi.editor2d.frontend.gui.model;
 
 import ch.supsi.editor2d.backend.controller.ImageController;
 import ch.supsi.editor2d.backend.exception.FileReadingException;
+import ch.supsi.editor2d.backend.exception.PipelineException;
 import ch.supsi.editor2d.backend.helper.FilterPipeline;
 import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
-import ch.supsi.editor2d.backend.model.filter.MatrixFilter;
+import ch.supsi.editor2d.backend.model.filter.Filter;
 import ch.supsi.editor2d.backend.model.task.FilterTask;
 import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.backend.model.task.Task;
@@ -17,6 +18,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DataModel {
@@ -34,11 +38,14 @@ public class DataModel {
 
     private ImageWrapper imageLoaded;
 
+    private final List<Filter> filterList = new ArrayList<>();
+
     /**
      * Filter pipeline
      */
     private final FilterPipeline filterPipeline;
 
+    private final ObservableList<Filter> actualFiltersList;
 
     private final ObservableList<Task<ImageWrapper, FilterTaskResult>> actualFiltersPipeline;
 
@@ -47,6 +54,7 @@ public class DataModel {
         this.imageController = new ImageController();
         this.filterPipeline = new FilterPipeline();
         this.actualFiltersPipeline = FXCollections.observableArrayList();
+        this.actualFiltersList = FXCollections.observableArrayList();
     }
 
     public ImageView getImage() {
@@ -92,14 +100,25 @@ public class DataModel {
         image.setImage(writableImage);
     }
 
+    public void addFilterSelection(Filter filter) {
+        filterList.add(filter);
+        actualFiltersList.clear();
+        actualFiltersList.addAll(filterList);
+    }
+
     /**
      * Send filter to backend and update actualFilterPipeline ListView on frontend
      * @param filter filter to be added
      */
-    public void addFilterPipeline(MatrixFilter filter){
+    public void addFilterPipeline(Filter filter){
         filterPipeline.add(new FilterTask(filter));
         actualFiltersPipeline.clear();
         actualFiltersPipeline.addAll(filterPipeline.getQueue());
+        System.out.println(filterPipeline.getQueue().size());
+    }
+
+    public ObservableList<Filter> getActualFiltersList() {
+        return actualFiltersList;
     }
 
     public ObservableList<Task<ImageWrapper, FilterTaskResult>> getActualFiltersPipeline(){
@@ -110,5 +129,9 @@ public class DataModel {
         filterPipeline.remove(task);
         actualFiltersPipeline.clear();
         actualFiltersPipeline.addAll(filterPipeline.getQueue());
+    }
+
+    public FilterTaskResult runPipeline(ImageWrapper imageWrapper) throws PipelineException {
+        return filterPipeline.run(imageWrapper);
     }
 }

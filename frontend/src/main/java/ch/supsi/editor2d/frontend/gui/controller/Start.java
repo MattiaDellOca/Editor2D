@@ -1,10 +1,14 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
+import ch.supsi.editor2d.backend.model.filter.FlipFilter;
+import ch.supsi.editor2d.backend.model.filter.GrayscaleFilter;
+import ch.supsi.editor2d.backend.model.filter.SepiaFilter;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
@@ -42,8 +46,23 @@ public class Start extends Application {
             imageViewController.refresh();
         });
 
+
+        // Filter selection View page
+        FXMLLoader filterSelectionViewLoader = new FXMLLoader(getClass().getResource("/view/filtersListView.fxml"));
+        Parent filterSelectionView = filterSelectionViewLoader.load();
+        FiltersSelectionViewController filtersSelectionViewController = filterSelectionViewLoader.getController();
+        filtersSelectionViewController.initModel(model);
+
+        // Set FilterSelectionView inside mainView
+        AnchorPane filtersSelectionPane = mainViewController.getFiltersListPane();
+        filtersSelectionPane.getChildren().setAll(filterSelectionView);
+        AnchorPane.setBottomAnchor(filterSelectionView, 0.0);
+        AnchorPane.setTopAnchor(filterSelectionView,0.0);
+        AnchorPane.setLeftAnchor(filterSelectionView,0.0);
+        AnchorPane.setRightAnchor(filterSelectionView,0.0);
+
         // Image updated handling
-        mainViewController.setOnImageUpdated(e -> {
+        filtersSelectionViewController.setOnImageUpdated(e -> {
             model.setImage(e.getImage());
             imageViewController.refresh();
         });
@@ -69,10 +88,9 @@ public class Start extends Application {
 
 
 
-        model.addFilterPipeline(new SepiaFilter());
-        model.addFilterPipeline(new FlipFilter(2));
-        model.addFilterPipeline(new GrayscaleFilter());
-        model.addFilterPipeline(new SepiaFilter());
+        model.addFilterSelection(new FlipFilter());
+        model.addFilterSelection(new SepiaFilter());
+        model.addFilterSelection(new GrayscaleFilter());
     }
 
     public static void main(String[] args) {

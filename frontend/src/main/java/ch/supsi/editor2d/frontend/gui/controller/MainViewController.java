@@ -1,15 +1,25 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
-import ch.supsi.editor2d.frontend.gui.event.FileDropEvent;
+import ch.supsi.editor2d.backend.helper.FilterPipeline;
+import ch.supsi.editor2d.backend.model.ImageWrapper;
+import ch.supsi.editor2d.backend.model.pipeline.Pipeline;
+import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
+import ch.supsi.editor2d.frontend.gui.event.FileOpenEvent;
+import ch.supsi.editor2d.frontend.gui.event.ImageUpdatedEvent;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Main view controller that handles the main view logic.
@@ -20,6 +30,9 @@ public class MainViewController {
      * List of supported file extensions
      */
     private final String[] SUPPORTED_FORMATS = new String[]{"ppm", "pgm", "pbm", "tga"};
+
+    @FXML
+    private AnchorPane filtersListPane;
 
     /**
      * Scroll pane for pipeline FXML
@@ -38,7 +51,6 @@ public class MainViewController {
     private EventHandler<FileOpenEvent> fileOpened = event -> {
     };
 
-    private EventHandler<ImageUpdatedEvent> imageUpdated = event -> {};
 
     /**
      * Image pane reference
@@ -46,43 +58,33 @@ public class MainViewController {
     @FXML
     private Pane imagePane;
 
-    @FXML
-    private ListView<String> filtersSelectionView;
-
-    @FXML
-    private ListView<String> filtersSelectedView;
-
-    private final List<String> filters = new ArrayList<>(List.of(new String[]{"Flip", "Grayscale", "Sepia"}));
-
     private final Pipeline<ImageWrapper, FilterTaskResult> filterPipeline = new FilterPipeline();
 
-    public void setOnFileDropped(EventHandler<FileDropEvent> event) {
-        this.fileDropped = event;
+    public void setOnFileDropped(EventHandler<FileOpenEvent> event) {
+        this.fileOpened = event;
     }
+
     /**
      * Loaded about stage
      */
     private Stage aboutStage;
 
-    public void setOnImageUpdated(EventHandler<ImageUpdatedEvent> event) { this.imageUpdated = event; }
 
-    public EventHandler<FileDropEvent> getOnFileDropped() {
-        return this.fileDropped;
+    public EventHandler<FileOpenEvent> getOnFileDropped() {
+        return this.fileOpened;
     }
     /**
      * File chooser reference
      */
     private FileChooser fileChooser;
 
-    public EventHandler<ImageUpdatedEvent> getOnImageUpdated() { return this.imageUpdated; }
 
-    public void initModel(DataModel model){
     /**
      * Initialize the model reference and set all the event handlers
      *
      * @param model Data model
      */
-    public void init(DataModel model) {
+    public void initModel(DataModel model) {
 
         // ensure model is only set once
         if (this.model != null) {
@@ -144,6 +146,7 @@ public class MainViewController {
             // Consume event
             dragEvent.consume();
         });
+
     }
 
     /**
@@ -181,34 +184,9 @@ public class MainViewController {
         return imagePane;
     }
 
-        // Add filters to filtersSelectionView
-        filtersSelectionView.getItems().addAll(filters);
-        // Add ChangeListener to filtersSelectionView
-        filtersSelectionView.getSelectionModel().selectedItemProperty().addListener((observableValue, s, filter) -> {
-            filtersSelectedView.getItems().add(filter);
-            ImageWrapper image = model.getImageLoaded();
-
-            switch (filter) {
-                case "Flip" -> filterPipeline.add(new FilterTask(new FlipFilter()));
-                case "Grayscale" -> filterPipeline.add(new FilterTask(new GrayscaleFilter()));
-                case "Sepia" -> filterPipeline.add(new FilterTask(new SepiaFilter()));
-            }
-
-            ImageWrapper i = filterPipeline.run(image).getResult();
-
-            getOnImageUpdated().handle(new ImageUpdatedEvent(i, imagePane));
-
-        });
-
-
-        // Add ChangeListener to filtersSelectedView
-        filtersSelectedView.getSelectionModel().selectedItemProperty().addListener((observableValue, s, t1) -> {
-            String filter = filtersSelectedView.getSelectionModel().getSelectedItem();
-            filtersSelectionView.getItems().add(filter);
-            //filtersSelectedView.getItems().remove(filter);
-        });
-
-        this.model = model;
+    public AnchorPane getFiltersListPane() {
+        return filtersListPane;
+    }
 
     /**
      * Get the pipeline pane reference

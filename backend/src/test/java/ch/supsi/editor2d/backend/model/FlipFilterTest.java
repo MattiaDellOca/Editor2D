@@ -1,5 +1,6 @@
 package ch.supsi.editor2d.backend.model;
 
+import ch.supsi.editor2d.backend.exception.FilterApplyException;
 import ch.supsi.editor2d.backend.model.filter.Filter;
 import ch.supsi.editor2d.backend.model.filter.FlipFilter;
 import org.junit.jupiter.api.Test;
@@ -10,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FlipFilterTest {
     @Test
-    void applyCorrect() {
+    void applyCorrect() throws FilterApplyException {
         ImageWrapper sample = new ImageWrapper(3, 3,
                 new ColorWrapper[][]{{ColorWrapper.WHITE, ColorWrapper.YELLOW, ColorWrapper.CYAN},
                 {ColorWrapper.GRAY, ColorWrapper.GREEN, ColorWrapper.ORANGE},
@@ -30,7 +31,7 @@ class FlipFilterTest {
     }
 
     @Test
-    void applyIncorrect() {
+    void applyIncorrect() throws FilterApplyException {
         ImageWrapper sample = new ImageWrapper(3, 3,
                 new ColorWrapper[][]{{ColorWrapper.WHITE, ColorWrapper.YELLOW, ColorWrapper.CYAN},
                         {ColorWrapper.GRAY, ColorWrapper.GREEN, ColorWrapper.ORANGE},

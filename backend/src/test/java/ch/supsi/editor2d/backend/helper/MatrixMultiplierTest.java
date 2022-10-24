@@ -1,9 +1,11 @@
 package ch.supsi.editor2d.backend.helper;
 
+import ch.supsi.editor2d.backend.exception.FilterApplyException;
 import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.filter.FlipFilter;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.model.filter.GrayscaleFilter;
+import ch.supsi.editor2d.backend.model.filter.SharpenFilter;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;

@@ -7,6 +7,11 @@ import ch.supsi.editor2d.backend.model.ImageWrapper;
  * This filter mirror the given image
  */
 public class FlipFilter extends Filter {
+
+    public FlipFilter() {
+        super("Flip");
+    }
+
     @Override
     public ImageWrapper apply(ImageWrapper image) {
         ColorWrapper[][] I = image.getData();

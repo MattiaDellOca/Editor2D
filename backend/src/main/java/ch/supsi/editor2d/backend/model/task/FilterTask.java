@@ -17,7 +17,7 @@ public class FilterTask implements Task<ImageWrapper, FilterTaskResult> {
         return new FilterTaskResult(filter.apply(input));
     }
 
-    public MatrixFilter getFilter() {
+    public Filter getFilter() {
         return filter;
     }
 }

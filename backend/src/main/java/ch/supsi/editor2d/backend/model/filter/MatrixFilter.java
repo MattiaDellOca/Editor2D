@@ -9,18 +9,13 @@ public abstract class MatrixFilter extends Filter {
     /**
      * Name of the filter, which will be displayed in the frontend
      */
-    private final String name;
 
     public MatrixFilter(double[][] matrix, String name) {
+        super(name);
         this.matrix = matrix;
-        this.name = name;
     }
 
     public double[][] getMatrix() {
         return matrix;
-    }
-
-    public String getName() {
-        return name;
     }
 }
