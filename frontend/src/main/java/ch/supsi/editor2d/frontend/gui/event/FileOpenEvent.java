@@ -13,7 +13,7 @@ public class FileOpenEvent extends Event {
         return (File) getSource();
     }
 
-    public FileOpenEvent(Object o, EventTarget eventTarget) {
+    public FileOpenEvent(File o, EventTarget eventTarget) {
         super(o, eventTarget, FILE_DROPPED);
     }
 }
