@@ -9,6 +9,6 @@ import ch.supsi.editor2d.backend.model.ImageWrapper;
  */
 public interface IImageService {
     ImageWrapper handleLoad(String extension, String path) throws FileReadingException;
-    void handleSave(String path, ImageWrapper data) throws FileWritingException;
+    void handleSave(String extension, String filename, String path, ImageWrapper data) throws FileWritingException;
 }
 

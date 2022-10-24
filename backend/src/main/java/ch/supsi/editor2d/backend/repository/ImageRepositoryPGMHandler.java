@@ -77,7 +77,7 @@ public class ImageRepositoryPGMHandler extends ImageRepositoryHandler {
     }
 
     @Override
-    public void handleSave(String path, ImageWrapper data) throws FileWritingException {
+    public void handleSave(String extension, String filename, String path, ImageWrapper data) throws FileWritingException {
         throw new RuntimeException("Not implemented yet");
     }
 }

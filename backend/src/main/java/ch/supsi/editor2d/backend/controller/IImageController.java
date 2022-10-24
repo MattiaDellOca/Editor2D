@@ -13,5 +13,5 @@ public interface IImageController {
 
     ImageWrapper getImage(String path) throws FileReadingException;
 
-    void exportImage(File directory, ImageWrapper data) throws FileWritingException;
+    void exportImage(String filename, String extension, File directory, ImageWrapper data) throws FileWritingException;
 }

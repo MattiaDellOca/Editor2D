@@ -35,13 +35,13 @@ public class ImageService implements IImageController {
     }
 
     @Override
-    public void exportImage(File directory, ImageWrapper data) throws FileWritingException {
+    public void exportImage(String filename, String extension, File directory, ImageWrapper data) throws FileWritingException {
         // Check that the directory is actually a directory + check that is writable
         if (!directory.isDirectory() || !directory.canWrite()) {
             throw new FileWritingException("The directory is not writable");
         } else {
             // Pass data to the repository layer
-            repositoryLayer.handleSave(directory.getAbsolutePath(), data);
+            repositoryLayer.handleSave(filename, extension, directory.getAbsolutePath(), data);
         }
     }
 }

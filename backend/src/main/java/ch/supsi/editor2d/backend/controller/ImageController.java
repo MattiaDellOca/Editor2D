@@ -37,7 +37,7 @@ public class ImageController {
      * @param imageData the image data
      * @throws FileWritingException if occurs an error during the writing process
      */
-    public void exportImage(File directory, ImageWrapper imageData) throws FileWritingException {
-        serviceLayer.exportImage(directory, imageData);
+    public void exportImage(String filename, String extension, File directory, ImageWrapper imageData) throws FileWritingException {
+        serviceLayer.exportImage(filename, extension, directory, imageData);
     }
 }
