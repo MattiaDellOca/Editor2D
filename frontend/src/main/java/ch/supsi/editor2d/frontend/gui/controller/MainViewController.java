@@ -6,8 +6,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -25,6 +25,12 @@ public class MainViewController {
      * List of supported file extensions
      */
     private final String[] SUPPORTED_FORMATS = new String[]{"ppm", "pgm", "pbm", "tga"};
+
+    /**
+     * Scroll pane for pipeline FXML
+     */
+    @FXML
+    private AnchorPane pipelinePane;
 
     /**
      * Data model reference
@@ -124,6 +130,7 @@ public class MainViewController {
 
     /**
      * Check if the file extension is supported
+     *
      * @param file File to check
      * @return true if the file extension is supported, false otherwise
      */
@@ -154,6 +161,15 @@ public class MainViewController {
      */
     public Pane getImagePane() {
         return imagePane;
+    }
+
+
+    /**
+     * Get the pipeline pane reference
+     * @return Pipeline Pane
+     */
+    public AnchorPane getPipelinePane() {
+        return pipelinePane;
     }
 
     /**

@@ -10,7 +10,7 @@
    <children>
       <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
-            <AnchorPane prefHeight="50.0" prefWidth="300.0" style="-fx-background-color: #ffd7b5;" BorderPane.alignment="CENTER">
+            <AnchorPane maxHeight="50.0" prefHeight="34.0" prefWidth="300.0" style="-fx-background-color: #ffd7b5;" BorderPane.alignment="CENTER">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" text="Pipeline" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <font>

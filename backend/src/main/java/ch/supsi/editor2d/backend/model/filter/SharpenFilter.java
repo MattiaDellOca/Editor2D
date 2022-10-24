@@ -2,7 +2,7 @@ package ch.supsi.editor2d.backend.model.filter;
 
 public class SharpenFilter extends KernelMatrixFilter{
     public SharpenFilter() {
-        super(generateMatrix());
+        super(generateMatrix(), "Sharpen");
     }
 
     private static double[][] generateMatrix(){

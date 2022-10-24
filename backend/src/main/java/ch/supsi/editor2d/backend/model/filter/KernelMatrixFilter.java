@@ -6,8 +6,8 @@ import ch.supsi.editor2d.backend.model.ImageWrapper;
 
 public abstract class KernelMatrixFilter extends  MatrixFilter{
 
-    public KernelMatrixFilter(double[][] matrix) {
-        super(matrix);
+    public KernelMatrixFilter(double[][] matrix, String name) {
+        super(matrix, name);
     }
 
     @Override

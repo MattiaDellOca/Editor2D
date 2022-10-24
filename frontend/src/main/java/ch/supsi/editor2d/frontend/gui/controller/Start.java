@@ -8,6 +8,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -46,9 +47,20 @@ public class Start extends Application {
         PipelineViewController pipelineViewController = pipelineViewLoader.getController();
         pipelineViewController.initModel(model);
 
+       // //Set PipelineView inside mainView
+        AnchorPane pipelinePane = mainViewController.getPipelinePane();
+        pipelinePane.getChildren().setAll(pipelineView);
+        AnchorPane.setBottomAnchor(pipelineView,0.0);
+        AnchorPane.setTopAnchor(pipelineView,0.0);
+        AnchorPane.setLeftAnchor(pipelineView,0.0);
+        AnchorPane.setRightAnchor(pipelineView,0.0);
+
+
         stage.setTitle("Editor2D");
-        stage.setScene(new Scene(pipelineView));
+        stage.setScene(new Scene(mainView));
         stage.show();
+
+
 
         model.addFilterPipeline(new SepiaFilter());
         model.addFilterPipeline(new FlipFilter(2));
