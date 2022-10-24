@@ -2,8 +2,11 @@ package ch.supsi.editor2d.backend.service;
 
 import ch.supsi.editor2d.backend.controller.IImageController;
 import ch.supsi.editor2d.backend.exception.FileReadingException;
+import ch.supsi.editor2d.backend.exception.FileWritingException;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.repository.*;
+
+import java.io.File;
 
 public class ImageService implements IImageController {
     private final IImageService repositoryLayer;
@@ -31,4 +34,14 @@ public class ImageService implements IImageController {
         return repositoryLayer.handleLoad(extension, path);
     }
 
+    @Override
+    public void exportImage(String filename, String extension, File directory, ImageWrapper data) throws FileWritingException {
+        // Check that the directory is actually a directory + check that is writable
+        if (!directory.isDirectory() || !directory.canWrite()) {
+            throw new FileWritingException("The directory is not writable");
+        } else {
+            // Pass data to the repository layer
+            repositoryLayer.handleSave(extension, filename, directory.getAbsolutePath(), data);
+        }
+    }
 }

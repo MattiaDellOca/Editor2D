@@ -1,6 +1,7 @@
 package ch.supsi.editor2d.backend.repository;
 
 import ch.supsi.editor2d.backend.exception.FileReadingException;
+import ch.supsi.editor2d.backend.exception.FileWritingException;
 import ch.supsi.editor2d.backend.helper.ColorInterpolation;
 import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImagePGM;
@@ -8,13 +9,15 @@ import ch.supsi.editor2d.backend.model.ImageWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.Objects;
+import java.nio.file.Paths;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ImageRepositoryPGMHandlerTest {
 
     private ImageRepositoryPGMHandler imageRepositoryPGMHandler;
+    private ImageRepositoryPBMHandler imageRepositoryPBMHandler;
     private final String pathImageTestPGMOk = Objects.requireNonNull(getClass().getClassLoader().getResource("PGM/testPGMOk.pgm")).getPath();
     private final String pathImageTestPGMWrongMagicNumber = Objects.requireNonNull(getClass().getClassLoader().getResource("PGM/testPGMWrongMagicNumber.pgm")).getPath();
     private final String pathImageTestPGMMalformedBody = Objects.requireNonNull(getClass().getClassLoader().getResource("PGM/testPGMMalformedBody.pgm")).getPath();
@@ -22,12 +25,11 @@ class ImageRepositoryPGMHandlerTest {
     @BeforeEach
     void init(){
         imageRepositoryPGMHandler = new ImageRepositoryPGMHandler();
+        imageRepositoryPBMHandler = new ImageRepositoryPBMHandler();
     }
-
 
     @Test
     void handleLoadResultCorrect() {
-
         //result desired creation
         int widthDesiredResult = 10;
         int heightDesiredResult = 6;
@@ -80,7 +82,54 @@ class ImageRepositoryPGMHandlerTest {
     void handleLoadMalformedBody(){
         Exception ex = assertThrows(FileReadingException.class, () -> imageRepositoryPGMHandler.handleLoad("PGM",pathImageTestPGMMalformedBody));
         assertEquals("Error during image loading",ex.getMessage());
-
     }
 
+    /**
+     * WARNING: This test depends on handleLoadResultCorrect test
+     */
+    @Test
+    void handleSaveResultCorrect () throws FileReadingException, FileWritingException {
+        // Check if the image is saved correctly
+
+        // Load image + Save + Reload to check file structure correctness
+        ImageWrapper pgmImage = imageRepositoryPGMHandler.handleLoad("PGM", pathImageTestPGMOk);
+
+        final String exportDir = Paths.get(pathImageTestPGMOk).getParent().toString();
+        final String exportedPath = Paths.get(exportDir, "testPBMOk.pbm").toString();
+        imageRepositoryPBMHandler.handleSave(
+                "pbm",
+                "testPBMOk",
+                exportDir,
+                pgmImage
+        );
+
+        ImageWrapper obtainedResult = imageRepositoryPBMHandler.handleLoad("PBM", exportedPath);
+        final List<ColorWrapper> data = new LinkedList<>();
+        // Build a 10x6 image with a white line on line number 4
+        for (int h = 0; h < pgmImage.getHeight(); h++) {
+            for (int w = 0; w < pgmImage.getWidth(); w++) {
+                if (h == 4) {
+                    data.add(new ColorWrapper(1.f, 1.f, 1.f));
+                } else {
+                    data.add(new ColorWrapper(0.f, 0.f, 0.f));
+                }
+            }
+        }
+
+        assertEquals(obtainedResult.getWidth(), pgmImage.getWidth());
+        assertEquals(obtainedResult.getHeight(), pgmImage.getHeight());
+
+        // compare each pixel using parallel stream to speed up the process
+        final Iterator<ColorWrapper> it = data.iterator();
+
+        // Iterate image data and compare each pixel with the expected one
+        Arrays.stream(obtainedResult.getData())
+                .flatMap(Arrays::stream)
+                .forEach(colorWrapper -> {
+                    ColorWrapper expected = it.next();
+                    assertEquals(expected.getRed(), colorWrapper.getRed());
+                    assertEquals(expected.getGreen(), colorWrapper.getGreen());
+                    assertEquals(expected.getBlue(), colorWrapper.getBlue());
+                });
+    }
 }

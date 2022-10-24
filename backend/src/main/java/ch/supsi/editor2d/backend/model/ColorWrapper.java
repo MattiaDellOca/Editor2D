@@ -118,4 +118,13 @@ public class ColorWrapper {
     public int hashCode() {
         return Objects.hash(r, g, b);
     }
+
+    @Override
+    public String toString() {
+        return "ColorWrapper{" +
+                "r=" + r +
+                ", g=" + g +
+                ", b=" + b +
+                '}';
+    }
 }

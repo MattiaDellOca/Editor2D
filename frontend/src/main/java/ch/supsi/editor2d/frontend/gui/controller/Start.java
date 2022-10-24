@@ -1,14 +1,20 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
+import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 public class Start extends Application {
+
+    private static final Collection<String> SUPPORTED_FORMATS = Arrays.asList("ppm", "pgm", "pbm", "tga");
+
     @Override
     public void start(Stage stage) throws Exception {
         DataModel model = new DataModel();
@@ -17,26 +23,61 @@ public class Start extends Application {
         FXMLLoader mainViewLoader = new FXMLLoader(getClass().getResource("/view/mainView.fxml"));
         Parent mainView = mainViewLoader.load();
         MainViewController mainViewController = mainViewLoader.getController();
-        mainViewController.init(model);
+        mainViewController.init(model, SUPPORTED_FORMATS);
 
         // Image View page
         FXMLLoader imageViewLoader = new FXMLLoader(getClass().getResource("/view/imageView.fxml"));
         Parent imageView = imageViewLoader.load();
-        ImageViewController imageViewController = imageViewLoader.getController();
-        imageViewController.initModel(model);
+        imageViewLoader.<ImageViewController>getController().initModel(model);
 
+        // About view page
+        FXMLLoader aboutLoader = new FXMLLoader(getClass().getResource("/view/aboutView.fxml"));
+        Stage aboutStage = new Stage();
+        aboutStage.setTitle("About Editor2D");
+        aboutStage.setScene(new Scene(aboutLoader.load()));
+
+        // Export stage page
+        FXMLLoader exportLoader = new FXMLLoader(getClass().getResource("/view/exportView.fxml"));
+        Stage exportStage = new Stage();
+        exportStage.setTitle("Export Image");
+        exportStage.setScene(new Scene(exportLoader.load()));
+        ExportViewController exportViewController = exportLoader.getController();
+        exportViewController.init(SUPPORTED_FORMATS);
+        exportViewController.setOnExport(event -> {
+            // Close the export stage
+            exportStage.close();
+            // Start exporting image
+            model.exportImage(event.getExport());
+        });
 
         // Set imageView.fxml inside mainView.fxml
-        Pane imagePane = mainViewController.getImagePane();
-        imagePane.getChildren().add(imageView);
+        mainViewController.getImagePane().getChildren().add(imageView);
 
         // File visualization handling
         mainViewController.setOnFileOpen(e -> {
+            // Load image + refresh view
             model.loadImage(e.getFile().getAbsolutePath());
-            // Now, refresh image view to show the new image
-            imageViewController.refresh();
+            imageViewLoader.<ImageViewController>getController().refresh();
         });
 
+        // About view handling
+        mainViewController.setOnAboutClicked(e -> {
+            // Show about stage
+            aboutStage.show();
+        });
+
+        // Export handling
+        mainViewController.setOnExportClicked(e -> {
+            // Check if image is load
+            if (model.getImageData() != null) {
+                // Show export stage
+                exportStage.show();
+            } else {
+                ErrorAlert.showError("Please load an image before exporting it.");
+            }
+        });
+
+        // Set main window title + show page
         stage.setTitle("Editor2D");
         stage.setScene(new Scene(mainView));
         stage.show();

@@ -6,15 +6,15 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * Main view controller that handles the main view logic.
@@ -24,7 +24,7 @@ public class MainViewController {
     /**
      * List of supported file extensions
      */
-    private final String[] SUPPORTED_FORMATS = new String[]{"ppm", "pgm", "pbm", "tga"};
+    private Collection<String> SUPPORTED_FORMATS;
 
     /**
      * Data model reference
@@ -38,15 +38,22 @@ public class MainViewController {
     };
 
     /**
+     * About view action event handler
+     */
+    private EventHandler<ActionEvent> aboutClicked = event -> {
+    };
+
+    /**
+     * Export file action event handler
+     */
+    private EventHandler<ActionEvent> exportClicked = event -> {
+    };
+
+    /**
      * Image pane reference
      */
     @FXML
     private Pane imagePane;
-
-    /**
-     * Loaded about stage
-     */
-    private Stage aboutStage;
 
     /**
      * File chooser reference
@@ -57,14 +64,17 @@ public class MainViewController {
      * Initialize the model reference and set all the event handlers
      *
      * @param model Data model
+     * @param supportedFormats List of supported file extensions
      */
-    public void init(DataModel model) {
-
+    public void init(DataModel model, final Collection<String> supportedFormats) {
         // ensure model is only set once
         if (this.model != null) {
             throw new IllegalStateException("Model can only be initialized once");
         }
         this.model = model;
+
+        // Setup supported formats
+        this.SUPPORTED_FORMATS = supportedFormats;
 
         // set event handlers + load about view
         try {
@@ -77,7 +87,7 @@ public class MainViewController {
     private void initEventHandlers() throws IOException {
         // Load about page
         FXMLLoader aboutLoader = new FXMLLoader(getClass().getResource("/view/aboutView.fxml"));
-        aboutStage = new Stage();
+        Stage aboutStage = new Stage();
         aboutStage.setScene(new Scene(aboutLoader.load()));
 
         // Load file chooser
@@ -89,8 +99,15 @@ public class MainViewController {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter(
                         "Image Files",
-                        Arrays.stream(SUPPORTED_FORMATS).map(s -> "*." + s).toArray(String[]::new)
+                        SUPPORTED_FORMATS.stream().map(s -> "*." + s).toArray(String[]::new)
                 )
+        );
+
+        // Open directory chooser
+        DirectoryChooser directoryChooser = new DirectoryChooser();
+        directoryChooser.setTitle("Export location");
+        directoryChooser.setInitialDirectory(
+                new File(System.getProperty("user.home"))
         );
 
         // Enable drag and drop to imagePane component
@@ -113,10 +130,13 @@ public class MainViewController {
 
             // handle response
             dragEvent.setDropCompleted(success);
+
+            // If drop was successful, open the file
             if (success) {
                 // Fire file dropped event
                 fileOpened.handle(new FileOpenEvent(dragEvent.getDragboard().getFiles().get(0), imagePane));
             }
+
             // Consume event
             dragEvent.consume();
         });
@@ -145,6 +165,22 @@ public class MainViewController {
      */
     public void setOnFileOpen(EventHandler<FileOpenEvent> event) {
         this.fileOpened = event;
+    }
+
+    /**
+     * Set the about clicked event handler
+     * @param event About clicked event
+     */
+    public void setOnAboutClicked(EventHandler<ActionEvent> event) {
+        this.aboutClicked = event;
+    }
+
+    /**
+     * Set the export clicked event handler
+     * @param event Export clicked event
+     */
+    public void setOnExportClicked(EventHandler<ActionEvent> event) {
+        this.exportClicked = event;
     }
 
     /**
@@ -177,10 +213,8 @@ public class MainViewController {
     /**
      * Handle the about menu action
      */
-    public void onAboutMenu() {
-        // Open a new window with about view
-        if (aboutStage != null)
-            aboutStage.show();
+    public void onAboutMenu(ActionEvent e) {
+        aboutClicked.handle(e);
     }
 
     public void onRunPipeline(ActionEvent actionEvent) {
@@ -212,5 +246,12 @@ public class MainViewController {
 
     public void onClose(ActionEvent actionEvent) {
         throw new RuntimeException("NOT IMPLEMENTED!");
+    }
+
+    /**
+     * Handle image export action
+     */
+    public void onExport(ActionEvent e) {
+        exportClicked.handle(e);
     }
 }
