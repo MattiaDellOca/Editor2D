@@ -30,15 +30,13 @@ public class Start extends Application {
         ImageViewController imageViewController = imageViewLoader.getController();
         imageViewController.initModel(model);
 
+
         // Set imageView.fxml inside mainView.fxml
         Pane imagePane = mainViewController.getImagePane();
         imagePane.getChildren().add(imageView);
 
-        imagePane.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
-
         // File visualization handling
-        mainViewController.setOnFileDropped(e -> {
-            // Pass file path to model
+        mainViewController.setOnFileOpen(e -> {
             model.loadImage(e.getFile().getAbsolutePath());
             // Now, refresh image view to show the new image
             imageViewController.refresh();
@@ -50,9 +48,31 @@ public class Start extends Application {
             imageViewController.refresh();
         });
 
+        //Pipeline View page
+        FXMLLoader pipelineViewLoader = new FXMLLoader(getClass().getResource("/view/pipelineView.fxml"));
+        Parent pipelineView = pipelineViewLoader.load();
+        PipelineViewController pipelineViewController = pipelineViewLoader.getController();
+        pipelineViewController.initModel(model);
+
+       // //Set PipelineView inside mainView
+        AnchorPane pipelinePane = mainViewController.getPipelinePane();
+        pipelinePane.getChildren().setAll(pipelineView);
+        AnchorPane.setBottomAnchor(pipelineView,0.0);
+        AnchorPane.setTopAnchor(pipelineView,0.0);
+        AnchorPane.setLeftAnchor(pipelineView,0.0);
+        AnchorPane.setRightAnchor(pipelineView,0.0);
+
+
         stage.setTitle("Editor2D");
         stage.setScene(new Scene(mainView));
         stage.show();
+
+
+
+        model.addFilterPipeline(new SepiaFilter());
+        model.addFilterPipeline(new FlipFilter(2));
+        model.addFilterPipeline(new GrayscaleFilter());
+        model.addFilterPipeline(new SepiaFilter());
     }
 
     public static void main(String[] args) {

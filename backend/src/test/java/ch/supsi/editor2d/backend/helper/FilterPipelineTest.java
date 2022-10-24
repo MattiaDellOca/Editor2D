@@ -1,5 +1,6 @@
 package ch.supsi.editor2d.backend.helper;
 
+import ch.supsi.editor2d.backend.exception.PipelineException;
 import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.model.filter.FlipFilter;
@@ -11,6 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 // FIXME: Add tests for observers
 public class FilterPipelineTest {
@@ -62,8 +65,13 @@ public class FilterPipelineTest {
         };
 
         // Run the pipeline using the
-        FilterTaskResult result = pipeline.run(sample);
-        assert Arrays.deepEquals(result.getResult().getData(), expectedData);
+        try {
+            FilterTaskResult result = pipeline.run(sample);
+            assert Arrays.deepEquals(result.getResult().getData(), expectedData);
+
+        } catch (PipelineException e) {
+            fail();
+        }
     }
 
 
