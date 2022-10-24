@@ -1,5 +1,6 @@
 package ch.supsi.editor2d.backend.helper;
 
+import ch.supsi.editor2d.backend.exception.FilterApplyException;
 import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.model.filter.KernelMatrixFilter;
@@ -8,11 +9,12 @@ import ch.supsi.editor2d.backend.model.filter.MatrixFilter;
 import java.util.Arrays;
 
 public final class MatrixMultiplier {
-    public static ImageWrapper applyScalarFilter(ImageWrapper image, MatrixFilter filter) {
+    public static ImageWrapper applyScalarFilter(ImageWrapper image, MatrixFilter filter) throws FilterApplyException {
         ColorWrapper[][] I = image.getData();
         double[][] F = filter.getMatrix();
-        if (I[0].length != F.length)
-            return null;
+        if (I[0].length != F.length){
+            throw new FilterApplyException("impossible to apply filter: ");
+        }
 
         ColorWrapper[][] R = new ColorWrapper[I.length][F[0].length];
         for (int i = 0; i < I.length; i++) {
@@ -31,11 +33,12 @@ public final class MatrixMultiplier {
         return new ImageWrapper(image.getWidth(), image.getHeight(), R);
     }
 
-    public static ImageWrapper applyColorFilter(ImageWrapper image, MatrixFilter filter) {
+    public static ImageWrapper applyColorFilter(ImageWrapper image, MatrixFilter filter) throws FilterApplyException {
         ColorWrapper[][] I = image.getData();
         double[][] F = filter.getMatrix();
-        if (I[0].length != F.length)
-            return null;
+        if (I[0].length != F.length){
+            throw new FilterApplyException("impossible to apply filter: ");
+        }
 
         ColorWrapper[][] R = new ColorWrapper[I.length][F[0].length];
         for (int i = 0; i < I.length; i++) {
@@ -47,8 +50,6 @@ public final class MatrixMultiplier {
         return new ImageWrapper(image.getWidth(), image.getHeight(), R);
     }
 
-    //TODO: chiedere a Mattia perchè tornare null e non un exception
-
     /**
      * Method for apply 3x3 filter kernel
      *
@@ -56,11 +57,11 @@ public final class MatrixMultiplier {
      * @param filter kernel filter 3x3
      * @return a new image with the filter applied
      */
-    public static ImageWrapper applyKernelFilter(ImageWrapper image, KernelMatrixFilter filter) {
+    public static ImageWrapper applyKernelFilter(ImageWrapper image, KernelMatrixFilter filter) throws FilterApplyException {
 
         //Image has to be at least 3x3 because the border aren't count
         if (image.getWidth() < 3 || image.getHeight() < 3) {
-            return null;
+            throw new FilterApplyException("impossible to apply filter: \n The image must be at least 3x3");
         }
 
         //get colors data

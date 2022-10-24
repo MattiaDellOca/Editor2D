@@ -1,5 +1,6 @@
 package ch.supsi.editor2d.backend.helper;
 
+import ch.supsi.editor2d.backend.exception.PipelineException;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.model.pipeline.Pipeline;
 import ch.supsi.editor2d.backend.model.pipeline.PipelineObserver;
@@ -11,7 +12,7 @@ public final class FilterPipeline extends Pipeline<ImageWrapper, FilterTaskResul
     }
 
     @Override
-    public FilterTaskResult run(ImageWrapper input) {
+    public FilterTaskResult run(ImageWrapper input) throws PipelineException {
         // Deep copy of input
         ImageWrapper image = new ImageWrapper(input);
 
@@ -20,6 +21,7 @@ public final class FilterPipeline extends Pipeline<ImageWrapper, FilterTaskResul
         // Cycle through tasks, one by one using Queue
         for (int i = 1; !tasks.isEmpty(); i++) {
             // Get next task
+
             FilterTaskResult result = tasks.poll().execute(image);
 
             // TODO: check if result is error

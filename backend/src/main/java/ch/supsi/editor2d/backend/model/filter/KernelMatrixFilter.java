@@ -1,5 +1,6 @@
 package ch.supsi.editor2d.backend.model.filter;
 
+import ch.supsi.editor2d.backend.exception.FilterApplyException;
 import ch.supsi.editor2d.backend.helper.MatrixMultiplier;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 
@@ -10,7 +11,7 @@ public abstract class KernelMatrixFilter extends  MatrixFilter{
     }
 
     @Override
-    public ImageWrapper apply(ImageWrapper image) {
+    public ImageWrapper apply(ImageWrapper image) throws FilterApplyException {
         return MatrixMultiplier.applyKernelFilter(image,this);
     }
 }

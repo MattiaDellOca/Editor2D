@@ -3,6 +3,7 @@ package ch.supsi.editor2d.frontend.gui.model;
 
 import ch.supsi.editor2d.backend.controller.ImageController;
 import ch.supsi.editor2d.backend.exception.FileReadingException;
+import ch.supsi.editor2d.backend.exception.FilterApplyException;
 import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.model.filter.SharpenFilter;
@@ -51,7 +52,7 @@ public class DataModel {
                 }
             }
             image.setImage(writableImage);
-        } catch (FileReadingException e) {
+        } catch (FileReadingException | FilterApplyException e) {
             //Show Alert
             System.err.println(e.getMessage());
             ErrorAlert.showError(e.getMessage());

@@ -1,5 +1,6 @@
 package ch.supsi.editor2d.backend.model.pipeline;
 
+import ch.supsi.editor2d.backend.exception.PipelineException;
 import ch.supsi.editor2d.backend.model.task.Task;
 import ch.supsi.editor2d.backend.model.task.TaskResult;
 
@@ -11,7 +12,7 @@ public abstract class TaskExecutor<T, K extends TaskResult<?>> implements Execut
 
     protected final Queue<Task<T, K>> tasks = new LinkedList<>();
 
-    public abstract K run(T startInput);
+    public abstract K run(T startInput) throws PipelineException;
 
     @Override
     public void clear() {
