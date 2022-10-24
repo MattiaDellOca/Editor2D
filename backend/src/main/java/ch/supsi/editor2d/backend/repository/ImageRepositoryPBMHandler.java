@@ -7,9 +7,7 @@ import ch.supsi.editor2d.backend.model.ImagePBM;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.repository.utils.DataValuesParser;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 import static ch.supsi.editor2d.backend.repository.utils.LineChecker.checkHeaderLine;
 
@@ -78,7 +76,33 @@ public class ImageRepositoryPBMHandler extends ImageRepositoryHandler {
     @Override
     public void handleSave(String extension, String filename, String path, ImageWrapper data) throws FileWritingException {
         if (extension.equalsIgnoreCase("PBM")) {
-            System.out.println("Saving PBM...");
+            try (FileWriter fileWriter = new FileWriter(new File(path, filename + "." + extension));
+                 BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)
+            ) {
+                // Print the header
+                bufferedWriter.write("P1\n");
+
+
+                // Print the width and height
+                bufferedWriter.write(data.getWidth() + " " + data.getHeight() + "\n");
+
+                // Print the data
+                for (int h = 0; h < data.getHeight(); h++) {
+                    for (int w = 0; w < data.getWidth(); w++) {
+                        // Convert RGB to black and white using average of the three values
+                        ColorWrapper rgbColor = data.getData()[h][w];
+                        boolean isBlack = (rgbColor.getRed() + rgbColor.getGreen() + rgbColor.getBlue()) / 3 < 0.5;
+                        bufferedWriter.write(isBlack ? "1 " : "0 ");
+                    }
+                    // New line
+                    bufferedWriter.write("\n");
+                }
+
+                // Save the image
+                bufferedWriter.flush();
+            } catch (IOException e) {
+                throw new FileWritingException("Error during image saving");
+            }
         } else if (successor != null) {
             successor.handleSave(extension, filename, path, data);
         } else {
