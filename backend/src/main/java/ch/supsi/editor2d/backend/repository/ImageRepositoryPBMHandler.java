@@ -62,8 +62,10 @@ public class ImageRepositoryPBMHandler extends ImageRepositoryHandler {
                 }
 
                 return new ImagePBM(width, height, data);
-            } catch (IOException | NumberFormatException | StringIndexOutOfBoundsException e) {
+            } catch (NumberFormatException | StringIndexOutOfBoundsException e) {
                 throw new FileReadingException("Error during image loading");
+            } catch (IOException e) {
+                throw new FileReadingException("File not found or not readable");
             }
         } else if (successor != null) {
             // Skip to the next successor
