@@ -80,12 +80,19 @@ public class ImageRepositoryPPMHandler extends ImageRepositoryHandler {
 
         } else if (successor != null) {
             return successor.handleLoad(extension, path);
+        } else {
+            throw new FileReadingException("File extension not supported");
         }
-        throw new FileReadingException("File extension not supported");
     }
 
     @Override
     public void handleSave(String extension, String filename, String path, ImageWrapper data) throws FileWritingException {
-        throw new RuntimeException("Not implemented yet");
+        if (extension.equalsIgnoreCase("PPM")) {
+            System.out.println("Saving PPM...");
+        } else if (successor != null) {
+            successor.handleSave(extension, filename, path, data);
+        } else {
+            throw new FileWritingException("File extension not supported");
+        }
     }
 }

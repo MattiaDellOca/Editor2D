@@ -34,7 +34,6 @@ import static ch.supsi.editor2d.backend.repository.utils.LineChecker.checkHeader
  0 0 0 0 0 0
  0 0 0 0 0 0 */
 
-
 public class ImageRepositoryPBMHandler extends ImageRepositoryHandler {
     @Override
     public ImageWrapper handleLoad(String extension, String path) throws FileReadingException {
@@ -71,13 +70,19 @@ public class ImageRepositoryPBMHandler extends ImageRepositoryHandler {
         } else if (successor != null) {
             // Skip to the next successor
             return successor.handleLoad(extension, path);
+        } else {
+            throw new FileReadingException("File extension not supported");
         }
-
-        throw new FileReadingException("File extension not supported");
-
     }
 
     @Override
     public void handleSave(String extension, String filename, String path, ImageWrapper data) throws FileWritingException {
+        if (extension.equalsIgnoreCase("PBM")) {
+            System.out.println("Saving PBM...");
+        } else if (successor != null) {
+            successor.handleSave(extension, filename, path, data);
+        } else {
+            throw new FileWritingException("File extension not supported");
+        }
     }
 }
