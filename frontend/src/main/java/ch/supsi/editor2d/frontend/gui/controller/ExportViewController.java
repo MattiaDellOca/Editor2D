@@ -97,7 +97,6 @@ public class ExportViewController {
                 ErrorAlert.showError("Filename cannot be empty!");
             } else {
                 // Check if the destination directory is empty
-                System.out.println(destinationDir);
                 if (destinationDir == null) {
                     ErrorAlert.showError("Destination directory cannot be empty!");
                 } else {
