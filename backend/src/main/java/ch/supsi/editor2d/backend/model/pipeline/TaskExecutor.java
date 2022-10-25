@@ -5,11 +5,11 @@ import ch.supsi.editor2d.backend.model.task.Task;
 import ch.supsi.editor2d.backend.model.task.TaskResult;
 
 import java.util.LinkedList;
-import java.util.Queue;
+import java.util.List;
 
 public abstract class TaskExecutor<T, K extends TaskResult<?>> implements Executor<T, K> {
 
-    protected final Queue<Task<T, K>> tasks = new LinkedList<>();
+    protected final List<Task<T, K>> tasks = new LinkedList<>();
 
     public abstract K run(T startInput) throws PipelineException;
 
@@ -32,7 +32,7 @@ public abstract class TaskExecutor<T, K extends TaskResult<?>> implements Execut
         return this.tasks.isEmpty();
     }
 
-    public Queue<Task<T,K>> getQueue(){
+    public List<Task<T,K>> getQueue(){
         return tasks;
     }
 }

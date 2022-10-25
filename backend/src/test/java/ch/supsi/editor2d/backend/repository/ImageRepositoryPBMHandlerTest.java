@@ -70,8 +70,6 @@ public class ImageRepositoryPBMHandlerTest {
 
     @Test
     void handleSaveResultCorrect() throws FileReadingException, FileWritingException {
-        // Check if the image is saved correctly
-
         // Load image + Save + Reload to check file structure correctness
         ImageWrapper pgmImage = imageRepositoryPBMHandler.handleLoad("PBM", pathImageTestPBMOk);
 
