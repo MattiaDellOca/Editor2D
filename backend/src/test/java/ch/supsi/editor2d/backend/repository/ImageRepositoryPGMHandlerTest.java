@@ -31,11 +31,11 @@ class ImageRepositoryPGMHandlerTest {
         //result desired creation
         int widthDesiredResult = 10;
         int heightDesiredResult = 6;
-        int scaleOfGray = 15;
+        int scaleOfGray = 255;
 
-        float grayColorValue1 = ColorInterpolation.interpolateRGBtoFloat(255 / scaleOfGray);
-        float grayColorValue5 = ColorInterpolation.interpolateRGBtoFloat((255 / scaleOfGray) * 5);
-        float grayColorValue10 = ColorInterpolation.interpolateRGBtoFloat((255 / scaleOfGray) * 10);
+        float grayColorValue1 = 0.06666667f;
+        float grayColorValue5 = 0.32941177f;
+        float grayColorValue10 = 0.66666667f;
 
         ColorWrapper[][] data = new ColorWrapper[heightDesiredResult][widthDesiredResult];
         for (int h = 0; h < heightDesiredResult; h++) {
@@ -60,9 +60,9 @@ class ImageRepositoryPGMHandlerTest {
             assertEquals(((ImagePGM) obtainedResult).getScaleGray(), scaleOfGray);
             for (int h = 0; h < heightDesiredResult; h++) {
                 for (int w = 0; w < widthDesiredResult; w++) {
-                    assertEquals(obtainedResult.getData()[h][w].getRed(), data[h][w].getRed());
-                    assertEquals(obtainedResult.getData()[h][w].getGreen(), data[h][w].getGreen());
-                    assertEquals(obtainedResult.getData()[h][w].getBlue(), data[h][w].getBlue());
+                    assertEquals(obtainedResult.getData()[h][w].getRed(), data[h][w].getRed(), 0.05f);
+                    assertEquals(obtainedResult.getData()[h][w].getGreen(), data[h][w].getGreen(), 0.05f);
+                    assertEquals(obtainedResult.getData()[h][w].getBlue(), data[h][w].getBlue(), 0.05f);
                 }
             }
         } catch (FileReadingException e) {
