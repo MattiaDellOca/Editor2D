@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -25,6 +26,12 @@ public class MainViewController {
      * List of supported file extensions
      */
     private Collection<String> SUPPORTED_FORMATS;
+
+    /**
+     * Scroll pane for filter selection FXML
+     */
+    @FXML
+    private AnchorPane filtersListPane;
 
     /**
      * Scroll pane for pipeline FXML
@@ -87,7 +94,6 @@ public class MainViewController {
      * @param supportedFormats List of supported file extensions
      */
     public void init(DataModel model, final Collection<String> supportedFormats) {
-    public void initModel(DataModel model) {
 
         // ensure model is only set once
         if (this.model != null) {

@@ -1,5 +1,6 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
+import ch.supsi.editor2d.backend.model.filter.SharpenFilter;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
 import ch.supsi.editor2d.backend.model.filter.FlipFilter;
 import ch.supsi.editor2d.backend.model.filter.GrayscaleFilter;
@@ -81,6 +82,26 @@ public class Start extends Application {
             }
         });
 
+        // Filter selection View page
+        FXMLLoader filterSelectionViewLoader = new FXMLLoader(getClass().getResource("/view/filtersListView.fxml"));
+        Parent filterSelectionView = filterSelectionViewLoader.load();
+        FiltersSelectionViewController filtersSelectionViewController = filterSelectionViewLoader.getController();
+        filtersSelectionViewController.initModel(model);
+
+        // Set FilterSelectionView inside mainView
+        AnchorPane filtersSelectionPane = mainViewController.getFiltersListPane();
+        filtersSelectionPane.getChildren().setAll(filterSelectionView);
+        AnchorPane.setBottomAnchor(filterSelectionView, 0.0);
+        AnchorPane.setTopAnchor(filterSelectionView,0.0);
+        AnchorPane.setLeftAnchor(filterSelectionView,0.0);
+        AnchorPane.setRightAnchor(filterSelectionView,0.0);
+
+        // Image updated handling
+        filtersSelectionViewController.setOnImageUpdated(e -> {
+            model.setImage(e.getImage());
+            imageViewLoader.<ImageViewController>getController().refresh();
+        });
+
         //Pipeline View page
         FXMLLoader pipelineViewLoader = new FXMLLoader(getClass().getResource("/view/pipelineView.fxml"));
         Parent pipelineView = pipelineViewLoader.load();
@@ -95,21 +116,10 @@ public class Start extends Application {
         AnchorPane.setLeftAnchor(pipelineView,0.0);
         AnchorPane.setRightAnchor(pipelineView,0.0);
 
-        model.addFilterPipeline(new SepiaFilter());
-        model.addFilterPipeline(new FlipFilter(2));
-        model.addFilterPipeline(new GrayscaleFilter());
-        model.addFilterPipeline(new SepiaFilter());
-
         // Set main window title + show page
         stage.setTitle("Editor2D");
         stage.setScene(new Scene(mainView));
         stage.show();
-
-        stage.setTitle("Editor2D");
-        stage.setScene(new Scene(mainView));
-        stage.show();
-
-
 
         model.addFilterSelection(new FlipFilter());
         model.addFilterSelection(new SepiaFilter());

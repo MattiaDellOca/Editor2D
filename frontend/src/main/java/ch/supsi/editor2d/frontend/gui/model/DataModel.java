@@ -21,6 +21,9 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class DataModel {
 
@@ -76,19 +79,6 @@ public class DataModel {
             ImageWrapper img = imageController.getImage(path);
             drawImage(img);
         } catch (FileReadingException e) {
-            imageData = imageController.getImage(path);
-            WritableImage writableImage = new WritableImage(imageData.getWidth(), imageData.getHeight());
-            PixelWriter pixelWriter = writableImage.getPixelWriter();
-
-            for (int h = 0; h < imageData.getHeight(); h++) {
-                for (int w = 0; w < imageData.getWidth(); w++) {
-                    ColorWrapper tempColor = imageData.getData()[h][w];
-                    pixelWriter.setColor(w, h, Color.color(tempColor.getRed(),tempColor.getGreen(),tempColor.getBlue()));
-                }
-            }
-            image.setImage(writableImage);
-        } catch (FileReadingException  e) {
-            //Show Alert
             System.err.println(e.getMessage());
             ErrorAlert.showError(e.getMessage());
         }
