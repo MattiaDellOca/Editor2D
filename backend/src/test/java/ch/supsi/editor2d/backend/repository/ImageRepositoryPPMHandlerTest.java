@@ -16,7 +16,6 @@ import static org.junit.jupiter.api.Assertions.*;
 class ImageRepositoryPPMHandlerTest {
 
     private ImageRepositoryPPMHandler imageRepositoryPPMHandler;
-    private ImageRepositoryPBMHandler imageRepositoryPBMHandler;
     private final String pathImageTestPPMOk = Objects.requireNonNull(getClass().getClassLoader().getResource("PPM/testPPMOk.ppm")).getPath();
     private final String pathImageTestPPMWrongMagicNumber = Objects.requireNonNull(getClass().getClassLoader().getResource("PPM/testPPMWrongMagicNumber.ppm")).getPath();
     private final String pathImageTestPPMMalformedBody = Objects.requireNonNull(getClass().getClassLoader().getResource("PPM/testPPMMalformedBody.ppm")).getPath();
@@ -24,7 +23,6 @@ class ImageRepositoryPPMHandlerTest {
     @BeforeEach
     void init(){
         imageRepositoryPPMHandler = new ImageRepositoryPPMHandler();
-        imageRepositoryPBMHandler = new ImageRepositoryPBMHandler();
     }
 
     @Test
@@ -79,45 +77,41 @@ class ImageRepositoryPPMHandlerTest {
         // Check if the image is saved correctly
 
         // Load image + Save + Reload to check file structure correctness
-        ImageWrapper pgmImage = imageRepositoryPPMHandler.handleLoad("PPM", pathImageTestPPMOk);
+        ImageWrapper ppmImage = imageRepositoryPPMHandler.handleLoad("PPM", pathImageTestPPMOk);
 
         final String exportDir = Paths.get(pathImageTestPPMOk).getParent().toString();
         final String filename = "testPPMOk";
-        final String extension = "pbm";
+        final String extension = "ppm";
         final String exportedPath = Paths.get(exportDir, filename+"."+extension).toString();
-        imageRepositoryPBMHandler.handleSave(
+        imageRepositoryPPMHandler.handleSave(
                 extension,
                 filename,
                 exportDir,
-                pgmImage
+                ppmImage
         );
 
 
-        ImageWrapper obtainedResult = imageRepositoryPBMHandler.handleLoad("PBM", exportedPath);
-        final ColorWrapper WHITE = new ColorWrapper(1.f, 1.f, 1.f);
-        final ColorWrapper BLACK = new ColorWrapper(0.f, 0.f, 0.f);
+        ImageWrapper obtainedResult = imageRepositoryPPMHandler.handleLoad("PPM", exportedPath);
 
-        final List<ColorWrapper> data = new LinkedList<>(Arrays.asList(
-            BLACK, BLACK, BLACK,
-            WHITE, WHITE, BLACK,
-            WHITE, BLACK, BLACK,
-            WHITE, WHITE, WHITE
-        ));
+        List<ColorWrapper> expected = List.of(ColorWrapper.RED, ColorWrapper.GREEN, ColorWrapper.BLUE ,
+                ColorWrapper.YELLOW, ColorWrapper.WHITE, ColorWrapper.BLACK,
+                ColorWrapper.CYAN, new ColorWrapper(75, 75, 75), new ColorWrapper(127, 127, 127),
+                new ColorWrapper(150, 150, 150), new ColorWrapper(150, 150, 150), new ColorWrapper(150, 150, 150));
 
-        assertEquals(obtainedResult.getWidth(), pgmImage.getWidth());
-        assertEquals(obtainedResult.getHeight(), pgmImage.getHeight());
+        assertEquals(obtainedResult.getWidth(), ppmImage.getWidth());
+        assertEquals(obtainedResult.getHeight(), ppmImage.getHeight());
 
         // compare each pixel using parallel stream to speed up the process
-        final Iterator<ColorWrapper> it = data.iterator();
+        final Iterator<ColorWrapper> it = expected.iterator();
 
         // Iterate image data and compare each pixel with the expected one
         Arrays.stream(obtainedResult.getData())
                 .flatMap(Arrays::stream)
                 .forEach(colorWrapper -> {
-                    ColorWrapper expected = it.next();
-                    assertEquals(expected.getRed(), colorWrapper.getRed());
-                    assertEquals(expected.getGreen(), colorWrapper.getGreen());
-                    assertEquals(expected.getBlue(), colorWrapper.getBlue());
+                    ColorWrapper expectedPixel = it.next();
+                    assertEquals(expectedPixel.getRed(), colorWrapper.getRed(), 0.05f);
+                    assertEquals(expectedPixel.getGreen(), colorWrapper.getGreen(), 0.05f);
+                    assertEquals(expectedPixel.getBlue(), colorWrapper.getBlue(), 0.05f);
                 });
     }
 }

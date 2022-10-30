@@ -74,7 +74,7 @@ public class Start extends Application {
         // Export handling
         mainViewController.setOnExportClicked(e -> {
             // Check if image is load
-            if (model.getImageData() != null) {
+            if (model.getImageLoaded() != null) {
                 // Show export stage
                 exportStage.show();
             } else {

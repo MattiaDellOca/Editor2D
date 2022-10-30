@@ -86,10 +86,31 @@ public class ImageRepositoryPPMHandler extends ImageRepositoryHandler {
     @Override
     public void handleSave(String extension, String filename, String path, ImageWrapper data) throws FileWritingException {
         if (extension.equalsIgnoreCase("PPM")) {
-            try (FileWriter fileWriter = new FileWriter(path + filename + "." + extension);
+            try (FileWriter fileWriter = new FileWriter(new File(path,filename + "." + extension));
                  BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)
             ) {
-                // FIXME: Write each pixel in the image
+                // Print the header
+                bufferedWriter.write("P3\n");
+
+                // Print the width and height
+                bufferedWriter.write(data.getWidth() + " " + data.getHeight() + "\n");
+
+                // TODO: try to cast the ImageWrapper
+                // Print the RGB scale
+                bufferedWriter.write(255 + "\n");
+
+                // Print the data
+                for (int h = 0; h < data.getHeight(); h++) {
+                    for (int w = 0; w < data.getWidth(); w++) {
+                        // Convert RGB to black and white using average of the three values
+                        ColorWrapper rgbColor = data.getData()[h][w];
+                        bufferedWriter.write(ColorInterpolation.interpolateRGBtoInt(rgbColor.getRed()) + " " +
+                                ColorInterpolation.interpolateRGBtoInt(rgbColor.getGreen()) + " " +
+                                ColorInterpolation.interpolateRGBtoInt(rgbColor.getBlue()) + " ");
+                    }
+                    // New line
+                    bufferedWriter.write("\n");
+                }
 
                 // Save the image
                 bufferedWriter.flush();

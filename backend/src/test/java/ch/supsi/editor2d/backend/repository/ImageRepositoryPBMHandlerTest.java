@@ -68,6 +68,9 @@ public class ImageRepositoryPBMHandlerTest {
         assertEquals("Error during image loading",ex.getMessage());
     }
 
+    /**
+     * WARNING: This test depends on handleLoadResultCorrect test
+     */
     @Test
     void handleSaveResultCorrect() throws FileReadingException, FileWritingException {
         // Check if the image is saved correctly

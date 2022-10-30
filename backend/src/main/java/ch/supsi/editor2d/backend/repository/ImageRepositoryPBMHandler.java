@@ -93,7 +93,10 @@ public class ImageRepositoryPBMHandler extends ImageRepositoryHandler {
                     for (int w = 0; w < data.getWidth(); w++) {
                         // Convert RGB to black and white using average of the three values
                         ColorWrapper rgbColor = data.getData()[h][w];
-                        boolean isBlack = (rgbColor.getRed() + rgbColor.getGreen() + rgbColor.getBlue()) / 3 < 0.5;
+
+
+                        float gray = 0.299f * rgbColor.getRed() + 0.587f * rgbColor.getGreen() + 0.114f * rgbColor.getBlue();
+                        boolean isBlack = gray < 0.5;
                         bufferedWriter.write(isBlack ? "1 " : "0 ");
                     }
                     // New line

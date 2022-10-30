@@ -38,14 +38,12 @@ public class DataModel {
      */
     private final ImageView image;
 
-    private ImageWrapper imageLoaded;
-
-    private final List<Filter> filterList = new ArrayList<>();
-
     /**
      * Image wrapper containing the image data
      */
-    private ImageWrapper imageData;
+    private ImageWrapper imageLoaded;
+
+    private final List<Filter> filterList = new ArrayList<>();
 
     /**
      * Filter pipeline
@@ -74,7 +72,6 @@ public class DataModel {
 
     // Load an image from a given path
     public void loadImage(String path) {
-
         try {
             ImageWrapper img = imageController.getImage(path);
             drawImage(img);
@@ -87,7 +84,7 @@ public class DataModel {
     public void exportImage (FileExport exportReq) {
         try {
             // Try to export image into selected directory
-            imageController.exportImage(exportReq.getFilename(), exportReq.getExtension(), exportReq.getDestination(), imageData);
+            imageController.exportImage(exportReq.getFilename(), exportReq.getExtension(), exportReq.getDestination(), imageLoaded);
         } catch (FileWritingException e) {
             //Show Alert
             System.err.println(e.getMessage());
@@ -150,9 +147,5 @@ public class DataModel {
 
     public FilterTaskResult runPipeline(ImageWrapper imageWrapper) throws PipelineException {
         return filterPipeline.run(imageWrapper);
-    }
-
-    public ImageWrapper getImageData() {
-        return imageData;
     }
 }
