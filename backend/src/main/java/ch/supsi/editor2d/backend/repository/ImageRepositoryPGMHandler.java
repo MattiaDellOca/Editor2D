@@ -7,7 +7,6 @@ import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImagePGM;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.repository.utils.DataValuesParser;
-import jdk.jshell.spi.ExecutionControl;
 
 import java.io.*;
 
