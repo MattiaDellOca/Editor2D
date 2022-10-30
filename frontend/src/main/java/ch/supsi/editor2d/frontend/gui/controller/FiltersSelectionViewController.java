@@ -2,10 +2,7 @@ package ch.supsi.editor2d.frontend.gui.controller;
 
 import ch.supsi.editor2d.backend.exception.PipelineException;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
-import ch.supsi.editor2d.backend.model.filter.Filter;
-import ch.supsi.editor2d.backend.model.filter.FlipFilter;
-import ch.supsi.editor2d.backend.model.filter.GrayscaleFilter;
-import ch.supsi.editor2d.backend.model.filter.SepiaFilter;
+import ch.supsi.editor2d.backend.model.filter.*;
 import ch.supsi.editor2d.frontend.gui.event.ImageUpdatedEvent;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.event.EventHandler;
@@ -17,8 +14,6 @@ public class FiltersSelectionViewController {
     @FXML
     private ListView<Filter> filterSelectionList;
 
-    @FXML
-    private Pane imagePane;
     private DataModel model;
 
     private EventHandler<ImageUpdatedEvent> imageUpdated = event -> {};
@@ -34,31 +29,30 @@ public class FiltersSelectionViewController {
         }
         this.model = model;
 
-        //Setting filter pipeline as dataModel list
+        //Setting filters as dataModel list
         filterSelectionList.setItems(model.getActualFiltersList());
 
         //Setting personalized ListViewCell
         filterSelectionList.setCellFactory(taskListView -> new FilterCell(model));
 
-        // TODO: 24/10/22 Change listener so that an event is generated every time an item is clicked
-        // Add ChangeListener to filtersSelectionView
-        filterSelectionList.getSelectionModel().selectedItemProperty().addListener((observableValue, s, filter) -> {
+        // Add EventHandler to filtersSelectionView
+        filterSelectionList.setOnMouseClicked(mouseEvent -> {
+            Filter filter = filterSelectionList.getSelectionModel().getSelectedItem();
             ImageWrapper image = model.getImageLoaded();
 
-            switch (filter.getName()) {
-                case "Flip" -> model.addFilterPipeline(new FlipFilter());
-                case "Grayscale" -> model.addFilterPipeline(new GrayscaleFilter());
-                case "Sepia" -> model.addFilterPipeline(new SepiaFilter());
-            }
+            // Add the selected filter to the pipeline
+            model.addFilterPipeline(filter);
 
+            // Apply filters to the image
             ImageWrapper i;
             try {
                 i = model.runPipeline(image).getResult();
             } catch (PipelineException e) {
                 throw new RuntimeException(e);
             }
-            System.out.println(filterSelectionList.getParent());
-            getOnImageUpdated().handle(new ImageUpdatedEvent(i, imagePane));
+
+            // Create an event to notify that the image has changed
+            getOnImageUpdated().handle(new ImageUpdatedEvent(i, new Pane()));
         });
     }
 }

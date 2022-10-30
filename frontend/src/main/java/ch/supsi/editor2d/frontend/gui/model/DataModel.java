@@ -114,7 +114,6 @@ public class DataModel {
         filterPipeline.add(new FilterTask(filter));
         actualFiltersPipeline.clear();
         actualFiltersPipeline.addAll(filterPipeline.getQueue());
-        System.out.println(filterPipeline.getQueue().size());
     }
 
     public ObservableList<Filter> getActualFiltersList() {
@@ -129,6 +128,7 @@ public class DataModel {
         filterPipeline.remove(task);
         actualFiltersPipeline.clear();
         actualFiltersPipeline.addAll(filterPipeline.getQueue());
+        // TODO: 25/10/22 Re-execute the pipeline and update image 
     }
 
     public FilterTaskResult runPipeline(ImageWrapper imageWrapper) throws PipelineException {

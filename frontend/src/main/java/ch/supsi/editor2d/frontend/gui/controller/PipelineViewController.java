@@ -5,9 +5,7 @@ import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.backend.model.task.Task;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.util.Callback;
 
 public class PipelineViewController {
     @FXML
@@ -21,7 +19,7 @@ public class PipelineViewController {
         }
         this.model = model;
 
-        //Setting filter pipeline as datamodel list
+        //Setting filter pipeline as dataModel list
         filterPipelineList.setItems(model.getActualFiltersPipeline());
 
         //Setting personalized ListViewCell

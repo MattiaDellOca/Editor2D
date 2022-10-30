@@ -3,7 +3,6 @@ package ch.supsi.editor2d.frontend.gui.controller;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
 
 
 
@@ -13,8 +12,6 @@ public class FilterCellViewController {
 
     @FXML
     private Label filterName;
-    @FXML
-    private BorderPane cell;
 
 
     public void initModel(DataModel model) {

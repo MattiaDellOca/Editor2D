@@ -3,16 +3,14 @@ package ch.supsi.editor2d.frontend.gui.controller;
 import ch.supsi.editor2d.backend.model.filter.FlipFilter;
 import ch.supsi.editor2d.backend.model.filter.GrayscaleFilter;
 import ch.supsi.editor2d.backend.model.filter.SepiaFilter;
+import ch.supsi.editor2d.backend.model.filter.SharpenFilter;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
@@ -91,6 +89,7 @@ public class Start extends Application {
         model.addFilterSelection(new FlipFilter());
         model.addFilterSelection(new SepiaFilter());
         model.addFilterSelection(new GrayscaleFilter());
+        model.addFilterSelection(new SharpenFilter());
     }
 
     public static void main(String[] args) {

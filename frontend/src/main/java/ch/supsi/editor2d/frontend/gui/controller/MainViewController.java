@@ -1,11 +1,6 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
-import ch.supsi.editor2d.backend.helper.FilterPipeline;
-import ch.supsi.editor2d.backend.model.ImageWrapper;
-import ch.supsi.editor2d.backend.model.pipeline.Pipeline;
-import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.frontend.gui.event.FileOpenEvent;
-import ch.supsi.editor2d.frontend.gui.event.ImageUpdatedEvent;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -57,8 +52,6 @@ public class MainViewController {
      */
     @FXML
     private Pane imagePane;
-
-    private final Pipeline<ImageWrapper, FilterTaskResult> filterPipeline = new FilterPipeline();
 
     public void setOnFileDropped(EventHandler<FileOpenEvent> event) {
         this.fileOpened = event;
