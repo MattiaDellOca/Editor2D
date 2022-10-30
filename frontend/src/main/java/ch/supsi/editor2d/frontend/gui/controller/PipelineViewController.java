@@ -19,7 +19,7 @@ public class PipelineViewController {
         }
         this.model = model;
 
-        //Setting filter pipeline as datamodel list
+        //Setting filter pipeline as dataModel list
         filterPipelineList.setItems(model.getActualFiltersPipeline());
 
         //Setting personalized ListViewCell

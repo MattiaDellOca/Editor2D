@@ -4,10 +4,11 @@ package ch.supsi.editor2d.frontend.gui.model;
 import ch.supsi.editor2d.backend.controller.ImageController;
 import ch.supsi.editor2d.backend.exception.FileReadingException;
 import ch.supsi.editor2d.backend.exception.FileWritingException;
+import ch.supsi.editor2d.backend.exception.PipelineException;
 import ch.supsi.editor2d.backend.helper.FilterPipeline;
 import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
-import ch.supsi.editor2d.backend.model.filter.MatrixFilter;
+import ch.supsi.editor2d.backend.model.filter.Filter;
 import ch.supsi.editor2d.backend.model.task.FilterTask;
 import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.backend.model.task.Task;
@@ -34,6 +35,10 @@ public class DataModel {
      */
     private final ImageView image;
 
+    private ImageWrapper imageLoaded;
+
+    private final List<Filter> filterList = new ArrayList<>();
+
     /**
      * Image wrapper containing the image data
      */
@@ -44,6 +49,7 @@ public class DataModel {
      */
     private final FilterPipeline filterPipeline;
 
+    private final ObservableList<Filter> actualFiltersList;
 
     private final ObservableList<Task<ImageWrapper, FilterTaskResult>> actualFiltersPipeline;
 
@@ -52,10 +58,24 @@ public class DataModel {
         this.imageController = new ImageController();
         this.filterPipeline = new FilterPipeline();
         this.actualFiltersPipeline = FXCollections.observableArrayList();
+        this.actualFiltersList = FXCollections.observableArrayList();
     }
 
+    public ImageView getImage() {
+        return image;
+    }
+
+    public ImageWrapper getImageLoaded() {
+        return imageLoaded;
+    }
+
+    // Load an image from a given path
     public void loadImage(String path) {
+
         try {
+            ImageWrapper img = imageController.getImage(path);
+            drawImage(img);
+        } catch (FileReadingException e) {
             imageData = imageController.getImage(path);
             WritableImage writableImage = new WritableImage(imageData.getWidth(), imageData.getHeight());
             PixelWriter pixelWriter = writableImage.getPixelWriter();
@@ -85,18 +105,46 @@ public class DataModel {
         }
     }
 
-    public ImageView getImage() {
-        return image;
+    // Set the image which has to be shown. Used after applying a filter
+    public void setImage(ImageWrapper imageWrapper) {
+        drawImage(imageWrapper);
+    }
+
+    // Draw an ImageWrapper on ImageView
+    private void drawImage(ImageWrapper imageWrapper) {
+        imageLoaded = imageWrapper;
+
+        WritableImage writableImage = new WritableImage(imageWrapper.getWidth(), imageWrapper.getHeight());
+        PixelWriter pixelWriter = writableImage.getPixelWriter();
+
+        for (int h = 0; h < imageWrapper.getHeight(); h++) {
+            for (int w = 0; w < imageWrapper.getWidth(); w++) {
+                ColorWrapper tempColor = imageWrapper.getData()[h][w];
+                pixelWriter.setColor(w, h, Color.color(tempColor.getRed(),tempColor.getGreen(),tempColor.getBlue()));
+            }
+        }
+
+        image.setImage(writableImage);
+    }
+
+    public void addFilterSelection(Filter filter) {
+        filterList.add(filter);
+        actualFiltersList.clear();
+        actualFiltersList.addAll(filterList);
     }
 
     /**
      * Send filter to backend and update actualFilterPipeline ListView on frontend
      * @param filter filter to be added
      */
-    public void addFilterPipeline(MatrixFilter filter){
+    public void addFilterPipeline(Filter filter){
         filterPipeline.add(new FilterTask(filter));
         actualFiltersPipeline.clear();
         actualFiltersPipeline.addAll(filterPipeline.getQueue());
+    }
+
+    public ObservableList<Filter> getActualFiltersList() {
+        return actualFiltersList;
     }
 
     public ObservableList<Task<ImageWrapper, FilterTaskResult>> getActualFiltersPipeline(){
@@ -107,6 +155,11 @@ public class DataModel {
         filterPipeline.remove(task);
         actualFiltersPipeline.clear();
         actualFiltersPipeline.addAll(filterPipeline.getQueue());
+        // TODO: 25/10/22 Re-execute the pipeline and update image
+    }
+
+    public FilterTaskResult runPipeline(ImageWrapper imageWrapper) throws PipelineException {
+        return filterPipeline.run(imageWrapper);
     }
 
     public ImageWrapper getImageData() {

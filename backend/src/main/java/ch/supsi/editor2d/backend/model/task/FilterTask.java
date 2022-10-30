@@ -2,13 +2,13 @@ package ch.supsi.editor2d.backend.model.task;
 
 import ch.supsi.editor2d.backend.exception.FilterApplyException;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
-import ch.supsi.editor2d.backend.model.filter.MatrixFilter;
+import ch.supsi.editor2d.backend.model.filter.Filter;
 
 public class FilterTask implements Task<ImageWrapper, FilterTaskResult> {
 
-    private final MatrixFilter filter;
+    private final Filter filter;
 
-    public FilterTask (MatrixFilter filter) {
+    public FilterTask (Filter filter) {
         this.filter = filter;
     }
 
@@ -17,7 +17,7 @@ public class FilterTask implements Task<ImageWrapper, FilterTaskResult> {
         return new FilterTaskResult(filter.apply(input));
     }
 
-    public MatrixFilter getFilter() {
+    public Filter getFilter() {
         return filter;
     }
 }

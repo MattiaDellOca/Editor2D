@@ -104,6 +104,17 @@ public class Start extends Application {
         stage.setTitle("Editor2D");
         stage.setScene(new Scene(mainView));
         stage.show();
+
+        stage.setTitle("Editor2D");
+        stage.setScene(new Scene(mainView));
+        stage.show();
+
+
+
+        model.addFilterSelection(new FlipFilter());
+        model.addFilterSelection(new SepiaFilter());
+        model.addFilterSelection(new GrayscaleFilter());
+        model.addFilterSelection(new SharpenFilter());
     }
 
     public static void main(String[] args) {

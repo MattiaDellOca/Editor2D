@@ -1,24 +1,27 @@
 package ch.supsi.editor2d.backend.model.filter;
 
-// TODO: 10/10/22 abstract factory
-public class FlipFilter extends TransformMatrixFilter {
-    public FlipFilter(int width) {
-        super(generateMatrix(width), "Flip");
+import ch.supsi.editor2d.backend.model.ColorWrapper;
+import ch.supsi.editor2d.backend.model.ImageWrapper;
+
+/**
+ * This filter mirror the given image
+ */
+public class FlipFilter extends Filter {
+
+    public FlipFilter() {
+        super("Flip");
     }
 
-    private static double[][] generateMatrix(int width) {
-        if(width < 1)
-            throw new IllegalArgumentException();
-
-        double[][] flipMatrix = new double[width][width];
-        for(int i = 0; i < width; i ++) {
-            for(int t = 0; t < width; t ++) {
-                if(t == width - 1 - i)
-                    flipMatrix[i][t] = 1;
-                else
-                    flipMatrix[i][t] = 0;
+    @Override
+    public ImageWrapper apply(ImageWrapper image) {
+        ColorWrapper[][] I = image.getData();
+        ColorWrapper[][] R = new ColorWrapper[image.getHeight()][image.getWidth()];
+        for(int h = 0; h < image.getHeight(); h ++) {
+            for(int w = 0; w < image.getWidth(); w ++) {
+                R[h][image.getWidth() - w - 1] = I[h][w];
             }
         }
-        return flipMatrix;
+
+        return new ImageWrapper(image.getWidth(), image.getHeight(), R);
     }
 }

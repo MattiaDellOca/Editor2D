@@ -9,7 +9,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -56,12 +55,26 @@ public class MainViewController {
     private EventHandler<ActionEvent> exportClicked = event -> {
     };
 
+
     /**
      * Image pane reference
      */
     @FXML
     private Pane imagePane;
 
+    public void setOnFileDropped(EventHandler<FileOpenEvent> event) {
+        this.fileOpened = event;
+    }
+
+    /**
+     * Loaded about stage
+     */
+    private Stage aboutStage;
+
+
+    public EventHandler<FileOpenEvent> getOnFileDropped() {
+        return this.fileOpened;
+    }
     /**
      * File chooser reference
      */
@@ -74,6 +87,8 @@ public class MainViewController {
      * @param supportedFormats List of supported file extensions
      */
     public void init(DataModel model, final Collection<String> supportedFormats) {
+    public void initModel(DataModel model) {
+
         // ensure model is only set once
         if (this.model != null) {
             throw new IllegalStateException("Model can only be initialized once");
@@ -200,6 +215,9 @@ public class MainViewController {
         return imagePane;
     }
 
+    public AnchorPane getFiltersListPane() {
+        return filtersListPane;
+    }
 
     /**
      * Get the pipeline pane reference
