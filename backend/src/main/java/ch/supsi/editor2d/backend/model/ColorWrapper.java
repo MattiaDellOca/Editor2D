@@ -67,10 +67,10 @@ public class ColorWrapper {
         this.b = ColorInterpolation.interpolateRGBtoFloat(b);
     }
 
-    public ColorWrapper (ColorWrapper color) {
-        this.r = color.r;
-        this.g = color.g;
-        this.b = color.b;
+    public ColorWrapper (final ColorWrapper c) {
+        this.r = c.r;
+        this.g = c.g;
+        this.b = c.b;
     }
 
     public float getRed() {
