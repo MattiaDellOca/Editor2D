@@ -49,19 +49,21 @@ public class MainViewController {
     /**
      * File drop event handler
      */
-    private EventHandler<FileOpenEvent> fileOpened = event -> {
+    private EventHandler<FileOpenEvent> onFileOpened = event -> {
     };
 
     /**
      * About view action event handler
      */
-    private EventHandler<ActionEvent> aboutClicked = event -> {
+    private EventHandler<ActionEvent> onAboutClicked = event -> {
     };
+
+    private EventHandler<ActionEvent> onClose = event -> {};
 
     /**
      * Export file action event handler
      */
-    private EventHandler<ActionEvent> exportClicked = event -> {
+    private EventHandler<ActionEvent> onExportClicked = event -> {
     };
 
     /**
@@ -155,7 +157,7 @@ public class MainViewController {
             // If drop was successful, open the file
             if (success) {
                 // Fire file dropped event
-                fileOpened.handle(new FileOpenEvent(dragEvent.getDragboard().getFiles().get(0), imagePane));
+                onFileOpened.handle(new FileOpenEvent(dragEvent.getDragboard().getFiles().get(0), imagePane));
             }
 
             // Consume event
@@ -186,7 +188,7 @@ public class MainViewController {
      * @param event File drop event
      */
     public void setOnFileOpen(EventHandler<FileOpenEvent> event) {
-        this.fileOpened = event;
+        this.onFileOpened = event;
     }
 
     /**
@@ -194,7 +196,7 @@ public class MainViewController {
      * @param event About clicked event
      */
     public void setOnAboutClicked(EventHandler<ActionEvent> event) {
-        this.aboutClicked = event;
+        this.onAboutClicked = event;
     }
 
     /**
@@ -202,7 +204,7 @@ public class MainViewController {
      * @param event Export clicked event
      */
     public void setOnExportClicked(EventHandler<ActionEvent> event) {
-        this.exportClicked = event;
+        this.onExportClicked = event;
     }
 
     /**
@@ -211,6 +213,14 @@ public class MainViewController {
      */
     public void setOnPipelineFinishedRunning(EventHandler<ActionEvent> event) {
         this.onPipelineFinishedRunning = event;
+    }
+
+    /**
+     * Set the close event handler
+     * @param event Close event handler
+     */
+    public void setOnClose(EventHandler<ActionEvent> event) {
+        this.onClose = event;
     }
 
     /**
@@ -256,7 +266,7 @@ public class MainViewController {
      * Handle the about menu action
      */
     public void onAboutMenu(ActionEvent e) {
-        aboutClicked.handle(e);
+        onAboutClicked.handle(e);
     }
 
     public void onRunPipeline() {
@@ -278,7 +288,7 @@ public class MainViewController {
         // additional file extension check
         if (file != null && isSupportedFormat(file)) {
             // Fire file dropped event
-            fileOpened.handle(new FileOpenEvent(file, imagePane));
+            onFileOpened.handle(new FileOpenEvent(file, imagePane));
             // Then, refresh the image
             onPipelineFinishedRunning.handle(new ActionEvent());
         }
@@ -292,6 +302,6 @@ public class MainViewController {
      * Handle image export action
      */
     public void onExport(ActionEvent e) {
-        exportClicked.handle(e);
+        onExportClicked.handle(e);
     }
 }
