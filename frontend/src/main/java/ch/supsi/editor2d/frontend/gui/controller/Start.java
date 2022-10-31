@@ -107,6 +107,10 @@ public class Start extends Application {
         Parent pipelineView = pipelineViewLoader.load();
         PipelineViewController pipelineViewController = pipelineViewLoader.getController();
         pipelineViewController.initModel(model);
+        pipelineViewController.setOnFilterRemovedSuccessfully(e -> {
+            // Refresh image view
+            imageViewLoader.<ImageViewController>getController().refresh();
+        });
 
         // Set PipelineView inside mainView
         AnchorPane pipelinePane = mainViewController.getPipelinePane();
