@@ -32,7 +32,7 @@ public abstract class TaskExecutor<T, K extends TaskResult<?>> implements Execut
         return this.tasks.isEmpty();
     }
 
-    public List<Task<T,K>> getQueue(){
+    public List<Task<T,K>> getTasks(){
         return tasks;
     }
 }
