@@ -25,6 +25,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+/**
+ * Data model that holds the application data and login throughout the application.
+ */
 public class DataModel {
 
     /**
@@ -48,17 +51,29 @@ public class DataModel {
      */
     private ImageWrapper imageInitialData;
 
+    /**
+     * List of filters
+     */
     private final List<Filter> filterList = new ArrayList<>();
 
     /**
-     * Filter pipeline
+     * Filter pipeline containing the currently selected filter list
      */
     private final FilterPipeline filterPipeline;
 
+    /**
+     * Observable list of all the possible filters to apply
+     */
     private final ObservableList<Filter> actualFiltersList;
 
+    /**
+     * Observable list of the filter pipeline's tasks, used to update the pipeline view
+     */
     private final ObservableList<Task<ImageWrapper, FilterTaskResult>> actualFiltersPipeline;
 
+    /**
+     * Constructor that initializes the data model.
+     */
     public DataModel() {
         this.imageComponent = new ImageView();
         this.imageController = new ImageController();
@@ -67,15 +82,10 @@ public class DataModel {
         this.actualFiltersList = FXCollections.observableArrayList();
     }
 
-    public ImageView getImageComponent() {
-        return imageComponent;
-    }
-
-    public ImageWrapper getImageData() {
-        return imageData;
-    }
-
-    // Load an image from a given path
+    /**
+     * Load an image from a given path
+     * @param path the path of the image
+     */
     public void loadImage(String path) {
         try {
             // Load the image
@@ -92,6 +102,10 @@ public class DataModel {
         }
     }
 
+    /**
+     * Export the current image to a file with a specific format and path
+     * @param exportReq export request object, containing all the needed information
+     */
     public void exportImage (FileExport exportReq) {
         try {
             // Try to export image into selected directory
@@ -103,12 +117,10 @@ public class DataModel {
         }
     }
 
-    // Set the image which has to be shown. Used after applying a filter
-    public void setImageComponent(ImageWrapper imageWrapper) {
-        drawImage(imageWrapper);
-    }
-
-    // Draw an ImageWrapper on ImageView
+    /**
+     * Draw the image on the image component
+     * @param imageWrapper image to draw
+     */
     private void drawImage(ImageWrapper imageWrapper) {
         // Save current image
         imageData = imageWrapper;
@@ -129,6 +141,18 @@ public class DataModel {
         imageComponent.setImage(writableImage);
     }
 
+    /**
+     * Re-run the pipeline and update the current image on ImageView
+     * @throws PipelineException if the pipeline is empty
+     */
+    public void refreshPipeline() throws PipelineException {
+        drawImage(filterPipeline.run(imageInitialData).getResult());
+    }
+
+    /**
+     * Add a filter to the filter list
+     * @param filter filter to add
+     */
     public void addFilterSelection(Filter filter) {
         filterList.add(filter);
         actualFiltersList.clear();
@@ -145,24 +169,67 @@ public class DataModel {
         actualFiltersPipeline.addAll(filterPipeline.getTasks());
     }
 
-    public ObservableList<Filter> getActualFiltersList() {
-        return actualFiltersList;
-    }
-
-    public ObservableList<Task<ImageWrapper, FilterTaskResult>> getActualFiltersPipeline(){
-        return actualFiltersPipeline;
-    }
-
+    /**
+     * Remove a specific FilterTask from the pipeline and update actualFilterPipeline ListView on frontend
+     * @param task FilterTask to be removed
+     * @throws PipelineException if the task is not in the pipeline
+     */
     public void removeTaskFromPipeline(Task<ImageWrapper, FilterTaskResult> task) throws PipelineException {
         filterPipeline.remove(task);
         actualFiltersPipeline.clear();
         actualFiltersPipeline.addAll(filterPipeline.getTasks());
 
         // Re-run pipeline + update current image on ImageView
-        drawImage(runPipeline(imageInitialData).getResult());
+        drawImage(filterPipeline.run(imageInitialData).getResult());
     }
 
-    public FilterTaskResult runPipeline(ImageWrapper imageWrapper) throws PipelineException {
-        return filterPipeline.run(imageWrapper);
+    /**
+     * Set the component used to display the image
+     * @param imageWrapper the image to display
+     */
+    public void setImageComponent(ImageWrapper imageWrapper) {
+        drawImage(imageWrapper);
     }
+
+
+    /**
+     * Get the FilterPipeline object
+     * @return FilterPipeline object
+     */
+    public FilterPipeline getFilterPipeline() {
+        return filterPipeline;
+    }
+
+    /**
+     * Get the image component used to show the image
+     * @return image component
+     */
+    public ImageView getImageComponent() {
+        return imageComponent;
+    }
+
+    /**
+     * Get the image data
+     * @return ImageWrapper object
+     */
+    public ImageWrapper getImageData() {
+        return imageData;
+    }
+
+    /**
+     * Get actual list of possible filters
+     * @return removed filter
+     */
+    public ObservableList<Filter> getActualFiltersList() {
+        return actualFiltersList;
+    }
+
+    /**
+     * Get actual filter pipeline
+     * @return actual filter pipeline
+     */
+    public ObservableList<Task<ImageWrapper, FilterTaskResult>> getActualFiltersPipeline(){
+        return actualFiltersPipeline;
+    }
+
 }
