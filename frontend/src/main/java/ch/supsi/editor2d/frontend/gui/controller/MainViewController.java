@@ -269,6 +269,9 @@ public class MainViewController {
         onAboutClicked.handle(e);
     }
 
+    /**
+     * Handle the run pipeline action
+     */
     public void onRunPipeline() {
         try {
             // Run pipeline again
@@ -281,6 +284,9 @@ public class MainViewController {
         }
     }
 
+    /**
+     * Handle the open menu action
+     */
     public void onOpen() {
         // Open file browser
         File file = fileChooser.showOpenDialog(imagePane.getScene().getWindow());
@@ -294,8 +300,11 @@ public class MainViewController {
         }
     }
 
+    /**
+     * Handle the close menu action
+     */
     public void onClose() {
-        throw new RuntimeException("NOT IMPLEMENTED!");
+        onClose.handle(new ActionEvent());
     }
 
     /**

@@ -88,6 +88,18 @@ public class Start extends Application {
             }
         });
 
+        mainViewController.setOnClose(ignored -> {
+            // Close the application
+            stage.close();
+
+            // Close all the other stages
+            aboutStage.close();
+            exportStage.close();
+
+            // Exit the application
+            System.exit(0);
+        });
+
         // Filter selection View page
         FXMLLoader filterSelectionViewLoader = new FXMLLoader(getClass().getResource("/view/filtersListView.fxml"));
         Parent filterSelectionView = filterSelectionViewLoader.load();
