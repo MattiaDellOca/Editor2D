@@ -30,7 +30,14 @@ public class ImageWrapper {
     public ImageWrapper (ImageWrapper wrapper) {
         this.width = wrapper.getWidth();
         this.height = wrapper.getHeight();
-        this.data = wrapper.getData();
+
+        // Deep-Copy colors
+        this.data = new ColorWrapper[wrapper.getHeight()][wrapper.getWidth()];
+        for (int i = 0; i < wrapper.getHeight(); i++) {
+            for (int j = 0; j < wrapper.getWidth(); j++) {
+                data[i][j] = new ColorWrapper(wrapper.getData()[i][j]);
+            }
+        }
     }
 
     public ColorWrapper[][] getData() {
