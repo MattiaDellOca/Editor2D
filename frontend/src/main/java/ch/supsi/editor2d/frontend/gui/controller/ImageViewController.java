@@ -35,7 +35,7 @@ public class ImageViewController {
     public void refresh(){
         // Set container size
         containerImage.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
-        imageView.setImage(model.getImage().getImage());
+        imageView.setImage(model.getImageComponent().getImage());
         imageView.setPreserveRatio(true);
         imageView.setSmooth(false);
         imageView.setCache(false);

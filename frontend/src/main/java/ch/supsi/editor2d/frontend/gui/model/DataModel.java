@@ -36,12 +36,12 @@ public class DataModel {
     /**
      * Image showed
      */
-    private final ImageView image;
+    private final ImageView imageComponent;
 
     /**
      * Image wrapper containing the image data
      */
-    private ImageWrapper imageLoaded;
+    private ImageWrapper imageData;
 
     private final List<Filter> filterList = new ArrayList<>();
 
@@ -55,19 +55,19 @@ public class DataModel {
     private final ObservableList<Task<ImageWrapper, FilterTaskResult>> actualFiltersPipeline;
 
     public DataModel() {
-        this.image = new ImageView();
+        this.imageComponent = new ImageView();
         this.imageController = new ImageController();
         this.filterPipeline = new FilterPipeline();
         this.actualFiltersPipeline = FXCollections.observableArrayList();
         this.actualFiltersList = FXCollections.observableArrayList();
     }
 
-    public ImageView getImage() {
-        return image;
+    public ImageView getImageComponent() {
+        return imageComponent;
     }
 
-    public ImageWrapper getImageLoaded() {
-        return imageLoaded;
+    public ImageWrapper getImageData() {
+        return imageData;
     }
 
     // Load an image from a given path
@@ -84,7 +84,7 @@ public class DataModel {
     public void exportImage (FileExport exportReq) {
         try {
             // Try to export image into selected directory
-            imageController.exportImage(exportReq.getFilename(), exportReq.getExtension(), exportReq.getDestination(), imageLoaded);
+            imageController.exportImage(exportReq.getFilename(), exportReq.getExtension(), exportReq.getDestination(), imageData);
         } catch (FileWritingException e) {
             //Show Alert
             System.err.println(e.getMessage());
@@ -93,13 +93,13 @@ public class DataModel {
     }
 
     // Set the image which has to be shown. Used after applying a filter
-    public void setImage(ImageWrapper imageWrapper) {
+    public void setImageComponent(ImageWrapper imageWrapper) {
         drawImage(imageWrapper);
     }
 
     // Draw an ImageWrapper on ImageView
     private void drawImage(ImageWrapper imageWrapper) {
-        imageLoaded = imageWrapper;
+        imageData = imageWrapper;
 
         WritableImage writableImage = new WritableImage(imageWrapper.getWidth(), imageWrapper.getHeight());
         PixelWriter pixelWriter = writableImage.getPixelWriter();
@@ -111,7 +111,7 @@ public class DataModel {
             }
         }
 
-        image.setImage(writableImage);
+        imageComponent.setImage(writableImage);
     }
 
     public void addFilterSelection(Filter filter) {

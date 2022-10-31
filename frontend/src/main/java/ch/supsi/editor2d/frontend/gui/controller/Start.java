@@ -74,7 +74,7 @@ public class Start extends Application {
         // Export handling
         mainViewController.setOnExportClicked(e -> {
             // Check if image is load
-            if (model.getImageLoaded() != null) {
+            if (model.getImageData() != null) {
                 // Show export stage
                 exportStage.show();
             } else {
@@ -98,7 +98,7 @@ public class Start extends Application {
 
         // Image updated handling
         filtersSelectionViewController.setOnImageUpdated(e -> {
-            model.setImage(e.getImage());
+            model.setImageComponent(e.getImage());
             imageViewLoader.<ImageViewController>getController().refresh();
         });
 

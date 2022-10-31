@@ -38,7 +38,7 @@ public class FiltersSelectionViewController {
         // Add EventHandler to filtersSelectionView
         filterSelectionList.setOnMouseClicked(mouseEvent -> {
             Filter filter = filterSelectionList.getSelectionModel().getSelectedItem();
-            ImageWrapper image = model.getImageLoaded();
+            ImageWrapper image = model.getImageData();
 
             // Add the selected filter to the pipeline
             model.addFilterPipeline(filter);
