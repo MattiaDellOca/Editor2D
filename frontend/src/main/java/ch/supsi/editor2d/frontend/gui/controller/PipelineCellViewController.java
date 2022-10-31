@@ -6,7 +6,7 @@ import ch.supsi.editor2d.backend.model.task.Task;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.image.ImageView;
 
 public class PipelineCellViewController {
 
@@ -15,7 +15,11 @@ public class PipelineCellViewController {
     @FXML
     private Label filterName;
     @FXML
-    private BorderPane cell;
+    private ImageView swipeUpImageView;
+
+    @FXML
+    private ImageView swipeDownImageView;
+
 
     private Task<ImageWrapper, FilterTaskResult> task;
 
@@ -32,12 +36,30 @@ public class PipelineCellViewController {
         this.filterName.setText(label);
     }
 
-    public void setTask(Task<ImageWrapper, FilterTaskResult> task){
+    public void setTask(Task<ImageWrapper, FilterTaskResult> task) {
         this.task = task;
     }
 
     @FXML
     public void removeHandler() {
         model.removeTaskFromPipeline(task);
+    }
+
+    public void swipeUpVisibility(boolean value) {
+        swipeUpImageView.setVisible(value);
+    }
+
+    public void swipeDownVisibility(boolean value) {
+        swipeDownImageView.setVisible(value);
+    }
+
+    @FXML
+    public void swipeUp() {
+        model.swipeUpFilterPipeline(task);
+    }
+
+    @FXML
+    public void swipeDown() {
+        model.swipeDownFilterPipeline(task);
     }
 }

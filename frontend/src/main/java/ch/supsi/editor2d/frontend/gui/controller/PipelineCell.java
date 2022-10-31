@@ -17,6 +17,7 @@ public class PipelineCell extends ListCell<Task<ImageWrapper, FilterTaskResult>>
     private Parent root;
     private PipelineCellViewController pipelineCellViewController;
 
+    private DataModel model;
 
     public PipelineCell(DataModel model) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/pipelineCellView.fxml"));
@@ -24,8 +25,8 @@ public class PipelineCell extends ListCell<Task<ImageWrapper, FilterTaskResult>>
             root = loader.load();
             pipelineCellViewController = loader.getController();
             pipelineCellViewController.initModel(model);
+            this.model = model;
         } catch (IOException ignored) {}
-
     }
 
     @Override
@@ -37,7 +38,11 @@ public class PipelineCell extends ListCell<Task<ImageWrapper, FilterTaskResult>>
         } else {
             pipelineCellViewController.setTask(task);
             FilterPresentable filterPresentable = new FilterPresentable();
-            pipelineCellViewController.setFilterName(filterPresentable.present(((FilterTask) task).getFilter())); //TODO not the best solution
+            pipelineCellViewController.setFilterName(filterPresentable.present(((FilterTask) task).getFilter()));
+
+            pipelineCellViewController.swipeUpVisibility(!model.getActualFiltersPipeline().get(0).equals(task)); //if is the first task hide swipeUp
+            pipelineCellViewController.swipeDownVisibility(!model.getActualFiltersPipeline().get(model.getActualFiltersPipeline().size()-1).equals(task));//if is the last task hide swipeBottom
+
             setGraphic(root);
         }
     }

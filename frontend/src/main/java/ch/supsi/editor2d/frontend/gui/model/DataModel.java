@@ -145,6 +145,26 @@ public class DataModel {
         // TODO: 25/10/22 Re-execute the pipeline and update image
     }
 
+    /**
+     * Method used for swipe up a filter in the pipeline list
+     * @param task to swipe up
+     */
+    public void swipeUpFilterPipeline(Task<ImageWrapper, FilterTaskResult> task){
+        filterPipeline.invertBeforePositionTask(task);
+        actualFiltersPipeline.clear();
+        actualFiltersPipeline.addAll(filterPipeline.getQueue());
+    }
+
+    /**
+     * Method used for swipe down a filter in the pipeline list
+     * @param task to swipe down
+     */
+    public void swipeDownFilterPipeline(Task<ImageWrapper, FilterTaskResult> task){
+        filterPipeline.invertAfterPositionTask(task);
+        actualFiltersPipeline.clear();
+        actualFiltersPipeline.addAll(filterPipeline.getQueue());
+    }
+
     public FilterTaskResult runPipeline(ImageWrapper imageWrapper) throws PipelineException {
         return filterPipeline.run(imageWrapper);
     }

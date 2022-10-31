@@ -1,23 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<BorderPane fx:id="cell" prefHeight="30.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.supsi.editor2d.frontend.gui.controller.PipelineCellViewController">
+
+<BorderPane prefHeight="30.0" prefWidth="250.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.supsi.editor2d.frontend.gui.controller.PipelineCellViewController">
    <right>
-      <AnchorPane prefHeight="30.0" prefWidth="30.0" BorderPane.alignment="CENTER">
-         <ImageView fitHeight="30.0" fitWidth="30.0" layoutY="1.0" onMouseClicked="#removeHandler"
+      <AnchorPane prefHeight="30.0" prefWidth="90.0" BorderPane.alignment="CENTER">
+         <ImageView fx:id="swipeUpImageView" fitHeight="30.0" fitWidth="30.0" onMouseClicked="#swipeUp"
                     pickOnBounds="true" preserveRatio="true" smooth="false" AnchorPane.bottomAnchor="0.0"
-                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <Image url="@images/delete.png"/>
+                    AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="60.0" AnchorPane.topAnchor="0.0">
+            <Image url="@images/arrowTop.png"/>
+         </ImageView>
+         <ImageView fitHeight="30.0" fitWidth="30.0" layoutY="1.0" onMouseClicked="#removeHandler" pickOnBounds="true" preserveRatio="true" smooth="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Image url="@images/delete.png" />
+         </ImageView>
+         <ImageView fx:id="swipeDownImageView" fitHeight="30.0" fitWidth="30.0" layoutX="10.0" layoutY="10.0"
+                    onMouseClicked="#swipeDown" pickOnBounds="true" preserveRatio="true" smooth="false"
+                    AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0"
+                    AnchorPane.topAnchor="0.0">
+            <Image url="@images/arrowBottom.png"/>
          </ImageView>
       </AnchorPane>
    </right>
    <left>
-      <AnchorPane prefHeight="30.0" prefWidth="220.0" BorderPane.alignment="CENTER">
-         <Label fx:id="filterName" alignment="CENTER" text="Label" AnchorPane.bottomAnchor="0.0"
-                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
+      <AnchorPane prefHeight="30.0" prefWidth="160.0" BorderPane.alignment="CENTER">
+         <Label fx:id="filterName" alignment="CENTER" text="Label" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       </AnchorPane>
    </left>
 </BorderPane>

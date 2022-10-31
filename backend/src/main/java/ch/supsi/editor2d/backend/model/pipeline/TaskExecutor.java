@@ -35,4 +35,44 @@ public abstract class TaskExecutor<T, K extends TaskResult<?>> implements Execut
     public List<Task<T,K>> getQueue(){
         return tasks;
     }
+
+    /**
+     * Invert the task given with the previous one
+     * @param task to be inverted to the previous one
+     */
+    public void invertBeforePositionTask(Task<T,K> task){
+        int index = tasks.indexOf(task);
+
+        if(index == -1 || index == 0){
+            return;
+        }
+
+        //Get task before my task
+        Task<T,K> taskUp = tasks.get(index-1);
+
+        //Invert the two tasks
+        tasks.set(index-1,task);
+        tasks.set(index, taskUp);
+    }
+
+    /**
+     * Invert the task given with the next one
+     * @param task to be inverted to the next one
+     */
+    public void invertAfterPositionTask(Task<T,K> task){
+        int index = tasks.indexOf(task);
+
+        if(index == -1 || index == tasks.size()-1){
+            return;
+        }
+
+        //Get task after my task
+        Task<T,K> taskUp = tasks.get(index+1);
+
+        //Invert the two tasks
+        tasks.set(index+1,task);
+        tasks.set(index, taskUp);
+
+    }
+
 }
