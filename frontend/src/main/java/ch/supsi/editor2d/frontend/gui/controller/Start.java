@@ -55,6 +55,12 @@ public class Start extends Application {
             model.exportImage(event.getExport());
         });
 
+        // Save image refresh callback function
+        mainViewController.setOnPipelineFinishedRunning((ignored) -> {
+            // Pipeline has finished running! We can refresh the image now!
+            imageViewLoader.<ImageViewController>getController().refresh();
+        });
+
         // Set imageView.fxml inside mainView.fxml
         mainViewController.getImagePane().getChildren().add(imageView);
 

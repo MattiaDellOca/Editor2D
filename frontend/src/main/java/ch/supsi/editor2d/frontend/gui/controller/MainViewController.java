@@ -64,6 +64,10 @@ public class MainViewController {
     private EventHandler<ActionEvent> exportClicked = event -> {
     };
 
+    /**
+     * Refresh image callback
+     */
+    private EventHandler<ActionEvent> onPipelineFinishedRunning = event -> {};
 
     /**
      * Image pane reference
@@ -71,13 +75,6 @@ public class MainViewController {
     @FXML
     private Pane imagePane;
 
-    public void setOnFileDropped(EventHandler<FileOpenEvent> event) {
-        this.fileOpened = event;
-    }
-
-    public EventHandler<FileOpenEvent> getOnFileDropped() {
-        return this.fileOpened;
-    }
     /**
      * File chooser reference
      */
@@ -209,6 +206,14 @@ public class MainViewController {
     }
 
     /**
+     * Set the pipeline finished running event handler
+     * @param event Pipeline finished running event handler
+     */
+    public void setOnPipelineFinishedRunning(EventHandler<ActionEvent> event) {
+        this.onPipelineFinishedRunning = event;
+    }
+
+    /**
      * Get the image pane reference
      *
      * @return Image pane
@@ -256,7 +261,10 @@ public class MainViewController {
 
     public void onRunPipeline() {
         try {
+            // Run pipeline again
             model.refreshPipeline();
+            // Then, refresh the image
+            onPipelineFinishedRunning.handle(new ActionEvent());
         } catch (PipelineException e) {
             System.err.println("Unable to refresh pipeline: " + e.getMessage());
             ErrorAlert.showError("Unable to refresh pipeline: " + e.getMessage());
@@ -271,6 +279,8 @@ public class MainViewController {
         if (file != null && isSupportedFormat(file)) {
             // Fire file dropped event
             fileOpened.handle(new FileOpenEvent(file, imagePane));
+            // Then, refresh the image
+            onPipelineFinishedRunning.handle(new ActionEvent());
         }
     }
 
