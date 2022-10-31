@@ -43,6 +43,11 @@ public class DataModel {
      */
     private ImageWrapper imageLoaded;
 
+    /**
+     * Image wrapper containing the initial image data (before any filter is applied)
+     */
+    private ImageWrapper imageInitialData;
+
     private final List<Filter> filterList = new ArrayList<>();
 
     /**
@@ -73,8 +78,14 @@ public class DataModel {
     // Load an image from a given path
     public void loadImage(String path) {
         try {
+            // Load the image
             ImageWrapper img = imageController.getImage(path);
-            drawImage(img);
+
+            // Save the initial image data
+            imageInitialData = img;
+
+            // Draw image (passing copy)
+            drawImage(new ImageWrapper(img));
         } catch (FileReadingException e) {
             System.err.println(e.getMessage());
             ErrorAlert.showError(e.getMessage());
@@ -99,11 +110,16 @@ public class DataModel {
 
     // Draw an ImageWrapper on ImageView
     private void drawImage(ImageWrapper imageWrapper) {
+        // Save current image
         imageLoaded = imageWrapper;
 
+        System.out.println("NEW IMAGE DRAWN");
+
+        // Create a new WritableImage
         WritableImage writableImage = new WritableImage(imageWrapper.getWidth(), imageWrapper.getHeight());
         PixelWriter pixelWriter = writableImage.getPixelWriter();
 
+        // Draw the image
         for (int h = 0; h < imageWrapper.getHeight(); h++) {
             for (int w = 0; w < imageWrapper.getWidth(); w++) {
                 ColorWrapper tempColor = imageWrapper.getData()[h][w];
@@ -111,6 +127,7 @@ public class DataModel {
             }
         }
 
+        // Display image on ImageView component
         image.setImage(writableImage);
     }
 
@@ -127,7 +144,7 @@ public class DataModel {
     public void addFilterPipeline(Filter filter){
         filterPipeline.add(new FilterTask(filter));
         actualFiltersPipeline.clear();
-        actualFiltersPipeline.addAll(filterPipeline.getQueue());
+        actualFiltersPipeline.addAll(filterPipeline.getTasks());
     }
 
     public ObservableList<Filter> getActualFiltersList() {
@@ -138,18 +155,13 @@ public class DataModel {
         return actualFiltersPipeline;
     }
 
-    public void removeTaskFromPipeline(Task<ImageWrapper, FilterTaskResult> task) {
+    public void removeTaskFromPipeline(Task<ImageWrapper, FilterTaskResult> task) throws PipelineException {
         filterPipeline.remove(task);
         actualFiltersPipeline.clear();
-        actualFiltersPipeline.addAll(filterPipeline.getQueue());
+        actualFiltersPipeline.addAll(filterPipeline.getTasks());
 
-        // Re-run pipeline
-        try {
-            filterPipeline.run(imageLoaded);
-        } catch (PipelineException e) {
-            System.err.println(e.getMessage());
-            ErrorAlert.showError(e.getMessage());
-        }
+        // Re-run pipeline + update current image on ImageView
+        drawImage(runPipeline(imageInitialData).getResult());
     }
 
     public FilterTaskResult runPipeline(ImageWrapper imageWrapper) throws PipelineException {
