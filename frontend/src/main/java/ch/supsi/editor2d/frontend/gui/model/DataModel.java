@@ -142,7 +142,14 @@ public class DataModel {
         filterPipeline.remove(task);
         actualFiltersPipeline.clear();
         actualFiltersPipeline.addAll(filterPipeline.getQueue());
-        // TODO: 25/10/22 Re-execute the pipeline and update image
+
+        // Re-run pipeline
+        try {
+            filterPipeline.run(imageLoaded);
+        } catch (PipelineException e) {
+            System.err.println(e.getMessage());
+            ErrorAlert.showError(e.getMessage());
+        }
     }
 
     public FilterTaskResult runPipeline(ImageWrapper imageWrapper) throws PipelineException {
