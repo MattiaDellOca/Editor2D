@@ -1,5 +1,7 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
+import ch.supsi.editor2d.backend.exception.PipelineException;
+import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
 import ch.supsi.editor2d.frontend.gui.event.FileOpenEvent;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.event.ActionEvent;
@@ -72,12 +74,6 @@ public class MainViewController {
     public void setOnFileDropped(EventHandler<FileOpenEvent> event) {
         this.fileOpened = event;
     }
-
-    /**
-     * Loaded about stage
-     */
-    private Stage aboutStage;
-
 
     public EventHandler<FileOpenEvent> getOnFileDropped() {
         return this.fileOpened;
@@ -259,19 +255,12 @@ public class MainViewController {
     }
 
     public void onRunPipeline() {
-        throw new RuntimeException("NOT IMPLEMENTED!");
-    }
-
-    public void onRedo() {
-        throw new RuntimeException("NOT IMPLEMENTED!");
-    }
-
-    public void onUndo() {
-        throw new RuntimeException("NOT IMPLEMENTED!");
-    }
-
-    public void onSave() {
-        throw new RuntimeException("NOT IMPLEMENTED!");
+        try {
+            model.refreshPipeline();
+        } catch (PipelineException e) {
+            System.err.println("Unable to refresh pipeline: " + e.getMessage());
+            ErrorAlert.showError("Unable to refresh pipeline: " + e.getMessage());
+        }
     }
 
     public void onOpen() {
