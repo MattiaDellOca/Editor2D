@@ -6,6 +6,8 @@ import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.backend.model.task.Task;
 import ch.supsi.editor2d.backend.objectPresentation.FilterPresentable;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ListCell;
@@ -17,15 +19,16 @@ public class PipelineCell extends ListCell<Task<ImageWrapper, FilterTaskResult>>
     private Parent root;
     private PipelineCellViewController pipelineCellViewController;
 
-
-    public PipelineCell(DataModel model) {
+    public PipelineCell(DataModel model, EventHandler<ActionEvent> onFilterRemovedSuccessfully) {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/pipelineCellView.fxml"));
         try {
             root = loader.load();
             pipelineCellViewController = loader.getController();
             pipelineCellViewController.initModel(model);
-        } catch (IOException ignored) {}
 
+            // Set the onFilterRemovedSuccessfully event handler
+            pipelineCellViewController.setOnFilterRemovedSuccessfully(onFilterRemovedSuccessfully);
+        } catch (IOException ignored) {}
     }
 
     @Override
