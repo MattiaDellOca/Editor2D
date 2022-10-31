@@ -52,14 +52,11 @@
    <top>
        <MenuBar BorderPane.alignment="CENTER">
            <Menu mnemonicParsing="false" text="File">
-               <MenuItem mnemonicParsing="false" onAction="#onSave" text="Save" />
                <MenuItem mnemonicParsing="false" onAction="#onOpen" text="Open" />
                <MenuItem mnemonicParsing="false" text="Export image" onAction="#onExport"/>
                <MenuItem mnemonicParsing="false" onAction="#onClose" text="Close" />
            </Menu>
            <Menu mnemonicParsing="false" text="Edit">
-               <MenuItem mnemonicParsing="false" onAction="#onUndo" text="Undo" />
-               <MenuItem mnemonicParsing="false" onAction="#onRedo" text="Redo" />
                <MenuItem mnemonicParsing="false" onAction="#onRunPipeline" text="Run pipeline" />
            </Menu>
            <Menu mnemonicParsing="false" text="Help">
