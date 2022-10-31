@@ -46,7 +46,7 @@ public class FiltersSelectionViewController {
             // Apply filters to the image
             ImageWrapper i;
             try {
-                i = model.runPipeline(image).getResult();
+                i = model.getFilterPipeline().run(image).getResult();
             } catch (PipelineException e) {
                 throw new RuntimeException(e);
             }
