@@ -1,5 +1,6 @@
 package ch.supsi.editor2d.backend.model.pipeline;
 
+import ch.supsi.editor2d.backend.exception.IndexPipelineException;
 import ch.supsi.editor2d.backend.exception.PipelineException;
 import ch.supsi.editor2d.backend.model.task.Task;
 import ch.supsi.editor2d.backend.model.task.TaskResult;
@@ -39,12 +40,13 @@ public abstract class TaskExecutor<T, K extends TaskResult<?>> implements Execut
     /**
      * Invert the task given with the previous one
      * @param task to be inverted to the previous one
+     * @throws IndexPipelineException in case of index errors
      */
-    public void invertBeforePositionTask(Task<T,K> task){
+    public void invertBeforePositionTask(Task<T,K> task) throws IndexPipelineException {
         int index = tasks.indexOf(task);
 
         if(index == -1 || index == 0){
-            return;
+            throw new IndexPipelineException("Impossible to invert position with the previous one");
         }
 
         //Get task before my task
@@ -58,12 +60,13 @@ public abstract class TaskExecutor<T, K extends TaskResult<?>> implements Execut
     /**
      * Invert the task given with the next one
      * @param task to be inverted to the next one
+     * @throws IndexPipelineException in case of index errors
      */
-    public void invertAfterPositionTask(Task<T,K> task){
+    public void invertAfterPositionTask(Task<T,K> task) throws IndexPipelineException{
         int index = tasks.indexOf(task);
 
         if(index == -1 || index == tasks.size()-1){
-            return;
+            throw new IndexPipelineException("Impossible to invert position with the next one");
         }
 
         //Get task after my task

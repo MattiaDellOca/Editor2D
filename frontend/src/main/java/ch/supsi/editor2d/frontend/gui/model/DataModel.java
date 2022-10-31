@@ -184,6 +184,34 @@ public class DataModel {
     }
 
     /**
+     * Method used for swipe up a filter in the pipeline list
+     * @param task to swipe up
+     * @throws PipelineException in case of execution errors or index errors
+     */
+    public void swipeUpFilterPipeline(Task<ImageWrapper, FilterTaskResult> task) throws PipelineException {
+        filterPipeline.invertBeforePositionTask(task);
+        actualFiltersPipeline.clear();
+        actualFiltersPipeline.addAll(filterPipeline.getTasks());
+
+        //refresh pipeline
+        refreshPipeline();
+    }
+
+    /**
+     * Method used for swipe down a filter in the pipeline list
+     * @param task to swipe down
+     * @throws PipelineException in case of execution errors or index errors
+     */
+    public void swipeDownFilterPipeline(Task<ImageWrapper, FilterTaskResult> task) throws PipelineException {
+        filterPipeline.invertAfterPositionTask(task);
+        actualFiltersPipeline.clear();
+        actualFiltersPipeline.addAll(filterPipeline.getTasks());
+
+        //refresh pipeline
+        refreshPipeline();
+    }
+
+    /**
      * Set the component used to display the image
      * @param imageWrapper the image to display
      */
@@ -230,26 +258,6 @@ public class DataModel {
      */
     public ObservableList<Task<ImageWrapper, FilterTaskResult>> getActualFiltersPipeline(){
         return actualFiltersPipeline;
-    }
-
-    /**
-     * Method used for swipe up a filter in the pipeline list
-     * @param task to swipe up
-     */
-    public void swipeUpFilterPipeline(Task<ImageWrapper, FilterTaskResult> task){
-        filterPipeline.invertBeforePositionTask(task);
-        actualFiltersPipeline.clear();
-        actualFiltersPipeline.addAll(filterPipeline.getQueue());
-    }
-
-    /**
-     * Method used for swipe down a filter in the pipeline list
-     * @param task to swipe down
-     */
-    public void swipeDownFilterPipeline(Task<ImageWrapper, FilterTaskResult> task){
-        filterPipeline.invertAfterPositionTask(task);
-        actualFiltersPipeline.clear();
-        actualFiltersPipeline.addAll(filterPipeline.getQueue());
     }
 
     public FilterTaskResult runPipeline(ImageWrapper imageWrapper) throws PipelineException {

@@ -29,7 +29,7 @@ public class PipelineCell extends ListCell<Task<ImageWrapper, FilterTaskResult>>
             this.model = model;
 
             // Set the onFilterRemovedSuccessfully event handler
-            pipelineCellViewController.setOnFilterRemovedSuccessfully(onFilterRemovedSuccessfully);
+            pipelineCellViewController.setOnFilterChanged(onFilterRemovedSuccessfully);
         } catch (IOException ignored) {}
 
     }
@@ -41,12 +41,17 @@ public class PipelineCell extends ListCell<Task<ImageWrapper, FilterTaskResult>>
         if (empty || task == null) {
             setGraphic(null);
         } else {
+            //Set task
             pipelineCellViewController.setTask(task);
+
+            //Present the filter name
             FilterPresentable filterPresentable = new FilterPresentable();
             pipelineCellViewController.setFilterName(filterPresentable.present(((FilterTask) task).getFilter()));
 
-            pipelineCellViewController.swipeUpVisibility(!model.getActualFiltersPipeline().get(0).equals(task)); //if is the first task hide swipeUp
-            pipelineCellViewController.swipeDownVisibility(!model.getActualFiltersPipeline().get(model.getActualFiltersPipeline().size()-1).equals(task));//if is the last task hide swipeBottom
+            //if is the first task hide swipeUp
+            pipelineCellViewController.swipeUpVisibility(!model.getActualFiltersPipeline().get(0).equals(task));
+            //if is the last task hide swipeBottom
+            pipelineCellViewController.swipeDownVisibility(!model.getActualFiltersPipeline().get(model.getActualFiltersPipeline().size()-1).equals(task));
 
             setGraphic(root);
         }

@@ -27,7 +27,8 @@ public class PipelineCellViewController {
 
     private Task<ImageWrapper, FilterTaskResult> task;
 
-    private EventHandler<ActionEvent> onFilterRemovedSuccessfully = event -> {};
+    private EventHandler<ActionEvent> onFilterChanged = event -> {
+    };
 
     public void initModel(DataModel model) {
         // ensure model is only set once
@@ -45,8 +46,8 @@ public class PipelineCellViewController {
         this.task = task;
     }
 
-    public void setOnFilterRemovedSuccessfully(EventHandler<ActionEvent> onFilterRemovedSuccessfully) {
-        this.onFilterRemovedSuccessfully = onFilterRemovedSuccessfully;
+    public void setOnFilterChanged(EventHandler<ActionEvent> onFilterChanged) {
+        this.onFilterChanged = onFilterChanged;
     }
 
     @FXML
@@ -55,7 +56,7 @@ public class PipelineCellViewController {
             // Remove task from pipeline + rerun pipeline
             model.removeTaskFromPipeline(task);
             // Notify that image has been updated
-            onFilterRemovedSuccessfully.handle(new ActionEvent());
+            onFilterChanged.handle(new ActionEvent());
         } catch (PipelineException e) {
             System.err.println(e.getMessage());
             ErrorAlert.showError(e.getMessage());
@@ -72,11 +73,27 @@ public class PipelineCellViewController {
 
     @FXML
     public void swipeUp() {
-        model.swipeUpFilterPipeline(task);
+        try {
+            //swipe this task with the previous one
+            model.swipeUpFilterPipeline(task);
+            // Notify that image has been updated
+            onFilterChanged.handle(new ActionEvent());
+        } catch (PipelineException e) {
+            System.err.println(e.getMessage());
+            ErrorAlert.showError(e.getMessage());
+        }
     }
 
     @FXML
     public void swipeDown() {
-        model.swipeDownFilterPipeline(task);
+        try {
+            //swipe this task with the next one
+            model.swipeDownFilterPipeline(task);
+            // Notify that image has been updated
+            onFilterChanged.handle(new ActionEvent());
+        } catch (PipelineException e) {
+            System.err.println(e.getMessage());
+            ErrorAlert.showError(e.getMessage());
+        }
     }
 }
