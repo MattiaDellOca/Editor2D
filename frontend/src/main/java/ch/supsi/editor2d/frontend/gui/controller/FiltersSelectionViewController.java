@@ -3,6 +3,8 @@ package ch.supsi.editor2d.frontend.gui.controller;
 import ch.supsi.editor2d.backend.exception.PipelineException;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.model.filter.*;
+import ch.supsi.editor2d.frontend.exception.ImageNotLoadedException;
+import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
 import ch.supsi.editor2d.frontend.gui.event.ImageUpdatedEvent;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.event.EventHandler;
@@ -38,7 +40,6 @@ public class FiltersSelectionViewController {
         // Add EventHandler to filtersSelectionView
         filterSelectionList.setOnMouseClicked(mouseEvent -> {
             Filter filter = filterSelectionList.getSelectionModel().getSelectedItem();
-            ImageWrapper image = model.getImageData();
 
             // Add the selected filter to the pipeline
             model.addFilterPipeline(filter);
@@ -46,13 +47,16 @@ public class FiltersSelectionViewController {
             // Apply filters to the image
             ImageWrapper i;
             try {
-                i = model.getFilterPipeline().run(image).getResult();
+                i = model.runPipeline();
+
+                // Create an event to notify that the image has changed
+                getOnImageUpdated().handle(new ImageUpdatedEvent(i, new Pane()));
             } catch (PipelineException e) {
                 throw new RuntimeException(e);
+            } catch (ImageNotLoadedException e) {
+                System.err.println("Unable to apply filter: Please load an image before applying a filter.");
+                ErrorAlert.showError("Unable to apply filter: Please load an image before applying a filter.");
             }
-
-            // Create an event to notify that the image has changed
-            getOnImageUpdated().handle(new ImageUpdatedEvent(i, new Pane()));
         });
     }
 }

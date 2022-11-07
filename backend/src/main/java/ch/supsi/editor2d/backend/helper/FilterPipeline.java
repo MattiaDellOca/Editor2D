@@ -1,5 +1,6 @@
 package ch.supsi.editor2d.backend.helper;
 
+import ch.supsi.editor2d.backend.exception.FilterApplyException;
 import ch.supsi.editor2d.backend.exception.PipelineException;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.model.pipeline.Pipeline;
@@ -23,8 +24,13 @@ public final class FilterPipeline extends Pipeline<ImageWrapper, FilterTaskResul
 
         // Cycle through tasks, one by one using Queue
         for (int i = 1; it.hasNext(); i++) {
+            FilterTaskResult result;
             // Get next task
-            FilterTaskResult result = it.next().execute(image);
+            try {
+                result = it.next().execute(image);
+            } catch (FilterApplyException e) {
+                throw new FilterApplyException("impossible to apply filter: \n The image must be at least 3x3");
+            }
             // TODO: check if result is error
             System.out.println("RESULT " + i + ": " + result.getResult());
 

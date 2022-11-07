@@ -13,7 +13,12 @@ import java.util.Arrays;
  */
 public final class MatrixMultiplier {
 
-    // Apply a color based filter to an image
+    /**
+     * Apply a color-based filter to an image
+     * @param image original image
+     * @param filter color-based filter
+     * @return a new image with the filter applied
+     */
     public static ImageWrapper applyColorFilter(ImageWrapper image, ColorMatrixFilter filter) {
         ColorWrapper[][] I = image.getData();
         double[][] F = filter.getMatrix();
@@ -84,18 +89,12 @@ public final class MatrixMultiplier {
         return new ImageWrapper(newImage[0].length, newImage.length, newImage);
     }
 
-    private static ColorWrapper dotProduct(ColorWrapper[] row, double[] column) {
-        float red = 0, green = 0, blue = 0;
-        for(int i = 0; i < row.length; i ++) {
-            red += row[i].getRed() * column[i];
-            green += row[i].getGreen() * column[i];
-            blue += row[i].getBlue() * column[i];
-        }
-
-        return new ColorWrapper(red, green, blue);
-    }
-
-    // Calculate the matrix multiplication of a matrix representing the filter and a vector containing pixel's RGB values
+    /**
+     * Calculate the matrix multiplication of a matrix representing the filter and a vector containing pixel's RGB values
+     * @param matrix representing the filter
+     * @param vector representing a pixel's RGB component
+     * @return a color wrapper representing the pixel's RGB values after applying the given filter
+     */
     private static ColorWrapper matrixPerVector(double[][] matrix, ColorWrapper vector) {
         float[] rgb = new float[3];
         Arrays.fill(rgb, 0);

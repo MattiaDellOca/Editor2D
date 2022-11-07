@@ -4,6 +4,7 @@ package ch.supsi.editor2d.frontend.gui.model;
 import ch.supsi.editor2d.backend.controller.ImageController;
 import ch.supsi.editor2d.backend.exception.FileReadingException;
 import ch.supsi.editor2d.backend.exception.FileWritingException;
+import ch.supsi.editor2d.backend.exception.FilterApplyException;
 import ch.supsi.editor2d.backend.exception.PipelineException;
 import ch.supsi.editor2d.backend.helper.FilterPipeline;
 import ch.supsi.editor2d.backend.model.ColorWrapper;
@@ -12,6 +13,7 @@ import ch.supsi.editor2d.backend.model.filter.Filter;
 import ch.supsi.editor2d.backend.model.task.FilterTask;
 import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.backend.model.task.Task;
+import ch.supsi.editor2d.frontend.exception.ImageNotLoadedException;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
 import ch.supsi.editor2d.frontend.gui.event.util.FileExport;
 import javafx.collections.FXCollections;
@@ -142,6 +144,25 @@ public class DataModel {
     }
 
     /**
+     * Run the pipeline starting from the ImageWrapper obtained as the last result of the previous execution
+     * This method is called every time a filter is added to the pipeline
+     * @throws ImageNotLoadedException if no image has been loaded
+     * @throws PipelineException if the pipeline is empty
+     */
+    public ImageWrapper runPipeline() throws ImageNotLoadedException, PipelineException {
+        if(imageData == null)
+            throw new ImageNotLoadedException();
+
+        try {
+            imageData = filterPipeline.run(imageData).getResult();
+        } catch(FilterApplyException e) {
+            System.err.println("Unable to run pipeline: " + e.getMessage());
+            ErrorAlert.showError("Unable to run pipeline: " + e.getMessage());
+        }
+        return imageData;
+    }
+
+    /**
      * Re-run the pipeline and update the current image on ImageView
      * @throws PipelineException if the pipeline is empty
      */
@@ -180,7 +201,7 @@ public class DataModel {
         actualFiltersPipeline.addAll(filterPipeline.getTasks());
 
         // Re-run pipeline + update current image on ImageView
-        drawImage(filterPipeline.run(imageInitialData).getResult());
+        refreshPipeline();
     }
 
     /**
@@ -258,9 +279,5 @@ public class DataModel {
      */
     public ObservableList<Task<ImageWrapper, FilterTaskResult>> getActualFiltersPipeline(){
         return actualFiltersPipeline;
-    }
-
-    public FilterTaskResult runPipeline(ImageWrapper imageWrapper) throws PipelineException {
-        return filterPipeline.run(imageWrapper);
     }
 }
