@@ -100,6 +100,12 @@ public class Start extends Application {
             System.exit(0);
         });
 
+        // Handle zoom out action
+        mainViewController.setOnZoomOutClicked(e -> imageViewLoader.<ImageViewController>getController().setZoom(false));
+
+        // Handle zoom in action
+        mainViewController.setOnZoomInClicked(e -> imageViewLoader.<ImageViewController>getController().setZoom(true));
+
         // Filter selection View page
         FXMLLoader filterSelectionViewLoader = new FXMLLoader(getClass().getResource("/view/filtersListView.fxml"));
         Parent filterSelectionView = filterSelectionViewLoader.load();

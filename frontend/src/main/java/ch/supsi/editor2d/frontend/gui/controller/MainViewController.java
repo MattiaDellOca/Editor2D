@@ -8,7 +8,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
@@ -70,6 +72,17 @@ public class MainViewController {
      * Refresh image callback
      */
     private EventHandler<ActionEvent> onPipelineFinishedRunning = event -> {};
+
+
+    /**
+     * Zoom out callback
+     */
+    private EventHandler<ActionEvent> onZoomOutClicked = event -> {};
+
+    /**
+     * Zoom in callback
+     */
+    private EventHandler<ActionEvent> onZoomInClicked = event -> {};
 
     /**
      * Image pane reference
@@ -215,6 +228,14 @@ public class MainViewController {
         this.onPipelineFinishedRunning = event;
     }
 
+    public void setOnZoomOutClicked(EventHandler<ActionEvent> event) {
+        this.onZoomOutClicked = event;
+    }
+
+    public void setOnZoomInClicked(EventHandler<ActionEvent> event) {
+        this.onZoomInClicked = event;
+    }
+
     /**
      * Set the close event handler
      * @param event Close event handler
@@ -246,20 +267,16 @@ public class MainViewController {
 
     /**
      * Handle the zoom out action
-     *
-     * @param actionEvent Action event
      */
-    public void zoomOut(ActionEvent actionEvent) {
-        System.out.println("ZOOMING OUT: " + actionEvent);
+    public void zoomOut(ActionEvent e) {
+        onZoomOutClicked.handle(e);
     }
 
     /**
      * Handle the zoom in action
-     *
-     * @param actionEvent Action event
      */
-    public void zoomIn(ActionEvent actionEvent) {
-        System.out.println("ZOOMING IN: " + actionEvent);
+    public void zoomIn(ActionEvent e) {
+        onZoomInClicked.handle(e);
     }
 
     /**
