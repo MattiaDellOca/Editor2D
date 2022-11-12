@@ -154,7 +154,7 @@ public class DataModel {
             throw new ImageNotLoadedException();
 
         try {
-            imageData = filterPipeline.run(imageData).getResult();
+            imageData = filterPipeline.run(imageInitialData).getResult();
         } catch(FilterApplyException e) {
             System.err.println("Unable to run pipeline: " + e.getMessage());
             ErrorAlert.showError("Unable to run pipeline: " + e.getMessage());
