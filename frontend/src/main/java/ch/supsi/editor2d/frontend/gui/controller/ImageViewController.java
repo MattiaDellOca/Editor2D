@@ -16,6 +16,8 @@ import javafx.scene.paint.Color;
  */
 public class ImageViewController {
 
+    private static final double ZOOM_FACTOR = 1.1;
+
     private DataModel model;
 
     // Main component, contains the image and handles visualizing it in sub-images when it's too big
@@ -61,11 +63,11 @@ public class ImageViewController {
      */
     public void setZoom(boolean isIn) {
         if(isIn) {
-            imageView.setFitWidth(imageView.getFitWidth() * 1.05);
-            imageView.setFitHeight(imageView.getFitHeight() * 1.05);
+            imageView.setFitWidth(imageView.getFitWidth() * ZOOM_FACTOR);
+            imageView.setFitHeight(imageView.getFitHeight() * ZOOM_FACTOR);
         } else {
-            imageView.setFitWidth(imageView.getFitWidth() / 1.05);
-            imageView.setFitHeight(imageView.getFitHeight() / 1.05);
+            imageView.setFitWidth(imageView.getFitWidth() / ZOOM_FACTOR);
+            imageView.setFitHeight(imageView.getFitHeight() / ZOOM_FACTOR);
         }
     }
 }

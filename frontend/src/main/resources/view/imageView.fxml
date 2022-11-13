@@ -3,8 +3,8 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.ImageView?>
 
-<ScrollPane fx:id="scrollPane" accessibleRole="PARENT" focusTraversable="false" pannable="true" prefHeight="250.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.supsi.editor2d.frontend.gui.controller.ImageViewController">
+<ScrollPane fx:id="scrollPane" accessibleRole="PARENT" focusTraversable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" pannable="true" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.supsi.editor2d.frontend.gui.controller.ImageViewController">
    <content>
-      <ImageView fx:id="imageView" fitHeight="240.0" fitWidth="390.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" smooth="false" />
+      <ImageView fx:id="imageView" fitHeight="390.0" fitWidth="590.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" smooth="false" />
    </content>
 </ScrollPane>
