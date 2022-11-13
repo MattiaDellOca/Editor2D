@@ -41,6 +41,10 @@ public class FiltersSelectionViewController {
         filterSelectionList.setOnMouseClicked(mouseEvent -> {
             Filter filter = filterSelectionList.getSelectionModel().getSelectedItem();
 
+            // If the user selected an empty field object, do nothing
+            if(filter == null)
+                return;
+
             // Add the selected filter to the pipeline
             model.addFilterPipeline(filter);
 

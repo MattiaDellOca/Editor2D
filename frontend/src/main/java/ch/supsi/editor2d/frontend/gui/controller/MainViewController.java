@@ -228,10 +228,18 @@ public class MainViewController {
         this.onPipelineFinishedRunning = event;
     }
 
+    /**
+     * Set the zoom in clicked event handler
+     * @param event ZoomIn clicked event
+     */
     public void setOnZoomOutClicked(EventHandler<ActionEvent> event) {
         this.onZoomOutClicked = event;
     }
 
+    /**
+     * Set the zoom out clicked event handler
+     * @param event ZoomOut clicked event
+     */
     public void setOnZoomInClicked(EventHandler<ActionEvent> event) {
         this.onZoomInClicked = event;
     }
