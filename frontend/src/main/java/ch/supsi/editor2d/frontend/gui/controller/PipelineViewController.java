@@ -24,7 +24,7 @@ public class PipelineViewController {
         this.model = model;
 
         //Setting filter pipeline as dataModel list
-        filterPipelineList.setItems(model.getActualFiltersPipeline());
+        filterPipelineList.setItems(model.getActualFiltersPipeline().getList());
 
         //Setting personalized ListViewCell
         filterPipelineList.setCellFactory(taskListView -> new PipelineCell(model, onFilterRemovedSuccessfully));

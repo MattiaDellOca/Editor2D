@@ -9,7 +9,6 @@ public class MainCLI implements PipelineObserver {
         MainCLI mainCLI = new MainCLI();
         FilterPipeline pipeline = new FilterPipeline();
         pipeline.addObserver(mainCLI);
-
     }
 
     @Override

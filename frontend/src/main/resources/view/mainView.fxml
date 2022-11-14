@@ -57,6 +57,8 @@
                <MenuItem mnemonicParsing="false" onAction="#onClose" text="Close" />
            </Menu>
            <Menu mnemonicParsing="false" text="Edit">
+                <MenuItem mnemonicParsing="false" onAction="#onUndo" text="Undo" />
+                <MenuItem mnemonicParsing="false" onAction="#onRedo" text="Redo" />
                <MenuItem mnemonicParsing="false" onAction="#onRunPipeline" text="Run pipeline" />
            </Menu>
            <Menu mnemonicParsing="false" text="Help">

@@ -71,7 +71,7 @@ public class DataModel {
     /**
      * Observable list of the filter pipeline's tasks, used to update the pipeline view
      */
-    private final ObservableList<Task<ImageWrapper, FilterTaskResult>> actualFiltersPipeline;
+    private final ObservableTaskList<ImageWrapper, FilterTaskResult> actualFiltersPipeline;
 
     /**
      * Constructor that initializes the data model.
@@ -79,8 +79,12 @@ public class DataModel {
     public DataModel() {
         this.imageComponent = new ImageView();
         this.imageController = new ImageController();
+
+        // create filter pipeline + first snapshot
         this.filterPipeline = new FilterPipeline();
-        this.actualFiltersPipeline = FXCollections.observableArrayList();
+        this.filterPipeline.createSnapshot();
+
+        this.actualFiltersPipeline = new ObservableTaskList<>();
         this.actualFiltersList = FXCollections.observableArrayList();
     }
 
@@ -170,8 +174,11 @@ public class DataModel {
      * Clear the pipeline, called when uploading a new image
      */
     public void clearPipeline() {
-        filterPipeline.getTasks().forEach(actualFiltersPipeline::remove);
         filterPipeline.clear();
+        actualFiltersPipeline.clear();
+
+        // Create snapshot before clearing the pipeline
+        filterPipeline.createSnapshot();
     }
 
     /**
@@ -194,6 +201,9 @@ public class DataModel {
         filterPipeline.add(new FilterTask(filter));
         actualFiltersPipeline.clear();
         actualFiltersPipeline.addAll(filterPipeline.getTasks());
+
+        // Create snapshot after adding a filter
+        filterPipeline.createSnapshot();
     }
 
     /**
@@ -220,7 +230,7 @@ public class DataModel {
         actualFiltersPipeline.clear();
         actualFiltersPipeline.addAll(filterPipeline.getTasks());
 
-        //refresh pipeline
+        // refresh pipeline
         refreshPipeline();
     }
 
@@ -234,7 +244,7 @@ public class DataModel {
         actualFiltersPipeline.clear();
         actualFiltersPipeline.addAll(filterPipeline.getTasks());
 
-        //refresh pipeline
+        // refresh pipeline
         refreshPipeline();
     }
 
@@ -283,7 +293,7 @@ public class DataModel {
      * Get actual filter pipeline
      * @return actual filter pipeline
      */
-    public ObservableList<Task<ImageWrapper, FilterTaskResult>> getActualFiltersPipeline(){
+    public ObservableTaskList<ImageWrapper, FilterTaskResult> getActualFiltersPipeline(){
         return actualFiltersPipeline;
     }
 }

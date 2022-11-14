@@ -338,4 +338,20 @@ public class MainViewController {
     public void onExport(ActionEvent e) {
         onExportClicked.handle(e);
     }
+
+    public void onUndo(ActionEvent actionEvent) {
+        this.model.getFilterPipeline().undo();
+        this.model.getActualFiltersPipeline().undo();
+
+        // Re-run pipeline
+        onRunPipeline();
+    }
+
+    public void onRedo(ActionEvent actionEvent) {
+        this.model.getFilterPipeline().redo();
+        this.model.getActualFiltersPipeline().redo();
+
+        // Re-run pipeline
+        onRunPipeline();
+    }
 }

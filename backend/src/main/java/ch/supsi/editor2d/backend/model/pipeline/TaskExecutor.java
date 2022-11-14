@@ -2,6 +2,8 @@ package ch.supsi.editor2d.backend.model.pipeline;
 
 import ch.supsi.editor2d.backend.exception.IndexPipelineException;
 import ch.supsi.editor2d.backend.exception.PipelineException;
+import ch.supsi.editor2d.backend.model.memento.MementoCaretaker;
+import ch.supsi.editor2d.backend.model.memento.Originator;
 import ch.supsi.editor2d.backend.model.task.Task;
 import ch.supsi.editor2d.backend.model.task.TaskResult;
 
