@@ -1,12 +1,9 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
-import ch.supsi.editor2d.backend.exception.PipelineException;
-import ch.supsi.editor2d.backend.model.filter.SharpenFilter;
-import ch.supsi.editor2d.frontend.exception.ImageNotLoadedException;
+import ch.supsi.editor2d.backend.helper.FilterPipeline;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
-import ch.supsi.editor2d.backend.model.filter.FlipFilter;
-import ch.supsi.editor2d.backend.model.filter.GrayscaleFilter;
-import ch.supsi.editor2d.backend.model.filter.SepiaFilter;
+import ch.supsi.editor2d.frontend.gui.command.AddFilterCommand;
+import ch.supsi.editor2d.frontend.gui.command.FilterReceiver;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -151,10 +148,10 @@ public class Start extends Application {
         stage.setScene(new Scene(mainView));
         stage.show();
 
-        model.addFilterSelection(new FlipFilter());
-        model.addFilterSelection(new SepiaFilter());
-        model.addFilterSelection(new GrayscaleFilter());
-        model.addFilterSelection(new SharpenFilter());
+        //TODO: test
+        FilterReceiver filterReceiver = new FilterReceiver(new FilterPipeline()); //FIXME FilterPipeline singleton? dove instanziare la prima volta
+        AddFilterCommand filterCommand = new AddFilterCommand(filterReceiver);
+
     }
 
     public static void main(String[] args) {
