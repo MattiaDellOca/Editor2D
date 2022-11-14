@@ -1,11 +1,13 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
 /**
@@ -39,6 +41,7 @@ public class ImageViewController {
 
         // Refresh image on resize
         scrollPane.widthProperty().addListener((observable, oldValue, newValue) -> refresh());
+
 
         // By default, this component will show a placeholder pane with a button
         // that will load an image from a URL

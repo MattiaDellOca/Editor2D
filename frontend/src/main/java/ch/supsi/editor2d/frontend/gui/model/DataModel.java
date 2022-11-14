@@ -146,13 +146,9 @@ public class DataModel {
     /**
      * Run the pipeline starting from the ImageWrapper obtained as the last result of the previous execution
      * This method is called every time a filter is added to the pipeline
-     * @throws ImageNotLoadedException if no image has been loaded
      * @throws PipelineException if the pipeline is empty
      */
-    public ImageWrapper runPipeline() throws ImageNotLoadedException, PipelineException {
-        if(imageData == null)
-            throw new ImageNotLoadedException();
-
+    public ImageWrapper runPipeline() throws PipelineException {
         try {
             imageData = filterPipeline.run(imageInitialData).getResult();
         } catch(FilterApplyException e) {
@@ -171,6 +167,14 @@ public class DataModel {
     }
 
     /**
+     * Clear the pipeline, called when uploading a new image
+     */
+    public void clearPipeline() {
+        filterPipeline.getTasks().forEach(actualFiltersPipeline::remove);
+        filterPipeline.clear();
+    }
+
+    /**
      * Add a filter to the filter list
      * @param filter filter to add
      */
@@ -184,7 +188,9 @@ public class DataModel {
      * Send filter to backend and update actualFilterPipeline ListView on frontend
      * @param filter filter to be added
      */
-    public void addFilterPipeline(Filter filter){
+    public void addFilterPipeline(Filter filter) throws ImageNotLoadedException {
+        if(imageInitialData == null)
+            throw new ImageNotLoadedException();
         filterPipeline.add(new FilterTask(filter));
         actualFiltersPipeline.clear();
         actualFiltersPipeline.addAll(filterPipeline.getTasks());

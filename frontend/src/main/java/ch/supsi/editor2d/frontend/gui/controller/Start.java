@@ -70,6 +70,7 @@ public class Start extends Application {
         mainViewController.setOnFileOpen(e -> {
             // Load image + refresh view
             model.loadImage(e.getFile().getAbsolutePath());
+            model.clearPipeline();
             imageViewLoader.<ImageViewController>getController().refresh();
         });
 

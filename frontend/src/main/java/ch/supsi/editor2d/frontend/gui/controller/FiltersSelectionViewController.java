@@ -45,8 +45,14 @@ public class FiltersSelectionViewController {
             if(filter == null)
                 return;
 
-            // Add the selected filter to the pipeline
-            model.addFilterPipeline(filter);
+            try {
+                // Add the selected filter to the pipeline
+                model.addFilterPipeline(filter);
+            }  catch (ImageNotLoadedException e) {
+                System.err.println("Unable to apply filter: Please load an image before applying a filter.");
+                ErrorAlert.showError("Unable to apply filter: Please load an image before applying a filter.");
+                return;
+            }
 
             // Apply filters to the image
             ImageWrapper i;
@@ -57,9 +63,6 @@ public class FiltersSelectionViewController {
                 getOnImageUpdated().handle(new ImageUpdatedEvent(i, new Pane()));
             } catch (PipelineException e) {
                 throw new RuntimeException(e);
-            } catch (ImageNotLoadedException e) {
-                System.err.println("Unable to apply filter: Please load an image before applying a filter.");
-                ErrorAlert.showError("Unable to apply filter: Please load an image before applying a filter.");
             }
         });
     }
