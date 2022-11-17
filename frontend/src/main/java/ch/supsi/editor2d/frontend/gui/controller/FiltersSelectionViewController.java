@@ -5,6 +5,7 @@ import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.model.filter.*;
 import ch.supsi.editor2d.frontend.exception.ImageNotLoadedException;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
+import ch.supsi.editor2d.frontend.gui.command.AddFilterCommand;
 import ch.supsi.editor2d.frontend.gui.event.ImageUpdatedEvent;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.event.EventHandler;
@@ -23,6 +24,12 @@ public class FiltersSelectionViewController {
     public EventHandler<ImageUpdatedEvent> getOnImageUpdated() { return this.imageUpdated; }
 
     public void setOnImageUpdated(EventHandler<ImageUpdatedEvent> event) { this.imageUpdated = event; }
+
+    private AddFilterCommand addFilterCommand;
+
+    public void setAddFilterCommand(AddFilterCommand addFilterCommand) {
+        this.addFilterCommand = addFilterCommand;
+    }
 
     public void initModel(DataModel model) {
         // ensure model is only set once
@@ -47,6 +54,7 @@ public class FiltersSelectionViewController {
 
             // Add the selected filter to the pipeline
             model.addFilterPipeline(filter);
+
 
             // Apply filters to the image
             ImageWrapper i;

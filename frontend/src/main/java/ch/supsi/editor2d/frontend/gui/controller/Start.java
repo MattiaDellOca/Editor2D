@@ -23,6 +23,11 @@ public class Start extends Application {
     public void start(Stage stage) throws Exception {
         DataModel model = new DataModel();
 
+        FilterPipeline filterPipeline = new FilterPipeline();
+        //TODO: test
+        FilterReceiver filterReceiver = new FilterReceiver(filterPipeline);
+        AddFilterCommand addFilterCommand = new AddFilterCommand(filterReceiver);
+
         // Main View page
         FXMLLoader mainViewLoader = new FXMLLoader(getClass().getResource("/view/mainView.fxml"));
         Parent mainView = mainViewLoader.load();
@@ -111,13 +116,17 @@ public class Start extends Application {
         FiltersSelectionViewController filtersSelectionViewController = filterSelectionViewLoader.getController();
         filtersSelectionViewController.initModel(model);
 
+        //TODO: test
+        filtersSelectionViewController.setAddFilterCommand(addFilterCommand);
+
+
         // Set FilterSelectionView inside mainView
         AnchorPane filtersSelectionPane = mainViewController.getFiltersListPane();
         filtersSelectionPane.getChildren().setAll(filterSelectionView);
         AnchorPane.setBottomAnchor(filterSelectionView, 0.0);
-        AnchorPane.setTopAnchor(filterSelectionView,0.0);
-        AnchorPane.setLeftAnchor(filterSelectionView,0.0);
-        AnchorPane.setRightAnchor(filterSelectionView,0.0);
+        AnchorPane.setTopAnchor(filterSelectionView, 0.0);
+        AnchorPane.setLeftAnchor(filterSelectionView, 0.0);
+        AnchorPane.setRightAnchor(filterSelectionView, 0.0);
 
         // Image updated handling
         filtersSelectionViewController.setOnImageUpdated(e -> {
@@ -138,19 +147,16 @@ public class Start extends Application {
         // Set PipelineView inside mainView
         AnchorPane pipelinePane = mainViewController.getPipelinePane();
         pipelinePane.getChildren().setAll(pipelineView);
-        AnchorPane.setBottomAnchor(pipelineView,0.0);
-        AnchorPane.setTopAnchor(pipelineView,0.0);
-        AnchorPane.setLeftAnchor(pipelineView,0.0);
-        AnchorPane.setRightAnchor(pipelineView,0.0);
+        AnchorPane.setBottomAnchor(pipelineView, 0.0);
+        AnchorPane.setTopAnchor(pipelineView, 0.0);
+        AnchorPane.setLeftAnchor(pipelineView, 0.0);
+        AnchorPane.setRightAnchor(pipelineView, 0.0);
 
         // Set main window title + show page
         stage.setTitle("Editor2D");
         stage.setScene(new Scene(mainView));
         stage.show();
 
-        //TODO: test
-        FilterReceiver filterReceiver = new FilterReceiver(new FilterPipeline()); //FIXME FilterPipeline singleton? dove instanziare la prima volta
-        AddFilterCommand filterCommand = new AddFilterCommand(filterReceiver);
 
     }
 
