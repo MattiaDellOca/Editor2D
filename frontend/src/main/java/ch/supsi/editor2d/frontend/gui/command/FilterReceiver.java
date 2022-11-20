@@ -9,7 +9,7 @@ import ch.supsi.editor2d.backend.model.task.FilterTask;
  * Filter receiver
  * Business logic for add/remove filter to the pipeline
  */
-public class FilterReceiver {
+public class FilterReceiver implements Receiver {
     private final FilterPipeline filterPipeline;
 
     public FilterReceiver(FilterPipeline filterPipeline) {

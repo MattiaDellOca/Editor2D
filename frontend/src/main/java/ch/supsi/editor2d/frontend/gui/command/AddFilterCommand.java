@@ -1,14 +1,25 @@
 package ch.supsi.editor2d.frontend.gui.command;
 
-import ch.supsi.editor2d.backend.helper.FilterPipeline;
 import ch.supsi.editor2d.backend.model.filter.Filter;
 
-public class AddFilterCommand implements Command {
-    private final FilterReceiver receiver; //FIXME è giusto avere AddFilterReceiver o meglio un interfaccia Receiver?
+public class AddFilterCommand<T extends FilterReceiver> extends AbstractCommand<FilterReceiver> {
+
     private Filter filter;
 
-    public AddFilterCommand(FilterReceiver receiver) {
-        this.receiver = receiver;
+    protected AddFilterCommand(T receiver) {
+        super(receiver);
+    }
+
+    public static AddFilterCommand<FilterReceiver> create (FilterReceiver receiver){
+        if(receiver == null){
+            throw new IllegalArgumentException("receiver cannot be null!");
+        }
+
+        return new AddFilterCommand<>(receiver);
+    }
+
+    public Filter getFilter() {
+        return filter;
     }
 
     public void setFilter(Filter filter) {
@@ -16,7 +27,11 @@ public class AddFilterCommand implements Command {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws NoSuchFieldException {
+        if(receiver == null){
+            throw new NoSuchFieldException("receiver is null!");
+        }
+
         receiver.addFilter(filter);
     }
 }

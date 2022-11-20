@@ -1,6 +1,10 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
 import ch.supsi.editor2d.backend.helper.FilterPipeline;
+import ch.supsi.editor2d.backend.model.filter.FlipFilter;
+import ch.supsi.editor2d.backend.model.filter.GrayscaleFilter;
+import ch.supsi.editor2d.backend.model.filter.SepiaFilter;
+import ch.supsi.editor2d.backend.model.filter.SharpenFilter;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
 import ch.supsi.editor2d.frontend.gui.command.AddFilterCommand;
 import ch.supsi.editor2d.frontend.gui.command.FilterReceiver;
@@ -23,10 +27,19 @@ public class Start extends Application {
     public void start(Stage stage) throws Exception {
         DataModel model = new DataModel();
 
+        //TODO: domande
+        /*
+        - Dove vengono salavati gli oggetti e rispettivamento la loro logica? Es: FilterPipeline
+        - I vari controller frontend possono avere accesso ai controller backend? o solo il datamodel può?
+        - Nel command pattern come passo dei parametri al comando?
+
+         */
         FilterPipeline filterPipeline = new FilterPipeline();
         //TODO: test
         FilterReceiver filterReceiver = new FilterReceiver(filterPipeline);
-        AddFilterCommand addFilterCommand = new AddFilterCommand(filterReceiver);
+        AddFilterCommand<FilterReceiver> addFilterCommand = AddFilterCommand.create(filterReceiver);
+        addFilterCommand.setFilter(new FlipFilter());
+
 
         // Main View page
         FXMLLoader mainViewLoader = new FXMLLoader(getClass().getResource("/view/mainView.fxml"));
@@ -157,6 +170,11 @@ public class Start extends Application {
         stage.setScene(new Scene(mainView));
         stage.show();
 
+        //Filter selection
+        model.addFilterSelection(new FlipFilter());
+        model.addFilterSelection(new SepiaFilter());
+        model.addFilterSelection(new GrayscaleFilter());
+        model.addFilterSelection(new SharpenFilter());
 
     }
 
