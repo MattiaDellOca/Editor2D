@@ -65,5 +65,6 @@ public class FiltersSelectionViewController {
                 throw new RuntimeException(e);
             }
         });
+
     }
 }

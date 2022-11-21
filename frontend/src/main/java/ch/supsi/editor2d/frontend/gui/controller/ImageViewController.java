@@ -41,6 +41,8 @@ public class ImageViewController {
 
         // Refresh image on resize
         scrollPane.widthProperty().addListener((observable, oldValue, newValue) -> refresh());
+        scrollPane.setFitToWidth(true);
+        scrollPane.setFitToHeight(true);
 
 
         // By default, this component will show a placeholder pane with a button
