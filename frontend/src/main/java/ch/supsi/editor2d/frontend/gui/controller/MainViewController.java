@@ -2,6 +2,7 @@ package ch.supsi.editor2d.frontend.gui.controller;
 
 import ch.supsi.editor2d.backend.exception.PipelineException;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
+import ch.supsi.editor2d.frontend.gui.command.RunPipelineCommand;
 import ch.supsi.editor2d.frontend.gui.event.FileOpenEvent;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.event.ActionEvent;
@@ -10,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -25,6 +27,11 @@ import java.util.Collection;
  * Main view controller that handles the main view logic.
  */
 public class MainViewController {
+    /**
+     *
+     */
+    public MenuItem runPipelineMenuItem;
+
 
     /**
      * List of supported file extensions
@@ -94,6 +101,7 @@ public class MainViewController {
      * File chooser reference
      */
     private FileChooser fileChooser;
+
 
     /**
      * Initialize the model reference and set all the event handlers
@@ -292,21 +300,6 @@ public class MainViewController {
      */
     public void onAboutMenu(ActionEvent e) {
         onAboutClicked.handle(e);
-    }
-
-    /**
-     * Handle the run pipeline action
-     */
-    public void onRunPipeline() {
-        try {
-            // Run pipeline again
-            model.refreshPipeline();
-            // Then, refresh the image
-            onPipelineFinishedRunning.handle(new ActionEvent());
-        } catch (PipelineException e) {
-            System.err.println("Unable to refresh pipeline: " + e.getMessage());
-            ErrorAlert.showError("Unable to refresh pipeline: " + e.getMessage());
-        }
     }
 
     /**

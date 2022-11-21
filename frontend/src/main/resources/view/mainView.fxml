@@ -57,7 +57,7 @@
                <MenuItem mnemonicParsing="false" onAction="#onClose" text="Close" />
            </Menu>
            <Menu mnemonicParsing="false" text="Edit">
-               <MenuItem mnemonicParsing="false" onAction="#onRunPipeline" text="Run pipeline" />
+               <MenuItem fx:id="runPipelineMenuItem" mnemonicParsing="false" text="Run pipeline" />
            </Menu>
            <Menu mnemonicParsing="false" text="Help">
                <MenuItem mnemonicParsing="false" onAction="#onAboutMenu" text="About" />

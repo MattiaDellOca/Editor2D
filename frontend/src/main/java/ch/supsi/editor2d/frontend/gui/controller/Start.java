@@ -7,8 +7,12 @@ import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
 import ch.supsi.editor2d.backend.model.filter.FlipFilter;
 import ch.supsi.editor2d.backend.model.filter.GrayscaleFilter;
 import ch.supsi.editor2d.backend.model.filter.SepiaFilter;
+import ch.supsi.editor2d.frontend.gui.command.RunPipelineCommand;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
+import ch.supsi.editor2d.frontend.gui.receiver.RunPipelineReceiver;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,10 +30,20 @@ public class Start extends Application {
     public void start(Stage stage) throws Exception {
         DataModel model = new DataModel();
 
+        //Receiver
+        RunPipelineReceiver runPipelineReceiver = RunPipelineReceiver.create(model);
+
+        //Commands
+        RunPipelineCommand runPipelineCommand = RunPipelineCommand.create(runPipelineReceiver);
+
         // Main View page
         FXMLLoader mainViewLoader = new FXMLLoader(getClass().getResource("/view/mainView.fxml"));
         Parent mainView = mainViewLoader.load();
         MainViewController mainViewController = mainViewLoader.getController();
+        // Set commands
+        mainViewController.runPipelineMenuItem.setOnAction(actionEvent -> runPipelineCommand.execute());
+
+
         mainViewController.init(model, SUPPORTED_FORMATS);
 
         // Image View page

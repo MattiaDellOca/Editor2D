@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * Data model that holds the application data and login throughout the application.
  */
-public class DataModel {
+public class DataModel implements RunPipelineHandler {
 
     /**
      * Interface imageController
@@ -146,16 +146,15 @@ public class DataModel {
     /**
      * Run the pipeline starting from the ImageWrapper obtained as the last result of the previous execution
      * This method is called every time a filter is added to the pipeline
-     * @throws PipelineException if the pipeline is empty
      */
-    public ImageWrapper runPipeline() throws PipelineException {
+    @Override
+    public void runPipeline()  {
         try {
             imageData = filterPipeline.run(imageInitialData).getResult();
-        } catch(FilterApplyException e) {
+        } catch( PipelineException e) {
             System.err.println("Unable to run pipeline: " + e.getMessage());
             ErrorAlert.showError("Unable to run pipeline: " + e.getMessage());
         }
-        return imageData;
     }
 
     /**

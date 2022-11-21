@@ -51,18 +51,6 @@ public class FiltersSelectionViewController {
             }  catch (ImageNotLoadedException e) {
                 System.err.println("Unable to apply filter: Please load an image before applying a filter.");
                 ErrorAlert.showError("Unable to apply filter: Please load an image before applying a filter.");
-                return;
-            }
-
-            // Apply filters to the image
-            ImageWrapper i;
-            try {
-                i = model.runPipeline();
-
-                // Create an event to notify that the image has changed
-                getOnImageUpdated().handle(new ImageUpdatedEvent(i, new Pane()));
-            } catch (PipelineException e) {
-                throw new RuntimeException(e);
             }
         });
 
