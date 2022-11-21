@@ -27,7 +27,7 @@ public class ImageViewController extends AbstractFXMLController {
 
     // Main component, contains the image and handles visualizing it in sub-images when it's too big
     @FXML
-    private ScrollPane scrollPane;
+    private AnchorPane anchorPane;
 
     // Component responsible for visualizing an Image
     @FXML
@@ -42,12 +42,6 @@ public class ImageViewController extends AbstractFXMLController {
             throw new IllegalStateException("Model can only be initialized once");
         }
 
-        // Refresh image on resize
-        scrollPane.widthProperty().addListener((observable, oldValue, newValue) -> refresh());
-        scrollPane.setFitToWidth(true);
-        scrollPane.setFitToHeight(true);
-
-
         // By default, this component will show a placeholder pane with a button
         // that will load an image from a URL
         this.model = model;
@@ -58,7 +52,6 @@ public class ImageViewController extends AbstractFXMLController {
      */
     public void refresh(){
         // Set container size
-        scrollPane.setBackground(new Background(new BackgroundFill(Color.BLUE, null, null)));
         imageView.setImage(model.getImageComponent().getImage());
         imageView.setPreserveRatio(true);
         imageView.setSmooth(false);

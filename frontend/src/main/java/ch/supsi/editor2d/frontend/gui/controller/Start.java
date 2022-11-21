@@ -53,6 +53,7 @@ public class Start extends Application {
         Parent imageView = imageViewLoader.load();
         imageViewLoader.<ImageViewController>getController().initModel(model);
 
+
         // About view page
         FXMLLoader aboutLoader = new FXMLLoader(getClass().getResource("/view/aboutView.fxml"));
         Stage aboutStage = new Stage();
@@ -80,7 +81,12 @@ public class Start extends Application {
         });
 
         // Set imageView.fxml inside mainView.fxml
-        mainViewController.getImagePane().getChildren().add(imageView);
+        AnchorPane imagePane = mainViewController.getImagePane();
+        imagePane.getChildren().add(imageView);
+        AnchorPane.setBottomAnchor(imageView, 0.0);
+        AnchorPane.setTopAnchor(imageView, 0.0);
+        AnchorPane.setLeftAnchor(imageView, 0.0);
+        AnchorPane.setRightAnchor(imageView, 0.0);
 
         // File visualization handling
         mainViewController.setOnFileOpen(e -> {

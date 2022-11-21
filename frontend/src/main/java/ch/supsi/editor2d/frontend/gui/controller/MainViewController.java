@@ -95,7 +95,7 @@ public class MainViewController {
      * Image pane reference
      */
     @FXML
-    private Pane imagePane;
+    private AnchorPane imagePane;
 
     /**
      * File chooser reference
@@ -265,7 +265,7 @@ public class MainViewController {
      *
      * @return Image pane
      */
-    public Pane getImagePane() {
+    public AnchorPane getImagePane() {
         return imagePane;
     }
 
