@@ -15,9 +15,11 @@ import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.backend.model.task.Task;
 import ch.supsi.editor2d.frontend.exception.ImageNotLoadedException;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
+import ch.supsi.editor2d.frontend.gui.event.ImageUpdatedEvent;
 import ch.supsi.editor2d.frontend.gui.event.util.FileExport;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -30,7 +32,7 @@ import java.util.List;
 /**
  * Data model that holds the application data and login throughout the application.
  */
-public class DataModel implements RunPipelineHandler {
+public class DataModel extends Observable implements RunPipelineHandler {
 
     /**
      * Interface imageController
@@ -151,6 +153,9 @@ public class DataModel implements RunPipelineHandler {
     public void runPipeline()  {
         try {
             imageData = filterPipeline.run(imageInitialData).getResult();
+            drawImage(imageData);
+            //notify that the image has been updated
+            getPropertyChangeSupport().firePropertyChange(new ImageUpdatedEvent(this));
         } catch( PipelineException e) {
             System.err.println("Unable to run pipeline: " + e.getMessage());
             ErrorAlert.showError("Unable to run pipeline: " + e.getMessage());

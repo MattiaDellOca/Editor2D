@@ -18,11 +18,11 @@ public class FiltersSelectionViewController {
 
     private DataModel model;
 
-    private EventHandler<ImageUpdatedEvent> imageUpdated = event -> {};
+    /*private EventHandler<ImageUpdatedEvent> imageUpdated = event -> {};
 
     public EventHandler<ImageUpdatedEvent> getOnImageUpdated() { return this.imageUpdated; }
 
-    public void setOnImageUpdated(EventHandler<ImageUpdatedEvent> event) { this.imageUpdated = event; }
+    public void setOnImageUpdated(EventHandler<ImageUpdatedEvent> event) { this.imageUpdated = event; }*/
 
     public void initModel(DataModel model) {
         // ensure model is only set once

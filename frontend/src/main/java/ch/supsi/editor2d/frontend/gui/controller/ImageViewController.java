@@ -1,5 +1,6 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
+import ch.supsi.editor2d.frontend.gui.event.ImageUpdatedEvent;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -10,13 +11,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import java.beans.PropertyChangeEvent;
+
 /**
  * Controller of the component entitled to show the image.
  * The main component is a ScrollPane containing an ImageView.
  * When zooming in or out, the dimension of the ImageView are changed: when the ImageView becomes bigger than the
  * ScrollPane, the latter creates a viewport (a "sub-image") of the ImageView
  */
-public class ImageViewController {
+public class ImageViewController extends AbstractFXMLController {
 
     private static final double ZOOM_FACTOR = 1.1;
 
@@ -73,6 +76,13 @@ public class ImageViewController {
         } else {
             imageView.setFitWidth(imageView.getFitWidth() / ZOOM_FACTOR);
             imageView.setFitHeight(imageView.getFitHeight() / ZOOM_FACTOR);
+        }
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent event) {
+        if (event instanceof ImageUpdatedEvent) {
+            refresh();
         }
     }
 }

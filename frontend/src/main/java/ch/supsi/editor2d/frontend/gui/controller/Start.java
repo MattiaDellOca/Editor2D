@@ -28,6 +28,8 @@ public class Start extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+
+        //Model
         DataModel model = new DataModel();
 
         //Receiver
@@ -133,15 +135,16 @@ public class Start extends Application {
         AnchorPane filtersSelectionPane = mainViewController.getFiltersListPane();
         filtersSelectionPane.getChildren().setAll(filterSelectionView);
         AnchorPane.setBottomAnchor(filterSelectionView, 0.0);
-        AnchorPane.setTopAnchor(filterSelectionView,0.0);
-        AnchorPane.setLeftAnchor(filterSelectionView,0.0);
-        AnchorPane.setRightAnchor(filterSelectionView,0.0);
+        AnchorPane.setTopAnchor(filterSelectionView, 0.0);
+        AnchorPane.setLeftAnchor(filterSelectionView, 0.0);
+        AnchorPane.setRightAnchor(filterSelectionView, 0.0);
 
+        /*
         // Image updated handling
         filtersSelectionViewController.setOnImageUpdated(e -> {
             model.setImageComponent(e.getImage());
             imageViewLoader.<ImageViewController>getController().refresh();
-        });
+        });*/
 
         //Pipeline View page
         FXMLLoader pipelineViewLoader = new FXMLLoader(getClass().getResource("/view/pipelineView.fxml"));
@@ -156,10 +159,10 @@ public class Start extends Application {
         // Set PipelineView inside mainView
         AnchorPane pipelinePane = mainViewController.getPipelinePane();
         pipelinePane.getChildren().setAll(pipelineView);
-        AnchorPane.setBottomAnchor(pipelineView,0.0);
-        AnchorPane.setTopAnchor(pipelineView,0.0);
-        AnchorPane.setLeftAnchor(pipelineView,0.0);
-        AnchorPane.setRightAnchor(pipelineView,0.0);
+        AnchorPane.setBottomAnchor(pipelineView, 0.0);
+        AnchorPane.setTopAnchor(pipelineView, 0.0);
+        AnchorPane.setLeftAnchor(pipelineView, 0.0);
+        AnchorPane.setRightAnchor(pipelineView, 0.0);
 
         // Set main window title + show page
         stage.setTitle("Editor2D");
@@ -170,6 +173,9 @@ public class Start extends Application {
         model.addFilterSelection(new SepiaFilter());
         model.addFilterSelection(new GrayscaleFilter());
         model.addFilterSelection(new SharpenFilter());
+
+        // observers
+        model.addPropertyChangeListener(imageViewLoader.getController());
     }
 
     public static void main(String[] args) {
