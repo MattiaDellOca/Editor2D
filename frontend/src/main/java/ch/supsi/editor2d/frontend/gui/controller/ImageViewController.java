@@ -27,7 +27,7 @@ public class ImageViewController extends AbstractFXMLController {
 
     // Main component, contains the image and handles visualizing it in sub-images when it's too big
     @FXML
-    private AnchorPane anchorPane;
+    private ScrollPane scrollPane;
 
     // Component responsible for visualizing an Image
     @FXML

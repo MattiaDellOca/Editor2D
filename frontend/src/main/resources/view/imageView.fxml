@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 
 
-<AnchorPane fx:id="anchorPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.supsi.editor2d.frontend.gui.controller.ImageViewController">
-   <children>
+<ScrollPane fx:id="scrollPane" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.supsi.editor2d.frontend.gui.controller.ImageViewController">
+   <content>
       <ImageView fx:id="imageView" fitHeight="390.0" fitWidth="590.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" smooth="false" />
-   </children>
-</AnchorPane>
+   </content>
+</ScrollPane>
