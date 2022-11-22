@@ -146,8 +146,8 @@ public class DataModel extends Observable implements RunPipelineHandler {
     }
 
     /**
-     * Run the pipeline starting from the ImageWrapper obtained as the last result of the previous execution
-     * This method is called every time a filter is added to the pipeline
+     * Run the whole pipeline.
+     * This method is called when the user press the button for running the pipeline
      */
     @Override
     public void runPipeline()  {
