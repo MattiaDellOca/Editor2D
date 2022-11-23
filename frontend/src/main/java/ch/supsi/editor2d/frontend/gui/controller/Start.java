@@ -1,18 +1,14 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
-import ch.supsi.editor2d.backend.exception.PipelineException;
 import ch.supsi.editor2d.backend.model.filter.SharpenFilter;
-import ch.supsi.editor2d.frontend.exception.ImageNotLoadedException;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
 import ch.supsi.editor2d.backend.model.filter.FlipFilter;
 import ch.supsi.editor2d.backend.model.filter.GrayscaleFilter;
 import ch.supsi.editor2d.backend.model.filter.SepiaFilter;
-import ch.supsi.editor2d.frontend.gui.command.RunPipelineCommand;
+import ch.supsi.editor2d.frontend.gui.command.*;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
-import ch.supsi.editor2d.frontend.gui.receiver.RunPipelineReceiver;
+import ch.supsi.editor2d.frontend.gui.receiver.*;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -34,31 +30,44 @@ public class Start extends Application {
 
         //Receiver
         RunPipelineReceiver runPipelineReceiver = RunPipelineReceiver.create(model);
+        ExitReceiver exitReceiver = ExitReceiver.create(model);
+        AboutReceiver aboutReceiver = AboutReceiver.create(model);
+        ZoomInReceiver zoomInReceiver = ZoomInReceiver.create(model);
+        ZoomOutReceiver zoomOutReceiver = ZoomOutReceiver.create(model);
 
         //Commands
         RunPipelineCommand runPipelineCommand = RunPipelineCommand.create(runPipelineReceiver);
-
-        // Main View page
-        FXMLLoader mainViewLoader = new FXMLLoader(getClass().getResource("/view/mainView.fxml"));
-        Parent mainView = mainViewLoader.load();
-        MainViewController mainViewController = mainViewLoader.getController();
-        // Set commands
-        mainViewController.runPipelineMenuItem.setOnAction(actionEvent -> runPipelineCommand.execute());
-
-
-        mainViewController.init(model, SUPPORTED_FORMATS);
+        ExitCommand exitCommand = ExitCommand.create(exitReceiver);
+        AboutCommand aboutCommand = AboutCommand.create(aboutReceiver);
+        ZoomInCommand zoomInCommand = ZoomInCommand.create(zoomInReceiver);
+        ZoomOutCommand zoomOutCommand = ZoomOutCommand.create(zoomOutReceiver);
 
         // Image View page
         FXMLLoader imageViewLoader = new FXMLLoader(getClass().getResource("/view/imageView.fxml"));
         Parent imageView = imageViewLoader.load();
         imageViewLoader.<ImageViewController>getController().initModel(model);
 
-
         // About view page
         FXMLLoader aboutLoader = new FXMLLoader(getClass().getResource("/view/aboutView.fxml"));
         Stage aboutStage = new Stage();
         aboutStage.setTitle("About Editor2D");
         aboutStage.setScene(new Scene(aboutLoader.load()));
+
+        // Main View page
+        FXMLLoader mainViewLoader = new FXMLLoader(getClass().getResource("/view/mainView.fxml"));
+        Parent mainView = mainViewLoader.load();
+        MainViewController mainViewController = mainViewLoader.getController();
+
+        // Set commands
+        mainViewController.runPipelineMenuItem.setOnAction(actionEvent -> runPipelineCommand.execute());
+        mainViewController.exitMenuItem.setOnAction(actionEvent -> exitCommand.execute(stage));
+        mainViewController.aboutMenuItem.setOnAction(actionEvent -> aboutCommand.execute(aboutStage));
+        mainViewController.zoomInButton.setOnAction(actionEvent ->
+                zoomInCommand.execute(imageViewLoader.<ImageViewController>getController().getImageView()));
+        mainViewController.zoomOutButton.setOnAction(actionEvent ->
+                zoomOutCommand.execute(imageViewLoader.<ImageViewController>getController().getImageView()));
+
+        mainViewController.init(model, SUPPORTED_FORMATS);
 
         // Export stage page
         FXMLLoader exportLoader = new FXMLLoader(getClass().getResource("/view/exportView.fxml"));
@@ -72,12 +81,6 @@ public class Start extends Application {
             exportStage.close();
             // Start exporting image
             model.exportImage(event.getExport());
-        });
-
-        // Save image refresh callback function
-        mainViewController.setOnPipelineFinishedRunning((ignored) -> {
-            // Pipeline has finished running! We can refresh the image now!
-            imageViewLoader.<ImageViewController>getController().refresh();
         });
 
         // Set imageView.fxml inside mainView.fxml
@@ -96,12 +99,6 @@ public class Start extends Application {
             imageViewLoader.<ImageViewController>getController().refresh();
         });
 
-        // About view handling
-        mainViewController.setOnAboutClicked(e -> {
-            // Show about stage
-            aboutStage.show();
-        });
-
         // Export handling
         mainViewController.setOnExportClicked(e -> {
             // Check if image is load
@@ -112,24 +109,6 @@ public class Start extends Application {
                 ErrorAlert.showError("Please load an image before exporting it.");
             }
         });
-
-        mainViewController.setOnClose(ignored -> {
-            // Close the application
-            stage.close();
-
-            // Close all the other stages
-            aboutStage.close();
-            exportStage.close();
-
-            // Exit the application
-            System.exit(0);
-        });
-
-        // Handle zoom out action
-        mainViewController.setOnZoomOutClicked(e -> imageViewLoader.<ImageViewController>getController().setZoom(false));
-
-        // Handle zoom in action
-        mainViewController.setOnZoomInClicked(e -> imageViewLoader.<ImageViewController>getController().setZoom(true));
 
         // Filter selection View page
         FXMLLoader filterSelectionViewLoader = new FXMLLoader(getClass().getResource("/view/filtersListView.fxml"));

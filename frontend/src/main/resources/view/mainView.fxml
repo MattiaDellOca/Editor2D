@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.supsi.editor2d.frontend.gui.controller.MainViewController">
+<BorderPane prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.supsi.editor2d.frontend.gui.controller.MainViewController">
    <center>
       <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
           <top>
@@ -38,8 +38,8 @@
                </center>
                <bottom>
                   <HBox style="-fx-spacing: 10px; -fx-padding: 5px;" BorderPane.alignment="BOTTOM_RIGHT">
-                    <Button mnemonicParsing="false" onAction="#zoomIn" text="+" />
-                    <Button mnemonicParsing="false" onAction="#zoomOut" text="-" />
+                    <Button fx:id="zoomInButton" mnemonicParsing="false" text="+" />
+                    <Button fx:id="zoomOutButton" mnemonicParsing="false" text="-" />
                   </HBox>
                </bottom>
             </BorderPane>
@@ -53,14 +53,14 @@
        <MenuBar BorderPane.alignment="CENTER">
            <Menu mnemonicParsing="false" text="File">
                <MenuItem mnemonicParsing="false" onAction="#onOpen" text="Open" />
-               <MenuItem mnemonicParsing="false" text="Export image" onAction="#onExport"/>
-               <MenuItem mnemonicParsing="false" onAction="#onClose" text="Close" />
+               <MenuItem mnemonicParsing="false" onAction="#onExport" text="Export image" />
+               <MenuItem fx:id="exitMenuItem" mnemonicParsing="false" text="Close" />
            </Menu>
            <Menu mnemonicParsing="false" text="Edit">
                <MenuItem fx:id="runPipelineMenuItem" mnemonicParsing="false" text="Run pipeline" />
            </Menu>
            <Menu mnemonicParsing="false" text="Help">
-               <MenuItem mnemonicParsing="false" onAction="#onAboutMenu" text="About" />
+               <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" text="About" />
            </Menu>
        </MenuBar>
    </top>

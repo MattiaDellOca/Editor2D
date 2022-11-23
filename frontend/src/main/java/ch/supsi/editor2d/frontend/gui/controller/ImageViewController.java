@@ -2,14 +2,9 @@ package ch.supsi.editor2d.frontend.gui.controller;
 
 import ch.supsi.editor2d.frontend.gui.event.ImageUpdatedEvent;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.geometry.Bounds;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 
 import java.beans.PropertyChangeEvent;
 
@@ -21,8 +16,6 @@ import java.beans.PropertyChangeEvent;
  */
 public class ImageViewController extends AbstractFXMLController {
 
-    private static final double ZOOM_FACTOR = 1.1;
-
     private DataModel model;
 
     // Main component, contains the image and handles visualizing it in sub-images when it's too big
@@ -32,6 +25,10 @@ public class ImageViewController extends AbstractFXMLController {
     // Component responsible for visualizing an Image
     @FXML
     private ImageView imageView;
+
+    public ImageView getImageView() {
+        return imageView;
+    }
 
     /**
      * Initialize the components
@@ -56,20 +53,6 @@ public class ImageViewController extends AbstractFXMLController {
         imageView.setPreserveRatio(true);
         imageView.setSmooth(false);
         imageView.setCache(false);
-    }
-
-    /**
-     * Perform the zoom in/out actions modifying the width and height of the imageView
-     * @param isIn if true, performs zoom in action; otherwise performs zoom out
-     */
-    public void setZoom(boolean isIn) {
-        if(isIn) {
-            imageView.setFitWidth(imageView.getFitWidth() * ZOOM_FACTOR);
-            imageView.setFitHeight(imageView.getFitHeight() * ZOOM_FACTOR);
-        } else {
-            imageView.setFitWidth(imageView.getFitWidth() / ZOOM_FACTOR);
-            imageView.setFitHeight(imageView.getFitHeight() / ZOOM_FACTOR);
-        }
     }
 
     @Override

@@ -1,23 +1,15 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
-import ch.supsi.editor2d.backend.exception.PipelineException;
-import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
-import ch.supsi.editor2d.frontend.gui.command.RunPipelineCommand;
 import ch.supsi.editor2d.frontend.gui.event.FileOpenEvent;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,6 +23,12 @@ public class MainViewController {
      *
      */
     public MenuItem runPipelineMenuItem;
+    public MenuItem exitMenuItem;
+    public MenuItem aboutMenuItem;
+
+    public Button zoomInButton;
+    public Button zoomOutButton;
+
 
 
     /**
@@ -62,14 +60,6 @@ public class MainViewController {
     };
 
     /**
-     * About view action event handler
-     */
-    private EventHandler<ActionEvent> onAboutClicked = event -> {
-    };
-
-    private EventHandler<ActionEvent> onClose = event -> {};
-
-    /**
      * Export file action event handler
      */
     private EventHandler<ActionEvent> onExportClicked = event -> {
@@ -79,17 +69,6 @@ public class MainViewController {
      * Refresh image callback
      */
     private EventHandler<ActionEvent> onPipelineFinishedRunning = event -> {};
-
-
-    /**
-     * Zoom out callback
-     */
-    private EventHandler<ActionEvent> onZoomOutClicked = event -> {};
-
-    /**
-     * Zoom in callback
-     */
-    private EventHandler<ActionEvent> onZoomInClicked = event -> {};
 
     /**
      * Image pane reference
@@ -129,10 +108,6 @@ public class MainViewController {
     }
 
     private void initEventHandlers() throws IOException {
-        // Load about page
-        FXMLLoader aboutLoader = new FXMLLoader(getClass().getResource("/view/aboutView.fxml"));
-        Stage aboutStage = new Stage();
-        aboutStage.setScene(new Scene(aboutLoader.load()));
 
         // Load file chooser
         fileChooser = new FileChooser();
@@ -213,14 +188,6 @@ public class MainViewController {
     }
 
     /**
-     * Set the about clicked event handler
-     * @param event About clicked event
-     */
-    public void setOnAboutClicked(EventHandler<ActionEvent> event) {
-        this.onAboutClicked = event;
-    }
-
-    /**
      * Set the export clicked event handler
      * @param event Export clicked event
      */
@@ -228,37 +195,6 @@ public class MainViewController {
         this.onExportClicked = event;
     }
 
-    /**
-     * Set the pipeline finished running event handler
-     * @param event Pipeline finished running event handler
-     */
-    public void setOnPipelineFinishedRunning(EventHandler<ActionEvent> event) {
-        this.onPipelineFinishedRunning = event;
-    }
-
-    /**
-     * Set the zoom in clicked event handler
-     * @param event ZoomIn clicked event
-     */
-    public void setOnZoomOutClicked(EventHandler<ActionEvent> event) {
-        this.onZoomOutClicked = event;
-    }
-
-    /**
-     * Set the zoom out clicked event handler
-     * @param event ZoomOut clicked event
-     */
-    public void setOnZoomInClicked(EventHandler<ActionEvent> event) {
-        this.onZoomInClicked = event;
-    }
-
-    /**
-     * Set the close event handler
-     * @param event Close event handler
-     */
-    public void setOnClose(EventHandler<ActionEvent> event) {
-        this.onClose = event;
-    }
 
     /**
      * Get the image pane reference
@@ -281,26 +217,6 @@ public class MainViewController {
         return pipelinePane;
     }
 
-    /**
-     * Handle the zoom out action
-     */
-    public void zoomOut(ActionEvent e) {
-        onZoomOutClicked.handle(e);
-    }
-
-    /**
-     * Handle the zoom in action
-     */
-    public void zoomIn(ActionEvent e) {
-        onZoomInClicked.handle(e);
-    }
-
-    /**
-     * Handle the about menu action
-     */
-    public void onAboutMenu(ActionEvent e) {
-        onAboutClicked.handle(e);
-    }
 
     /**
      * Handle the open menu action
@@ -316,13 +232,6 @@ public class MainViewController {
             // Then, refresh the image
             onPipelineFinishedRunning.handle(new ActionEvent());
         }
-    }
-
-    /**
-     * Handle the close menu action
-     */
-    public void onClose() {
-        onClose.handle(new ActionEvent());
     }
 
     /**

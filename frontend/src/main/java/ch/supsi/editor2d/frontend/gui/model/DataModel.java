@@ -4,7 +4,6 @@ package ch.supsi.editor2d.frontend.gui.model;
 import ch.supsi.editor2d.backend.controller.ImageController;
 import ch.supsi.editor2d.backend.exception.FileReadingException;
 import ch.supsi.editor2d.backend.exception.FileWritingException;
-import ch.supsi.editor2d.backend.exception.FilterApplyException;
 import ch.supsi.editor2d.backend.exception.PipelineException;
 import ch.supsi.editor2d.backend.helper.FilterPipeline;
 import ch.supsi.editor2d.backend.model.ColorWrapper;
@@ -19,11 +18,11 @@ import ch.supsi.editor2d.frontend.gui.event.ImageUpdatedEvent;
 import ch.supsi.editor2d.frontend.gui.event.util.FileExport;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,11 @@ import java.util.List;
 /**
  * Data model that holds the application data and login throughout the application.
  */
-public class DataModel extends Observable implements RunPipelineHandler {
+public class DataModel extends Observable implements RunPipelineHandler, ExitHandler, AboutHandler,
+        ZoomInHandler, ZoomOutHandler {
+
+    // Value used for zoom in/out functions
+    private static final double ZOOM_FACTOR = 1.1;
 
     /**
      * Interface imageController
@@ -160,6 +163,52 @@ public class DataModel extends Observable implements RunPipelineHandler {
             System.err.println("Unable to run pipeline: " + e.getMessage());
             ErrorAlert.showError("Unable to run pipeline: " + e.getMessage());
         }
+    }
+
+    /**
+     * Handle the closure of the application
+     * @param stage main stage
+     */
+    @Override
+    public void exit(Stage stage) {
+        // TODO: 23/11/2022 check if there are unsaved progress using mediator pattern
+        stage.close();
+        System.exit(0);
+    }
+
+    /**
+     * Show the "about stage"
+     * @param aboutStage stage to be shown
+     */
+    @Override
+    public void about(Stage aboutStage) {
+        aboutStage.show();
+    }
+
+    /**
+     * Zoom in on the given image view by a defined zoom factor
+     * @param imageView image to zoom
+     */
+    @Override
+    public void zoomIn(ImageView imageView) {
+        imageView.setFitWidth(imageView.getFitWidth() * ZOOM_FACTOR);
+        imageView.setFitHeight(imageView.getFitHeight() * ZOOM_FACTOR);
+
+        //notify that the image has been updated
+        getPropertyChangeSupport().firePropertyChange(new ImageUpdatedEvent(this));
+    }
+
+    /**
+     * Zoom out on the given image view by a defined zoom factor
+     * @param imageView image to zoom
+     */
+    @Override
+    public void zoomOut(ImageView imageView) {
+        imageView.setFitWidth(imageView.getFitWidth() / ZOOM_FACTOR);
+        imageView.setFitHeight(imageView.getFitHeight() / ZOOM_FACTOR);
+
+        //notify that the image has been updated
+        getPropertyChangeSupport().firePropertyChange(new ImageUpdatedEvent(this));
     }
 
     /**
