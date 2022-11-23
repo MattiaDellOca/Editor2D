@@ -3,8 +3,8 @@ package ch.supsi.editor2d.frontend.gui.controller;
 import ch.supsi.editor2d.frontend.gui.event.ImageUpdatedEvent;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.fxml.FXML;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
 
 import java.beans.PropertyChangeEvent;
 
@@ -38,6 +38,9 @@ public class ImageViewController extends AbstractFXMLController {
         if (this.model != null) {
             throw new IllegalStateException("Model can only be initialized once");
         }
+
+        // Set scroll pane properties
+        scrollPane.setPannable(true);
 
         // By default, this component will show a placeholder pane with a button
         // that will load an image from a URL
