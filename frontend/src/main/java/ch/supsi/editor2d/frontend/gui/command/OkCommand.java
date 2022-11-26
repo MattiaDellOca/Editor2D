@@ -17,11 +17,7 @@ public class OkCommand<T extends OkHandler> extends AbstractCommand<OkHandler> i
     }
 
     @Override
-    public void execute() throws NoSuchFieldException {
-        if(handler == null) {
-            throw new NoSuchFieldException("command handler is null!");
-        }
-
+    public void execute() {
         handler.ok();
     }
 }

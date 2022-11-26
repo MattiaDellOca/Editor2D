@@ -17,11 +17,7 @@ public class CancelCommand<T extends CancelHandler> extends AbstractCommand<Canc
     }
 
     @Override
-    public void execute() throws NoSuchFieldException {
-        if (handler == null) {
-            throw new NoSuchFieldException("command handler is null!");
-        }
-
+    public void execute() {
         handler.cancel();
     }
 

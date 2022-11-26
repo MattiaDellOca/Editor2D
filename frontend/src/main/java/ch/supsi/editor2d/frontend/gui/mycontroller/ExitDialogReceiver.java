@@ -42,24 +42,12 @@ public class ExitDialogReceiver<T extends Observable> extends AbstractController
 
     public void setCancelCommand(CancelCommand<CancelHandler> command) {
         Button cancelButton = (Button) exitStage.getScene().lookup("#cancelBtn");
-        cancelButton.setOnAction(actionEvent -> {
-            try {
-                command.execute();
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            }
-        });
+        cancelButton.setOnAction(actionEvent -> command.execute());
     }
 
-    public void setOkCommand(OkCommand<OkHandler> ok) {
+    public void setOkCommand(OkCommand<OkHandler> command) {
         Button okButton = (Button) exitStage.getScene().lookup("#okBtn");
-        okButton.setOnAction(actionEvent -> {
-            try {
-                ok.execute();
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            }
-        });
+        okButton.setOnAction(actionEvent -> command.execute());
     }
 
     @Override

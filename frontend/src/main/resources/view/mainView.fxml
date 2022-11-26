@@ -58,6 +58,8 @@
            </Menu>
            <Menu mnemonicParsing="false" text="Edit">
                <MenuItem fx:id="runPipelineMenuItem" mnemonicParsing="false" text="Run pipeline" />
+            <MenuItem fx:id="undoMenuItem" mnemonicParsing="false" text="Undo" />
+            <MenuItem fx:id="redoMenuItem" mnemonicParsing="false" text="Redo" />
            </Menu>
            <Menu mnemonicParsing="false" text="Help">
                <MenuItem fx:id="aboutMenuItem" mnemonicParsing="false" text="About" />

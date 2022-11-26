@@ -8,11 +8,14 @@ import ch.supsi.editor2d.backend.model.filter.SepiaFilter;
 import ch.supsi.editor2d.frontend.gui.command.*;
 import ch.supsi.editor2d.frontend.gui.model.*;
 import ch.supsi.editor2d.frontend.gui.mycontroller.ExitDialogReceiver;
+import ch.supsi.editor2d.frontend.gui.mycontroller.ToolbarMediator;
+import ch.supsi.editor2d.frontend.gui.mycontroller.UndoRedoReceiver;
 import ch.supsi.editor2d.frontend.gui.receiver.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -28,7 +31,6 @@ public class Start extends Application {
 
         /** MODEL */
         DataModel model = new DataModel();
-
 
         /** VIEWS */
 
@@ -55,6 +57,15 @@ public class Start extends Application {
         MainViewController mainViewController = mainViewLoader.getController();
 
 
+        /**
+         * MEDIATOR
+         */
+        MenuItem undoMenuItem = mainViewController.getUndoMenuItem();
+        MenuItem redoMenuItem = mainViewController.getRedoMenuItem();
+        ToolbarMediator<DataModel> toolbarMediator = ToolbarMediator.create(model, undoMenuItem, redoMenuItem);
+        model.addPropertyChangeListener(toolbarMediator);
+
+
         /** RECEIVERS */
 
         RunPipelineReceiver runPipelineReceiver = RunPipelineReceiver.create(model);
@@ -62,6 +73,7 @@ public class Start extends Application {
         ZoomInReceiver zoomInReceiver = ZoomInReceiver.create(model);
         ZoomOutReceiver zoomOutReceiver = ZoomOutReceiver.create(model);
         ExitDialogReceiver<Observable> exitDialogReceiver = ExitDialogReceiver.create(model, exitStage, stage);
+        UndoRedoReceiver<DataModel> undoRedoReceiver = UndoRedoReceiver.create(model);
 
 
         /** COMMANDS */
@@ -69,6 +81,9 @@ public class Start extends Application {
         ExitCommand<ExitHandler> exitCommand = ExitCommand.create(exitDialogReceiver);
         CancelCommand<CancelHandler> cancelCommand = CancelCommand.create(exitDialogReceiver);
         OkCommand<OkHandler> okCommand = OkCommand.create(exitDialogReceiver);
+
+        UndoCommand<UndoRedoHandler> undoCommand = UndoCommand.create(undoRedoReceiver);
+        RedoCommand<UndoRedoHandler> redoCommand = RedoCommand.create(undoRedoReceiver);
 
         RunPipelineCommand runPipelineCommand = RunPipelineCommand.create(runPipelineReceiver);
         AboutCommand aboutCommand = AboutCommand.create(aboutReceiver);
@@ -82,15 +97,11 @@ public class Start extends Application {
         // Set commands
         exitDialogReceiver.setCancelCommand(cancelCommand);
         exitDialogReceiver.setOkCommand(okCommand);
+        undoMenuItem.setOnAction(actionEvent -> undoCommand.execute());
+        redoMenuItem.setOnAction(actionEvent -> redoCommand.execute());
 
         mainViewController.runPipelineMenuItem.setOnAction(actionEvent -> runPipelineCommand.execute());
-        mainViewController.exitMenuItem.setOnAction(actionEvent -> {
-            try {
-                exitCommand.execute();
-            } catch (NoSuchFieldException e) {
-                e.printStackTrace();
-            }
-        });
+        mainViewController.exitMenuItem.setOnAction(actionEvent -> exitCommand.execute());
         mainViewController.aboutMenuItem.setOnAction(actionEvent -> aboutCommand.execute(aboutStage));
         mainViewController.zoomInButton.setOnAction(actionEvent ->
                 zoomInCommand.execute(imageViewLoader.<ImageViewController>getController().getImageView()));
@@ -191,6 +202,7 @@ public class Start extends Application {
 
         // observers
         model.addPropertyChangeListener(imageViewLoader.getController());
+        model.addPropertyChangeListener(mainViewLoader.getController());
     }
 
     public static void main(String[] args) {

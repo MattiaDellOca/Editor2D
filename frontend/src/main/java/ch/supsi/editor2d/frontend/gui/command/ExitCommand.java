@@ -18,11 +18,7 @@ public class ExitCommand<T extends ExitHandler> extends AbstractCommand<ExitHand
     }
 
     @Override
-    public void execute() throws NoSuchFieldException {
-        if(handler == null) {
-            throw new NoSuchFieldException("command handler is null!");
-        }
-
+    public void execute() {
         handler.exit();
     }
 

@@ -14,7 +14,10 @@ import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.backend.model.task.Task;
 import ch.supsi.editor2d.frontend.exception.ImageNotLoadedException;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
+import ch.supsi.editor2d.frontend.gui.event.AddedFilterEvent;
 import ch.supsi.editor2d.frontend.gui.event.ImageUpdatedEvent;
+import ch.supsi.editor2d.frontend.gui.event.RedoneEvent;
+import ch.supsi.editor2d.frontend.gui.event.UndoneEvent;
 import ch.supsi.editor2d.frontend.gui.event.util.FileExport;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,7 +35,7 @@ import java.util.List;
  * Data model that holds the application data and login throughout the application.
  */
 public class DataModel extends Observable implements RunPipelineHandler, AboutHandler,
-        ZoomInHandler, ZoomOutHandler {
+        ZoomInHandler, ZoomOutHandler, UndoRedoHandler {
 
     // Value used for zoom in/out functions
     private static final double ZOOM_FACTOR = 1.1;
@@ -78,6 +81,13 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
      */
     private final ObservableList<Task<ImageWrapper, FilterTaskResult>> actualFiltersPipeline;
 
+
+    /**
+     * Undo/redo fields
+     */
+    private int savedStatesCount;
+    private int undoRedoPointer;
+
     /**
      * Constructor that initializes the data model.
      */
@@ -87,6 +97,14 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
         this.filterPipeline = new FilterPipeline();
         this.actualFiltersPipeline = FXCollections.observableArrayList();
         this.actualFiltersList = FXCollections.observableArrayList();
+    }
+
+    public int getSavedStatesCount() {
+        return savedStatesCount;
+    }
+
+    public int getUndoRedoPointer() {
+        return undoRedoPointer;
     }
 
     /**
@@ -201,6 +219,22 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
         getPropertyChangeSupport().firePropertyChange(new ImageUpdatedEvent(this));
     }
 
+    @Override
+    public void undo() {
+        // TODO: 26/11/2022 Use memento pattern here
+
+        undoRedoPointer --;
+        getPropertyChangeSupport().firePropertyChange(new UndoneEvent(this));
+    }
+
+    @Override
+    public void redo() {
+        // TODO: 26/11/2022 Use memento pattern here
+
+        undoRedoPointer ++;
+        getPropertyChangeSupport().firePropertyChange(new RedoneEvent(this));
+    }
+
     /**
      * Re-run the pipeline and update the current image on ImageView
      * @throws PipelineException if the pipeline is empty
@@ -234,6 +268,11 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
     public void addFilterPipeline(Filter filter) throws ImageNotLoadedException {
         if(imageInitialData == null)
             throw new ImageNotLoadedException();
+
+        savedStatesCount ++;
+        undoRedoPointer ++;
+        getPropertyChangeSupport().firePropertyChange(new AddedFilterEvent(this));
+
         filterPipeline.add(new FilterTask(filter));
         actualFiltersPipeline.clear();
         actualFiltersPipeline.addAll(filterPipeline.getTasks());

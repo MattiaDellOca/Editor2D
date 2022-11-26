@@ -1,6 +1,8 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
 import ch.supsi.editor2d.frontend.gui.event.FileOpenEvent;
+import ch.supsi.editor2d.frontend.gui.event.RedoneEvent;
+import ch.supsi.editor2d.frontend.gui.event.UndoneEvent;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
+import java.beans.PropertyChangeEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
@@ -18,13 +21,15 @@ import java.util.Collection;
 /**
  * Main view controller that handles the main view logic.
  */
-public class MainViewController {
+public class MainViewController extends AbstractFXMLController {
     /**
      *
      */
     public MenuItem runPipelineMenuItem;
     public MenuItem exitMenuItem;
     public MenuItem aboutMenuItem;
+    public MenuItem undoMenuItem;
+    public MenuItem redoMenuItem;
 
     public Button zoomInButton;
     public Button zoomOutButton;
@@ -81,6 +86,13 @@ public class MainViewController {
      */
     private FileChooser fileChooser;
 
+    public MenuItem getUndoMenuItem() {
+        return undoMenuItem;
+    }
+
+    public MenuItem getRedoMenuItem() {
+        return redoMenuItem;
+    }
 
     /**
      * Initialize the model reference and set all the event handlers
@@ -239,5 +251,18 @@ public class MainViewController {
      */
     public void onExport(ActionEvent e) {
         onExportClicked.handle(e);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if(evt instanceof UndoneEvent) {
+            // TODO: 26/11/2022 Implement undone operation through memento pattern
+            System.out.println("Something was undone!");
+        }
+
+        if(evt instanceof RedoneEvent) {
+            // TODO: 26/11/2022 Implement redone operation through memento pattern
+            System.out.println("Something was redone!");
+        }
     }
 }
