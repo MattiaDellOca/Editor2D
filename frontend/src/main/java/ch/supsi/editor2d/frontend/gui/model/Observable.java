@@ -3,24 +3,34 @@ package ch.supsi.editor2d.frontend.gui.model;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-public abstract class Observable {
+public abstract class Observable implements Handler {
 
-        protected PropertyChangeSupport pcs;
+    protected boolean changed;
 
-        public Observable() {
-            this.pcs = new PropertyChangeSupport(this);
-        }
+    protected PropertyChangeSupport pcs;
 
-        public PropertyChangeSupport getPropertyChangeSupport() {
-            return this.pcs;
-        }
+    public Observable() {
+        this.pcs = new PropertyChangeSupport(this);
+    }
 
-        public void addPropertyChangeListener(PropertyChangeListener pcl) {
-            pcs.addPropertyChangeListener(pcl);
-        }
+    public boolean isChanged() {
+        return changed;
+    }
 
-        public void removePropertyChangeListener(PropertyChangeListener pcl) {
-            pcs.removePropertyChangeListener(pcl);
-        }
+    public void setChanged(boolean changed) {
+        this.changed = changed;
+    }
+
+    public PropertyChangeSupport getPropertyChangeSupport() {
+        return this.pcs;
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+        pcs.addPropertyChangeListener(pcl);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener pcl) {
+        pcs.removePropertyChangeListener(pcl);
+    }
 
 }

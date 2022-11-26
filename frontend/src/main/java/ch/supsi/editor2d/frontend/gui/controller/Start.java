@@ -6,7 +6,8 @@ import ch.supsi.editor2d.backend.model.filter.FlipFilter;
 import ch.supsi.editor2d.backend.model.filter.GrayscaleFilter;
 import ch.supsi.editor2d.backend.model.filter.SepiaFilter;
 import ch.supsi.editor2d.frontend.gui.command.*;
-import ch.supsi.editor2d.frontend.gui.model.DataModel;
+import ch.supsi.editor2d.frontend.gui.model.*;
+import ch.supsi.editor2d.frontend.gui.mycontroller.ExitDialogReceiver;
 import ch.supsi.editor2d.frontend.gui.receiver.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -25,22 +26,11 @@ public class Start extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        //Model
+        /** MODEL */
         DataModel model = new DataModel();
 
-        //Receiver
-        RunPipelineReceiver runPipelineReceiver = RunPipelineReceiver.create(model);
-        ExitReceiver exitReceiver = ExitReceiver.create(model);
-        AboutReceiver aboutReceiver = AboutReceiver.create(model);
-        ZoomInReceiver zoomInReceiver = ZoomInReceiver.create(model);
-        ZoomOutReceiver zoomOutReceiver = ZoomOutReceiver.create(model);
 
-        //Commands
-        RunPipelineCommand runPipelineCommand = RunPipelineCommand.create(runPipelineReceiver);
-        ExitCommand exitCommand = ExitCommand.create(exitReceiver);
-        AboutCommand aboutCommand = AboutCommand.create(aboutReceiver);
-        ZoomInCommand zoomInCommand = ZoomInCommand.create(zoomInReceiver);
-        ZoomOutCommand zoomOutCommand = ZoomOutCommand.create(zoomOutReceiver);
+        /** VIEWS */
 
         // Image View page
         FXMLLoader imageViewLoader = new FXMLLoader(getClass().getResource("/view/imageView.fxml"));
@@ -53,14 +43,54 @@ public class Start extends Application {
         aboutStage.setTitle("About Editor2D");
         aboutStage.setScene(new Scene(aboutLoader.load()));
 
+        // Exit view page
+        FXMLLoader exitLoader = new FXMLLoader(getClass().getResource("/view/exitView.fxml"));
+        Stage exitStage = new Stage();
+        exitStage.setTitle("Exit");
+        exitStage.setScene(new Scene(exitLoader.load()));
+
         // Main View page
         FXMLLoader mainViewLoader = new FXMLLoader(getClass().getResource("/view/mainView.fxml"));
         Parent mainView = mainViewLoader.load();
         MainViewController mainViewController = mainViewLoader.getController();
 
+
+        /** RECEIVERS */
+
+        RunPipelineReceiver runPipelineReceiver = RunPipelineReceiver.create(model);
+        AboutReceiver aboutReceiver = AboutReceiver.create(model);
+        ZoomInReceiver zoomInReceiver = ZoomInReceiver.create(model);
+        ZoomOutReceiver zoomOutReceiver = ZoomOutReceiver.create(model);
+        ExitDialogReceiver<Observable> exitDialogReceiver = ExitDialogReceiver.create(model, exitStage, stage);
+
+
+        /** COMMANDS */
+
+        ExitCommand<ExitHandler> exitCommand = ExitCommand.create(exitDialogReceiver);
+        CancelCommand<CancelHandler> cancelCommand = CancelCommand.create(exitDialogReceiver);
+        OkCommand<OkHandler> okCommand = OkCommand.create(exitDialogReceiver);
+
+        RunPipelineCommand runPipelineCommand = RunPipelineCommand.create(runPipelineReceiver);
+        AboutCommand aboutCommand = AboutCommand.create(aboutReceiver);
+        ZoomInCommand zoomInCommand = ZoomInCommand.create(zoomInReceiver);
+        ZoomOutCommand zoomOutCommand = ZoomOutCommand.create(zoomOutReceiver);
+
+
+        // TODO: 26/11/2022 Remove this later, only for test purposes!
+        model.setChanged(true);
+
         // Set commands
+        exitDialogReceiver.setCancelCommand(cancelCommand);
+        exitDialogReceiver.setOkCommand(okCommand);
+
         mainViewController.runPipelineMenuItem.setOnAction(actionEvent -> runPipelineCommand.execute());
-        mainViewController.exitMenuItem.setOnAction(actionEvent -> exitCommand.execute(stage));
+        mainViewController.exitMenuItem.setOnAction(actionEvent -> {
+            try {
+                exitCommand.execute();
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            }
+        });
         mainViewController.aboutMenuItem.setOnAction(actionEvent -> aboutCommand.execute(aboutStage));
         mainViewController.zoomInButton.setOnAction(actionEvent ->
                 zoomInCommand.execute(imageViewLoader.<ImageViewController>getController().getImageView()));

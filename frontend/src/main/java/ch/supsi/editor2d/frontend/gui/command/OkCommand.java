@@ -1,20 +1,19 @@
 package ch.supsi.editor2d.frontend.gui.command;
 
-import ch.supsi.editor2d.frontend.gui.model.ExitHandler;
+import ch.supsi.editor2d.frontend.gui.model.OkHandler;
 
-public class ExitCommand<T extends ExitHandler> extends AbstractCommand<ExitHandler> implements Command {
-
-    protected ExitCommand(ExitHandler handler) {
+public class OkCommand<T extends OkHandler> extends AbstractCommand<OkHandler> implements Command {
+    protected OkCommand(OkHandler handler) {
         super(handler);
     }
 
     // factory method
-    public static ExitCommand<ExitHandler> create(ExitHandler handler) throws InstantiationException {
+    public static OkCommand<OkHandler> create(OkHandler handler) throws InstantiationException {
         if (handler == null) {
             throw new InstantiationException("command handler cannot be null!");
         }
 
-        return new ExitCommand<>(handler);
+        return new OkCommand<>(handler);
     }
 
     @Override
@@ -23,7 +22,6 @@ public class ExitCommand<T extends ExitHandler> extends AbstractCommand<ExitHand
             throw new NoSuchFieldException("command handler is null!");
         }
 
-        handler.exit();
+        handler.ok();
     }
-
 }

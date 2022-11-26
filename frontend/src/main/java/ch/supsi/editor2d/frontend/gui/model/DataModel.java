@@ -31,7 +31,7 @@ import java.util.List;
 /**
  * Data model that holds the application data and login throughout the application.
  */
-public class DataModel extends Observable implements RunPipelineHandler, ExitHandler, AboutHandler,
+public class DataModel extends Observable implements RunPipelineHandler, AboutHandler,
         ZoomInHandler, ZoomOutHandler {
 
     // Value used for zoom in/out functions
@@ -165,16 +165,6 @@ public class DataModel extends Observable implements RunPipelineHandler, ExitHan
         }
     }
 
-    /**
-     * Handle the closure of the application
-     * @param stage main stage
-     */
-    @Override
-    public void exit(Stage stage) {
-        // TODO: 23/11/2022 check if there are unsaved progress using mediator pattern
-        stage.close();
-        System.exit(0);
-    }
 
     /**
      * Show the "about stage"
