@@ -135,6 +135,9 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
         try {
             // Try to export image into selected directory
             imageController.exportImage(exportReq.getFilename(), exportReq.getExtension(), exportReq.getDestination(), imageData);
+
+            // the image has been successfully saved, therefore there aren't any pending changes
+            setChanged(false);
         } catch (FileWritingException e) {
             //Show Alert
             System.err.println(e.getMessage());
@@ -175,7 +178,10 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
         try {
             imageData = filterPipeline.run(imageInitialData).getResult();
             drawImage(imageData);
-            //notify that the image has been updated
+
+            this.setChanged(true);
+
+            // notify that the image has been updated
             getPropertyChangeSupport().firePropertyChange(new ImageUpdatedEvent(this));
         } catch( PipelineException e) {
             System.err.println("Unable to run pipeline: " + e.getMessage());

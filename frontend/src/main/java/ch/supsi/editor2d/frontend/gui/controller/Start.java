@@ -90,10 +90,6 @@ public class Start extends Application {
         ZoomInCommand zoomInCommand = ZoomInCommand.create(zoomInReceiver);
         ZoomOutCommand zoomOutCommand = ZoomOutCommand.create(zoomOutReceiver);
 
-
-        // TODO: 26/11/2022 Remove this later, only for test purposes!
-        model.setChanged(true);
-
         // Set commands
         exitDialogReceiver.setCancelCommand(cancelCommand);
         exitDialogReceiver.setOkCommand(okCommand);
