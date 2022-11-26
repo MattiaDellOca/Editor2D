@@ -1,4 +1,4 @@
-package ch.supsi.editor2d.frontend.gui.mycontroller;
+package ch.supsi.editor2d.frontend.gui.receiver;
 
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import ch.supsi.editor2d.frontend.gui.model.Observable;
