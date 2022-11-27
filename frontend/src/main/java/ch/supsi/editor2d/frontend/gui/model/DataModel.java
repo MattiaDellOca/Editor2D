@@ -12,12 +12,8 @@ import ch.supsi.editor2d.backend.model.filter.Filter;
 import ch.supsi.editor2d.backend.model.task.FilterTask;
 import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.backend.model.task.Task;
-import ch.supsi.editor2d.frontend.exception.ImageNotLoadedException;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
-import ch.supsi.editor2d.frontend.gui.event.AddedFilterEvent;
-import ch.supsi.editor2d.frontend.gui.event.ImageUpdatedEvent;
-import ch.supsi.editor2d.frontend.gui.event.RedoneEvent;
-import ch.supsi.editor2d.frontend.gui.event.UndoneEvent;
+import ch.supsi.editor2d.frontend.gui.event.*;
 import ch.supsi.editor2d.frontend.gui.event.util.FileExport;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -27,15 +23,12 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  * Data model that holds the application data and login throughout the application.
  */
 public class DataModel extends Observable implements RunPipelineHandler, AboutHandler,
-        ZoomInHandler, ZoomOutHandler, UndoRedoHandler {
+        ZoomInHandler, ZoomOutHandler, UndoRedoHandler, AddFilterHandler {
 
     // Value used for zoom in/out functions
     private static final double ZOOM_FACTOR = 1.1;
@@ -62,19 +55,9 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
     private ImageWrapper imageInitialData;
 
     /**
-     * List of filters
-     */
-    private final List<Filter> filterList = new ArrayList<>();
-
-    /**
      * Filter pipeline containing the currently selected filter list
      */
     private final FilterPipeline filterPipeline;
-
-    /**
-     * Observable list of all the possible filters to apply
-     */
-    private final ObservableList<Filter> actualFiltersList;
 
     /**
      * Observable list of the filter pipeline's tasks, used to update the pipeline view
@@ -96,7 +79,6 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
         this.imageController = new ImageController();
         this.filterPipeline = new FilterPipeline();
         this.actualFiltersPipeline = FXCollections.observableArrayList();
-        this.actualFiltersList = FXCollections.observableArrayList();
     }
 
     public int getSavedStatesCount() {
@@ -121,6 +103,7 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
 
             // Draw image (passing copy)
             drawImage(new ImageWrapper(img));
+            getPropertyChangeSupport().firePropertyChange(new ImageLoadedEvent(this));
         } catch (FileReadingException e) {
             System.err.println(e.getMessage());
             ErrorAlert.showError(e.getMessage());
@@ -167,6 +150,19 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
 
         // Display image on ImageView component
         imageComponent.setImage(writableImage);
+    }
+
+    @Override
+    public void addFilter(Filter filter) {
+        if(imageInitialData == null)
+
+        savedStatesCount ++;
+        undoRedoPointer ++;
+        getPropertyChangeSupport().firePropertyChange(new AddedFilterEvent(this));
+
+        filterPipeline.add(new FilterTask(filter));
+        actualFiltersPipeline.clear();
+        actualFiltersPipeline.addAll(filterPipeline.getTasks());
     }
 
     /**
@@ -257,20 +253,11 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
         filterPipeline.clear();
     }
 
-    /**
-     * Add a filter to the filter list
-     * @param filter filter to add
-     */
-    public void addFilterSelection(Filter filter) {
-        filterList.add(filter);
-        actualFiltersList.clear();
-        actualFiltersList.addAll(filterList);
-    }
-
+/*
     /**
      * Send filter to backend and update actualFilterPipeline ListView on frontend
      * @param filter filter to be added
-     */
+
     public void addFilterPipeline(Filter filter) throws ImageNotLoadedException {
         if(imageInitialData == null)
             throw new ImageNotLoadedException();
@@ -283,7 +270,7 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
         actualFiltersPipeline.clear();
         actualFiltersPipeline.addAll(filterPipeline.getTasks());
     }
-
+*/
     /**
      * Remove a specific FilterTask from the pipeline and update actualFilterPipeline ListView on frontend
      * @param task FilterTask to be removed
@@ -327,23 +314,6 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
     }
 
     /**
-     * Set the component used to display the image
-     * @param imageWrapper the image to display
-     */
-    public void setImageComponent(ImageWrapper imageWrapper) {
-        drawImage(imageWrapper);
-    }
-
-
-    /**
-     * Get the FilterPipeline object
-     * @return FilterPipeline object
-     */
-    public FilterPipeline getFilterPipeline() {
-        return filterPipeline;
-    }
-
-    /**
      * Get the image component used to show the image
      * @return image component
      */
@@ -357,14 +327,6 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
      */
     public ImageWrapper getImageData() {
         return imageData;
-    }
-
-    /**
-     * Get actual list of possible filters
-     * @return removed filter
-     */
-    public ObservableList<Filter> getActualFiltersList() {
-        return actualFiltersList;
     }
 
     /**

@@ -1,10 +1,7 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
-import ch.supsi.editor2d.backend.model.filter.SharpenFilter;
+import ch.supsi.editor2d.backend.model.filter.*;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
-import ch.supsi.editor2d.backend.model.filter.FlipFilter;
-import ch.supsi.editor2d.backend.model.filter.GrayscaleFilter;
-import ch.supsi.editor2d.backend.model.filter.SepiaFilter;
 import ch.supsi.editor2d.frontend.gui.command.*;
 import ch.supsi.editor2d.frontend.gui.model.*;
 import ch.supsi.editor2d.frontend.gui.receiver.ExitDialogReceiver;
@@ -12,9 +9,12 @@ import ch.supsi.editor2d.frontend.gui.receiver.ToolbarMediator;
 import ch.supsi.editor2d.frontend.gui.receiver.UndoRedoReceiver;
 import ch.supsi.editor2d.frontend.gui.receiver.*;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -25,6 +25,9 @@ import java.util.Collection;
 public class Start extends Application {
 
     private static final Collection<String> SUPPORTED_FORMATS = Arrays.asList("ppm", "pgm", "pbm", "tga");
+
+    private static final Collection<Filter> FILTERS = Arrays.asList(new FlipFilter(), new GrayscaleFilter(),
+            new SepiaFilter(), new SharpenFilter());
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -56,6 +59,12 @@ public class Start extends Application {
         Parent mainView = mainViewLoader.load();
         MainViewController mainViewController = mainViewLoader.getController();
 
+        // Filter selection View page
+        FXMLLoader filterSelectionViewLoader = new FXMLLoader(getClass().getResource("/view/filtersListView.fxml"));
+        Parent filterSelectionView = filterSelectionViewLoader.load();
+        FiltersSelectionViewController filtersSelectionViewController = filterSelectionViewLoader.getController();
+        ListView<Filter> selectableFilters = filtersSelectionViewController.getFilterSelectionList();
+
 
         /**
          * MEDIATOR
@@ -64,6 +73,9 @@ public class Start extends Application {
         MenuItem redoMenuItem = mainViewController.getRedoMenuItem();
         ToolbarMediator<DataModel> toolbarMediator = ToolbarMediator.create(model, undoMenuItem, redoMenuItem);
         model.addPropertyChangeListener(toolbarMediator);
+
+        SelectableFiltersMediator<DataModel> selectableFiltersMediator = SelectableFiltersMediator.create(model, selectableFilters);
+        model.addPropertyChangeListener(selectableFiltersMediator);
 
 
         /** RECEIVERS */
@@ -74,6 +86,7 @@ public class Start extends Application {
         ZoomOutReceiver zoomOutReceiver = ZoomOutReceiver.create(model);
         ExitDialogReceiver<Observable> exitDialogReceiver = ExitDialogReceiver.create(model, exitStage, stage);
         UndoRedoReceiver<DataModel> undoRedoReceiver = UndoRedoReceiver.create(model);
+        AddFilterReceiver<DataModel> addFilterReceiver = AddFilterReceiver.create(model);
 
 
         /** COMMANDS */
@@ -85,6 +98,8 @@ public class Start extends Application {
         UndoCommand<UndoRedoHandler> undoCommand = UndoCommand.create(undoRedoReceiver);
         RedoCommand<UndoRedoHandler> redoCommand = RedoCommand.create(undoRedoReceiver);
 
+        AddFilterCommand<AddFilterHandler> addFilterCommand = AddFilterCommand.create(addFilterReceiver);
+
         RunPipelineCommand runPipelineCommand = RunPipelineCommand.create(runPipelineReceiver);
         AboutCommand aboutCommand = AboutCommand.create(aboutReceiver);
         ZoomInCommand zoomInCommand = ZoomInCommand.create(zoomInReceiver);
@@ -95,6 +110,16 @@ public class Start extends Application {
         exitDialogReceiver.setOkCommand(okCommand);
         undoMenuItem.setOnAction(actionEvent -> undoCommand.execute());
         redoMenuItem.setOnAction(actionEvent -> redoCommand.execute());
+
+            // Selectable filters
+        ObservableList<Filter> filters = FXCollections.observableArrayList(FILTERS);
+        selectableFilters.setItems(filters);
+        selectableFilters.setCellFactory(taskListView -> new FilterCell(model));
+        selectableFilters.setOnMouseClicked(mouseEvent -> {
+            Filter filter = selectableFilters.getSelectionModel().getSelectedItem();
+            addFilterCommand.execute(filter);
+        });
+
 
         mainViewController.runPipelineMenuItem.setOnAction(actionEvent -> runPipelineCommand.execute());
         mainViewController.exitMenuItem.setOnAction(actionEvent -> exitCommand.execute());
@@ -147,12 +172,6 @@ public class Start extends Application {
             }
         });
 
-        // Filter selection View page
-        FXMLLoader filterSelectionViewLoader = new FXMLLoader(getClass().getResource("/view/filtersListView.fxml"));
-        Parent filterSelectionView = filterSelectionViewLoader.load();
-        FiltersSelectionViewController filtersSelectionViewController = filterSelectionViewLoader.getController();
-        filtersSelectionViewController.initModel(model);
-
         // Set FilterSelectionView inside mainView
         AnchorPane filtersSelectionPane = mainViewController.getFiltersListPane();
         filtersSelectionPane.getChildren().setAll(filterSelectionView);
@@ -160,13 +179,6 @@ public class Start extends Application {
         AnchorPane.setTopAnchor(filterSelectionView, 0.0);
         AnchorPane.setLeftAnchor(filterSelectionView, 0.0);
         AnchorPane.setRightAnchor(filterSelectionView, 0.0);
-
-        /*
-        // Image updated handling
-        filtersSelectionViewController.setOnImageUpdated(e -> {
-            model.setImageComponent(e.getImage());
-            imageViewLoader.<ImageViewController>getController().refresh();
-        });*/
 
         //Pipeline View page
         FXMLLoader pipelineViewLoader = new FXMLLoader(getClass().getResource("/view/pipelineView.fxml"));
@@ -190,11 +202,6 @@ public class Start extends Application {
         stage.setTitle("Editor2D");
         stage.setScene(new Scene(mainView));
         stage.show();
-
-        model.addFilterSelection(new FlipFilter());
-        model.addFilterSelection(new SepiaFilter());
-        model.addFilterSelection(new GrayscaleFilter());
-        model.addFilterSelection(new SharpenFilter());
 
         // observers
         model.addPropertyChangeListener(imageViewLoader.getController());
