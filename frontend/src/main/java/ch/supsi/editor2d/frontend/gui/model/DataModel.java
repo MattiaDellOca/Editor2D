@@ -154,8 +154,6 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
 
     @Override
     public void addFilter(Filter filter) {
-        if(imageInitialData == null)
-
         savedStatesCount ++;
         undoRedoPointer ++;
         getPropertyChangeSupport().firePropertyChange(new AddedFilterEvent(this));
@@ -253,24 +251,6 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
         filterPipeline.clear();
     }
 
-/*
-    /**
-     * Send filter to backend and update actualFilterPipeline ListView on frontend
-     * @param filter filter to be added
-
-    public void addFilterPipeline(Filter filter) throws ImageNotLoadedException {
-        if(imageInitialData == null)
-            throw new ImageNotLoadedException();
-
-        savedStatesCount ++;
-        undoRedoPointer ++;
-        getPropertyChangeSupport().firePropertyChange(new AddedFilterEvent(this));
-
-        filterPipeline.add(new FilterTask(filter));
-        actualFiltersPipeline.clear();
-        actualFiltersPipeline.addAll(filterPipeline.getTasks());
-    }
-*/
     /**
      * Remove a specific FilterTask from the pipeline and update actualFilterPipeline ListView on frontend
      * @param task FilterTask to be removed
@@ -333,7 +313,7 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
      * Get actual filter pipeline
      * @return actual filter pipeline
      */
-    public ObservableList<Task<ImageWrapper, FilterTaskResult>> getActualFiltersPipeline(){
+    public ObservableList<Task<ImageWrapper, FilterTaskResult>> getActualFiltersPipeline() {
         return actualFiltersPipeline;
     }
 }
