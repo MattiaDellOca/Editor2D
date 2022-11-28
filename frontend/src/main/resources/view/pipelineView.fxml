@@ -1,32 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
-<AnchorPane minWidth="-Infinity" prefHeight="600.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/18"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ch.supsi.editor2d.frontend.gui.controller.PipelineViewController">
-   <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-               AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+
+<AnchorPane minWidth="-Infinity" prefHeight="600.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.supsi.editor2d.frontend.gui.controller.PipelineViewController">
+   <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <top>
-         <AnchorPane maxHeight="50.0" prefHeight="34.0" prefWidth="300.0" style="-fx-background-color: #ffd7b5;"
-                     BorderPane.alignment="CENTER">
-            <Label alignment="CENTER" contentDisplay="CENTER" text="Pipeline" AnchorPane.bottomAnchor="0.0"
-                   AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <AnchorPane maxHeight="50.0" prefHeight="34.0" prefWidth="300.0" style="-fx-background-color: #ffd7b5;" BorderPane.alignment="CENTER">
+            <Label alignment="CENTER" contentDisplay="CENTER" text="Pipeline" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <font>
-                  <Font name="Arial Bold" size="18.0"/>
+                  <Font name="Arial Bold" size="18.0" />
                </font>
             </Label>
          </AnchorPane>
       </top>
       <center>
          <AnchorPane prefHeight="550.0" prefWidth="300.0" BorderPane.alignment="CENTER">
-            <ListView id="listView" fx:id="filterPipelineList" prefHeight="373.0" prefWidth="300.0"
-                      style="-fx-background-color: white;" stylesheets="@pipelineStyle.css"
-                      AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                      AnchorPane.topAnchor="0.0"/>
+            <ListView id="listView" fx:id="filterPipelineList" prefHeight="373.0" prefWidth="300.0" style="-fx-background-color: white;" stylesheets="@pipelineStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </AnchorPane>
       </center>
+      <bottom>
+         <AnchorPane prefHeight="50.0" prefWidth="300.0" BorderPane.alignment="CENTER">
+            <children>
+               <GridPane prefHeight="50.0" prefWidth="271.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <columnConstraints>
+                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     <ColumnConstraints />
+                     <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+                  <children>
+                     <Button fx:id="moveUpFilter" mnemonicParsing="false" prefHeight="50.0" prefWidth="55.0">
+                        <graphic>
+                           <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@images/arrowTop.png" />
+                              </image>
+                           </ImageView>
+                        </graphic>
+                        <GridPane.margin>
+                           <Insets bottom="5.0" left="10.0" top="5.0" />
+                        </GridPane.margin>
+                     </Button>
+                     <Button fx:id="moveDownFilter" mnemonicParsing="false" prefHeight="50.0" prefWidth="55.0" GridPane.columnIndex="1">
+                        <graphic>
+                           <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@images/arrowBottom.png" />
+                              </image>
+                           </ImageView>
+                        </graphic>
+                        <GridPane.margin>
+                           <Insets bottom="5.0" left="10.0" top="5.0" />
+                        </GridPane.margin>
+                     </Button>
+                     <Button fx:id="removeFilter" mnemonicParsing="false" prefHeight="50.0" prefWidth="55.0" GridPane.columnIndex="2" GridPane.columnSpan="2">
+                        <graphic>
+                           <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@images/delete.png" />
+                              </image>
+                           </ImageView>
+                        </graphic>
+                        <GridPane.margin>
+                           <Insets bottom="5.0" left="10.0" top="5.0" />
+                        </GridPane.margin>
+                     </Button>
+                     <Button fx:id="runPipeline" mnemonicParsing="false" prefHeight="50.0" prefWidth="55.0" GridPane.columnIndex="4">
+                        <graphic>
+                           <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                              <image>
+                                 <Image url="@images/play.png" />
+                              </image>
+                           </ImageView>
+                        </graphic>
+                        <GridPane.margin>
+                           <Insets bottom="5.0" left="10.0" top="5.0" />
+                        </GridPane.margin>
+                     </Button>
+                  </children>
+               </GridPane>
+            </children>
+         </AnchorPane>
+      </bottom>
    </BorderPane>
 </AnchorPane>

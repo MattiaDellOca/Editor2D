@@ -94,6 +94,10 @@ public class MainViewController extends AbstractFXMLController {
         return redoMenuItem;
     }
 
+    public MenuItem getRunPipelineMenuItem() {
+        return runPipelineMenuItem;
+    }
+
     /**
      * Initialize the model reference and set all the event handlers
      *

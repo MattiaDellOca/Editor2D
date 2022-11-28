@@ -60,12 +60,6 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
     private final FilterPipeline filterPipeline;
 
     /**
-     * Observable list of the filter pipeline's tasks, used to update the pipeline view
-     */
-    private final ObservableList<Task<ImageWrapper, FilterTaskResult>> actualFiltersPipeline;
-
-
-    /**
      * Undo/redo fields
      */
     private int savedStatesCount;
@@ -78,7 +72,6 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
         this.imageComponent = new ImageView();
         this.imageController = new ImageController();
         this.filterPipeline = new FilterPipeline();
-        this.actualFiltersPipeline = FXCollections.observableArrayList();
     }
 
     public int getSavedStatesCount() {
@@ -156,11 +149,12 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
     public void addFilter(Filter filter) {
         savedStatesCount ++;
         undoRedoPointer ++;
+        filterPipeline.add(new FilterTask(filter));
+
         getPropertyChangeSupport().firePropertyChange(new AddedFilterEvent(this));
 
-        filterPipeline.add(new FilterTask(filter));
-        actualFiltersPipeline.clear();
-        actualFiltersPipeline.addAll(filterPipeline.getTasks());
+        //actualFiltersPipeline.clear();
+        //ctualFiltersPipeline.addAll(filterPipeline.getTasks());
     }
 
     /**
@@ -236,18 +230,9 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
     }
 
     /**
-     * Re-run the pipeline and update the current image on ImageView
-     * @throws PipelineException if the pipeline is empty
-     */
-    public void refreshPipeline() throws PipelineException {
-        drawImage(filterPipeline.run(imageInitialData).getResult());
-    }
-
-    /**
      * Clear the pipeline, called when uploading a new image
      */
     public void clearPipeline() {
-        filterPipeline.getTasks().forEach(actualFiltersPipeline::remove);
         filterPipeline.clear();
     }
 
@@ -258,11 +243,6 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
      */
     public void removeTaskFromPipeline(Task<ImageWrapper, FilterTaskResult> task) throws PipelineException {
         filterPipeline.remove(task);
-        actualFiltersPipeline.clear();
-        actualFiltersPipeline.addAll(filterPipeline.getTasks());
-
-        // Re-run pipeline + update current image on ImageView
-        refreshPipeline();
     }
 
     /**
@@ -270,13 +250,8 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
      * @param task to swipe up
      * @throws PipelineException in case of execution errors or index errors
      */
-    public void swipeUpFilterPipeline(Task<ImageWrapper, FilterTaskResult> task) throws PipelineException {
+    public void moveUpFilterPipeline(Task<ImageWrapper, FilterTaskResult> task) throws PipelineException {
         filterPipeline.invertBeforePositionTask(task);
-        actualFiltersPipeline.clear();
-        actualFiltersPipeline.addAll(filterPipeline.getTasks());
-
-        //refresh pipeline
-        refreshPipeline();
     }
 
     /**
@@ -284,13 +259,8 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
      * @param task to swipe down
      * @throws PipelineException in case of execution errors or index errors
      */
-    public void swipeDownFilterPipeline(Task<ImageWrapper, FilterTaskResult> task) throws PipelineException {
+    public void moveDownFilterPipeline(Task<ImageWrapper, FilterTaskResult> task) throws PipelineException {
         filterPipeline.invertAfterPositionTask(task);
-        actualFiltersPipeline.clear();
-        actualFiltersPipeline.addAll(filterPipeline.getTasks());
-
-        //refresh pipeline
-        refreshPipeline();
     }
 
     /**
@@ -309,11 +279,7 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
         return imageData;
     }
 
-    /**
-     * Get actual filter pipeline
-     * @return actual filter pipeline
-     */
-    public ObservableList<Task<ImageWrapper, FilterTaskResult>> getActualFiltersPipeline() {
-        return actualFiltersPipeline;
+    public FilterPipeline getFilterPipeline() {
+        return filterPipeline;
     }
 }

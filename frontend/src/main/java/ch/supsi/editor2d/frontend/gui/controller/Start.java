@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
@@ -32,11 +33,18 @@ public class Start extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
-        /** MODEL */
+        /*
+        ==================================
+        =========  MODEL SETUP  ==========
+        ==================================
+         */
         DataModel model = new DataModel();
 
-        /** VIEWS */
-
+        /*
+        ==================================
+        =========  VIEW SETUP  ===========
+        ==================================
+         */
         // Image View page
         FXMLLoader imageViewLoader = new FXMLLoader(getClass().getResource("/view/imageView.fxml"));
         Parent imageView = imageViewLoader.load();
@@ -65,21 +73,32 @@ public class Start extends Application {
         FiltersSelectionViewController filtersSelectionViewController = filterSelectionViewLoader.getController();
         ListView<Filter> selectableFilters = filtersSelectionViewController.getFilterSelectionList();
 
+        //Pipeline View page
+        FXMLLoader pipelineViewLoader = new FXMLLoader(getClass().getResource("/view/pipelineView.fxml"));
+        Parent pipelineView = pipelineViewLoader.load();
+        PipelineViewController pipelineViewController = pipelineViewLoader.getController();
+        pipelineViewController.initModel(model);
 
-        /**
-         * MEDIATOR
+        /*
+        ==================================
+        =========  MEDIATOR SETUP  =======
+        ==================================
          */
         MenuItem undoMenuItem = mainViewController.getUndoMenuItem();
         MenuItem redoMenuItem = mainViewController.getRedoMenuItem();
-        ToolbarMediator<DataModel> toolbarMediator = ToolbarMediator.create(model, undoMenuItem, redoMenuItem);
+        MenuItem runPipelineMenuItem = mainViewController.getRunPipelineMenuItem();
+        Button runPipelineButton = pipelineViewController.getRunPipeline();
+        ToolbarMediator<DataModel> toolbarMediator = ToolbarMediator.create(model, undoMenuItem, redoMenuItem, runPipelineMenuItem, runPipelineButton);
         model.addPropertyChangeListener(toolbarMediator);
 
         SelectableFiltersMediator<DataModel> selectableFiltersMediator = SelectableFiltersMediator.create(model, selectableFilters);
         model.addPropertyChangeListener(selectableFiltersMediator);
 
-
-        /** RECEIVERS */
-
+        /*
+        ==================================
+        =========  RECEIVER SETUP  =======
+        ==================================
+         */
         RunPipelineReceiver runPipelineReceiver = RunPipelineReceiver.create(model);
         AboutReceiver aboutReceiver = AboutReceiver.create(model);
         ZoomInReceiver zoomInReceiver = ZoomInReceiver.create(model);
@@ -89,8 +108,11 @@ public class Start extends Application {
         AddFilterReceiver<DataModel> addFilterReceiver = AddFilterReceiver.create(model);
 
 
-        /** COMMANDS */
-
+        /*
+        ==================================
+        =========  COMMAND SETUP  ========
+        ==================================
+         */
         ExitCommand<ExitHandler> exitCommand = ExitCommand.create(exitDialogReceiver);
         CancelCommand<CancelHandler> cancelCommand = CancelCommand.create(exitDialogReceiver);
         OkCommand<OkHandler> okCommand = OkCommand.create(exitDialogReceiver);
@@ -111,7 +133,7 @@ public class Start extends Application {
         undoMenuItem.setOnAction(actionEvent -> undoCommand.execute());
         redoMenuItem.setOnAction(actionEvent -> redoCommand.execute());
 
-            // Selectable filters
+        // Selectable filters
         ObservableList<Filter> filters = FXCollections.observableArrayList(FILTERS);
         selectableFilters.setItems(filters);
         selectableFilters.setCellFactory(taskListView -> new FilterCell(model));
@@ -131,6 +153,7 @@ public class Start extends Application {
 
         mainViewController.init(model, SUPPORTED_FORMATS);
 
+        pipelineViewController.getRunPipeline().setOnAction(actionEvent -> runPipelineCommand.execute());
         // Export stage page
         FXMLLoader exportLoader = new FXMLLoader(getClass().getResource("/view/exportView.fxml"));
         Stage exportStage = new Stage();
@@ -180,15 +203,6 @@ public class Start extends Application {
         AnchorPane.setLeftAnchor(filterSelectionView, 0.0);
         AnchorPane.setRightAnchor(filterSelectionView, 0.0);
 
-        //Pipeline View page
-        FXMLLoader pipelineViewLoader = new FXMLLoader(getClass().getResource("/view/pipelineView.fxml"));
-        Parent pipelineView = pipelineViewLoader.load();
-        PipelineViewController pipelineViewController = pipelineViewLoader.getController();
-        pipelineViewController.initModel(model);
-        pipelineViewController.setOnFilterRemovedSuccessfully(e -> {
-            // Refresh image view
-            imageViewLoader.<ImageViewController>getController().refresh();
-        });
 
         // Set PipelineView inside mainView
         AnchorPane pipelinePane = mainViewController.getPipelinePane();
@@ -206,6 +220,7 @@ public class Start extends Application {
         // observers
         model.addPropertyChangeListener(imageViewLoader.getController());
         model.addPropertyChangeListener(mainViewLoader.getController());
+        model.addPropertyChangeListener(pipelineViewLoader.getController());
     }
 
     public static void main(String[] args) {
