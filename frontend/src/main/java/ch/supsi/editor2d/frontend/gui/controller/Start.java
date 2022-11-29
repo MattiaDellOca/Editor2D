@@ -1,6 +1,9 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
+import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.model.filter.*;
+import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
+import ch.supsi.editor2d.backend.model.task.Task;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
 import ch.supsi.editor2d.frontend.gui.command.*;
 import ch.supsi.editor2d.frontend.gui.model.*;
@@ -78,6 +81,7 @@ public class Start extends Application {
         Parent pipelineView = pipelineViewLoader.load();
         PipelineViewController pipelineViewController = pipelineViewLoader.getController();
         pipelineViewController.initModel(model);
+        Button removeFilterButton = pipelineViewController.getRemoveFilter();
 
         /*
         ==================================
@@ -106,7 +110,7 @@ public class Start extends Application {
         ExitDialogReceiver<Observable> exitDialogReceiver = ExitDialogReceiver.create(model, exitStage, stage);
         UndoRedoReceiver<DataModel> undoRedoReceiver = UndoRedoReceiver.create(model);
         AddFilterReceiver<DataModel> addFilterReceiver = AddFilterReceiver.create(model);
-
+        RemoveFilterReceiver<DataModel> removeFilterReceiver = RemoveFilterReceiver.create(model);
 
         /*
         ==================================
@@ -121,6 +125,7 @@ public class Start extends Application {
         RedoCommand<UndoRedoHandler> redoCommand = RedoCommand.create(undoRedoReceiver);
 
         AddFilterCommand<AddFilterHandler> addFilterCommand = AddFilterCommand.create(addFilterReceiver);
+        RemoveFilterCommand<RemoveFilterHandler> removeFilterCommand = RemoveFilterCommand.create(removeFilterReceiver);
 
         RunPipelineCommand runPipelineCommand = RunPipelineCommand.create(runPipelineReceiver);
         AboutCommand aboutCommand = AboutCommand.create(aboutReceiver);
@@ -132,7 +137,10 @@ public class Start extends Application {
         exitDialogReceiver.setOkCommand(okCommand);
         undoMenuItem.setOnAction(actionEvent -> undoCommand.execute());
         redoMenuItem.setOnAction(actionEvent -> redoCommand.execute());
-
+        removeFilterButton.setOnAction(actionEvent -> {
+            Task<ImageWrapper, FilterTaskResult> selectedTask = pipelineViewController.getSelectedTask();
+            removeFilterCommand.execute(selectedTask);
+        });
         // Selectable filters
         ObservableList<Filter> filters = FXCollections.observableArrayList(FILTERS);
         selectableFilters.setItems(filters);

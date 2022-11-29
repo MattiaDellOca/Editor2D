@@ -28,7 +28,7 @@ import javafx.stage.Stage;
  * Data model that holds the application data and login throughout the application.
  */
 public class DataModel extends Observable implements RunPipelineHandler, AboutHandler,
-        ZoomInHandler, ZoomOutHandler, UndoRedoHandler, AddFilterHandler {
+        ZoomInHandler, ZoomOutHandler, UndoRedoHandler, AddFilterHandler, RemoveFilterHandler {
 
     // Value used for zoom in/out functions
     private static final double ZOOM_FACTOR = 1.1;
@@ -152,9 +152,18 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
         filterPipeline.add(new FilterTask(filter));
 
         getPropertyChangeSupport().firePropertyChange(new AddedFilterEvent(this));
+    }
 
-        //actualFiltersPipeline.clear();
-        //ctualFiltersPipeline.addAll(filterPipeline.getTasks());
+    /**
+     * Remove a filter from the filter pipeline
+     * @param filter to be removed
+     */
+    @Override
+    public void removeFilter(Task<ImageWrapper, FilterTaskResult> filter) {
+        //TODO: memento
+        filterPipeline.remove(filter);
+
+        getPropertyChangeSupport().firePropertyChange(new RemovedFilterEvent(this));
     }
 
     /**
@@ -234,15 +243,6 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
      */
     public void clearPipeline() {
         filterPipeline.clear();
-    }
-
-    /**
-     * Remove a specific FilterTask from the pipeline and update actualFilterPipeline ListView on frontend
-     * @param task FilterTask to be removed
-     * @throws PipelineException if the task is not in the pipeline
-     */
-    public void removeTaskFromPipeline(Task<ImageWrapper, FilterTaskResult> task) throws PipelineException {
-        filterPipeline.remove(task);
     }
 
     /**

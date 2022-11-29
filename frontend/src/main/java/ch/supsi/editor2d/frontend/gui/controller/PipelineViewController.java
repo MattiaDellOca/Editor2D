@@ -9,6 +9,7 @@ import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
 import ch.supsi.editor2d.frontend.gui.command.AddFilterCommand;
 import ch.supsi.editor2d.frontend.gui.event.AddedFilterEvent;
 import ch.supsi.editor2d.frontend.gui.event.ImageUpdatedEvent;
+import ch.supsi.editor2d.frontend.gui.event.RemovedFilterEvent;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import ch.supsi.editor2d.frontend.gui.model.Observable;
 import javafx.collections.FXCollections;
@@ -82,18 +83,6 @@ public class PipelineViewController extends AbstractFXMLController {
             }
         });
 
-        //Remove filter action
-        removeFilter.setOnAction(event -> {
-            try {
-                model.removeTaskFromPipeline(selectedTask);
-                updateFilterPipeline();
-            } catch (PipelineException e) {
-                System.err.println(e.getMessage());
-                ErrorAlert.showError(e.getMessage());
-            }
-            filterPipelineList.getSelectionModel().clearSelection();
-        });
-
         //Move up filter action
         moveUpFilter.setOnAction(event -> {
             try {
@@ -127,10 +116,20 @@ public class PipelineViewController extends AbstractFXMLController {
     public void propertyChange(PropertyChangeEvent event) {
         if (event instanceof AddedFilterEvent) {
             updateFilterPipeline();
+        } else  if(event instanceof RemovedFilterEvent){
+            updateFilterPipeline();
         }
     }
 
     public Button getRunPipeline() {
         return runPipeline;
+    }
+
+    public Button getRemoveFilter() {
+        return removeFilter;
+    }
+
+    public Task<ImageWrapper, FilterTaskResult> getSelectedTask() {
+        return selectedTask;
     }
 }
