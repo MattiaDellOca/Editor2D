@@ -6,8 +6,10 @@ import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.backend.model.task.Task;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
 import ch.supsi.editor2d.frontend.gui.event.AddedFilterEvent;
+import ch.supsi.editor2d.frontend.gui.event.ImageLoadedEvent;
 import ch.supsi.editor2d.frontend.gui.event.RemovedFilterEvent;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
+import ch.supsi.editor2d.frontend.gui.model.PipelineCell;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -41,8 +43,8 @@ public class PipelineViewController extends AbstractFXMLController {
 
     public void initModel(DataModel model) {
         // ensure model is only set once
-        if (this.model != null) {
-            throw new IllegalStateException("Model can only be initialized once");
+        if (model == null) {
+            throw new IllegalStateException("Model can't be null");
         }
         this.model = model;
     }
@@ -108,9 +110,7 @@ public class PipelineViewController extends AbstractFXMLController {
 
     @Override
     public void propertyChange(PropertyChangeEvent event) {
-        if (event instanceof AddedFilterEvent) {
-            updateFilterPipeline();
-        } else  if(event instanceof RemovedFilterEvent){
+        if (event instanceof AddedFilterEvent || event instanceof RemovedFilterEvent || event instanceof ImageLoadedEvent) {
             updateFilterPipeline();
         }
     }

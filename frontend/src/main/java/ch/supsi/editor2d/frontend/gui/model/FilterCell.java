@@ -1,7 +1,8 @@
-package ch.supsi.editor2d.frontend.gui.controller;
+package ch.supsi.editor2d.frontend.gui.model;
 
 import ch.supsi.editor2d.backend.model.filter.Filter;
 import ch.supsi.editor2d.backend.objectPresentation.FilterPresentable;
+import ch.supsi.editor2d.frontend.gui.controller.CellViewController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ListCell;

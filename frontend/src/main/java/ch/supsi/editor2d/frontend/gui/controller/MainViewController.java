@@ -55,11 +55,6 @@ public class MainViewController extends AbstractFXMLController {
     private AnchorPane pipelinePane;
 
     /**
-     * Data model reference
-     */
-    private DataModel model;
-
-    /**
      * File drop event handler
      */
     private EventHandler<FileOpenEvent> onFileOpened = event -> {
@@ -107,18 +102,9 @@ public class MainViewController extends AbstractFXMLController {
         return zoomOutButton;
     }
 
-    /**
-     * Initialize the model reference and set all the event handlers
-     * @param model Data model
-     */
-    public void initModel(DataModel model) {
 
-        // ensure model is only set once
-        if (this.model != null) {
-            throw new IllegalStateException("Model can only be initialized once");
-        }
-        this.model = model;
-
+    @FXML
+    public void initialize() {
         // set event handlers + load about view
         try {
             initEventHandlers();
@@ -128,7 +114,6 @@ public class MainViewController extends AbstractFXMLController {
     }
 
     private void initEventHandlers() throws IOException {
-
 
         // Open directory chooser
         DirectoryChooser directoryChooser = new DirectoryChooser();

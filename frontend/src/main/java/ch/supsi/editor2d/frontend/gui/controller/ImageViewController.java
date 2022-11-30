@@ -41,8 +41,8 @@ public class ImageViewController extends AbstractFXMLController {
      */
     public void initModel(DataModel model) {
         // ensure model is only set once
-        if (this.model != null) {
-            throw new IllegalStateException("Model can only be initialized once");
+        if (model == null) {
+            throw new IllegalStateException("Model can't be null");
         }
 
         // Set scroll pane properties

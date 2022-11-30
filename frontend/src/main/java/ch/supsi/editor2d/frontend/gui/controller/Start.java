@@ -44,7 +44,7 @@ public class Start extends Application {
         =========  MODEL SETUP  ==========
         ==================================
          */
-        DataModel model = new DataModel();
+        DataModel model = DataModel.getInstance();
 
         /*
         ==================================
@@ -72,7 +72,6 @@ public class Start extends Application {
         FXMLLoader mainViewLoader = new FXMLLoader(getClass().getResource("/view/mainView.fxml"));
         Parent mainView = mainViewLoader.load();
         MainViewController mainViewController = mainViewLoader.getController();
-        mainViewController.initModel(model);
 
         // Filter selection View page
         FXMLLoader filterSelectionViewLoader = new FXMLLoader(getClass().getResource("/view/filtersListView.fxml"));

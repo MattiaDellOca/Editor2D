@@ -60,10 +60,20 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
     private int savedStatesCount;
     private int undoRedoPointer;
 
+    //Singleton
+    private static DataModel instance;
+
+    public static DataModel getInstance() {
+        if (instance == null) {
+            instance = new DataModel();
+        }
+        return instance;
+    }
+
     /**
      * Constructor that initializes the data model.
      */
-    public DataModel() {
+    private DataModel() {
         this.imageController = new ImageController();
         this.filterPipeline = new FilterPipeline();
     }

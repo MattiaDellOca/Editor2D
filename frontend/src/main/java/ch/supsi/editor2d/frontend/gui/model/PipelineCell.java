@@ -1,10 +1,11 @@
-package ch.supsi.editor2d.frontend.gui.controller;
+package ch.supsi.editor2d.frontend.gui.model;
 
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.model.task.FilterTask;
 import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.backend.model.task.Task;
 import ch.supsi.editor2d.backend.objectPresentation.FilterPresentable;
+import ch.supsi.editor2d.frontend.gui.controller.CellViewController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ListCell;
