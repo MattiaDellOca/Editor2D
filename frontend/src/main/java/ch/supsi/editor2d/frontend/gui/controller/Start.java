@@ -225,7 +225,7 @@ public class Start extends Application {
         =========  MEDIATOR SETUP  =======
         ==================================
          */
-        ToolbarMediator<DataModel> toolbarMediator = ToolbarMediator.create(model, undoMenuItem, redoMenuItem);
+        ToolbarMediator<DataModel> toolbarMediator = ToolbarMediator.create(model, undoMenuItem, redoMenuItem, exportMenuItem);
         MementoShortcutMediator<DataModel> mementoShortcutMediator = MementoShortcutMediator.create(model, mainView, undoKeyCombination, redoKeyCombination, undoCommand, redoCommand);
         SelectableFiltersMediator<DataModel> selectableFiltersMediator = SelectableFiltersMediator.create(model, selectableFilters);
         RunPipelineMediator<DataModel> runPipelineMediator = RunPipelineMediator.create(model, runPipelineMenuItem, runPipelineButton);
