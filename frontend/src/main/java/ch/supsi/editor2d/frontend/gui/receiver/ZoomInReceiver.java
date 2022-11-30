@@ -3,7 +3,7 @@ package ch.supsi.editor2d.frontend.gui.receiver;
 import ch.supsi.editor2d.frontend.gui.model.ZoomInHandler;
 import javafx.scene.image.ImageView;
 
-public class ZoomInReceiver {
+public class ZoomInReceiver implements ZoomInHandler {
     protected ZoomInHandler handler;
 
     protected ZoomInReceiver(ZoomInHandler handler) {
@@ -19,6 +19,7 @@ public class ZoomInReceiver {
         return new ZoomInReceiver(handler);
     }
 
+    @Override
     public void zoomIn(ImageView imageView) {
         handler.zoomIn(imageView);
     }

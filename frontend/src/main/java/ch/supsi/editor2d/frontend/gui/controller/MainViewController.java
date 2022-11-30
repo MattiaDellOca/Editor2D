@@ -98,6 +98,14 @@ public class MainViewController extends AbstractFXMLController {
         return runPipelineMenuItem;
     }
 
+    public Button getZoomInButton() {
+        return zoomInButton;
+    }
+
+    public Button getZoomOutButton() {
+        return zoomOutButton;
+    }
+
     /**
      * Initialize the model reference and set all the event handlers
      *

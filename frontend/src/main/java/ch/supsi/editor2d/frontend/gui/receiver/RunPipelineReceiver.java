@@ -2,7 +2,7 @@ package ch.supsi.editor2d.frontend.gui.receiver;
 
 import ch.supsi.editor2d.frontend.gui.model.RunPipelineHandler;
 
-public class RunPipelineReceiver {
+public class RunPipelineReceiver implements RunPipelineHandler {
 
     protected RunPipelineHandler handler;
 
@@ -19,6 +19,7 @@ public class RunPipelineReceiver {
         return new RunPipelineReceiver(handler);
     }
 
+    @Override
     public void runPipeline() {
         handler.runPipeline();
     }

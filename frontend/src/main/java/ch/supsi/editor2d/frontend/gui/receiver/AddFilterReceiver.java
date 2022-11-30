@@ -5,7 +5,7 @@ import ch.supsi.editor2d.frontend.gui.model.AddFilterHandler;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import ch.supsi.editor2d.frontend.gui.model.Observable;
 
-public class AddFilterReceiver <T extends Observable> extends AbstractController<DataModel> implements AddFilterHandler {
+public class AddFilterReceiver <T extends Observable> extends AbstractReceiver<DataModel> implements AddFilterHandler {
     protected AddFilterReceiver(DataModel model) {
         super(model);
     }

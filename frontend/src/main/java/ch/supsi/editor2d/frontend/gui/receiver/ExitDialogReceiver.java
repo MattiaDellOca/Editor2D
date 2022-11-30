@@ -9,7 +9,7 @@ import ch.supsi.editor2d.frontend.gui.model.OkHandler;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class ExitDialogReceiver<T extends Observable> extends AbstractController<Observable> implements ExitHandler,
+public class ExitDialogReceiver<T extends Observable> extends AbstractReceiver<Observable> implements ExitHandler,
         CancelHandler, OkHandler {
 
     protected Stage exitStage;

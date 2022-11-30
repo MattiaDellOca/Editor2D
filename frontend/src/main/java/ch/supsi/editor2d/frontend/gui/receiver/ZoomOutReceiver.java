@@ -3,7 +3,7 @@ package ch.supsi.editor2d.frontend.gui.receiver;
 import ch.supsi.editor2d.frontend.gui.model.ZoomOutHandler;
 import javafx.scene.image.ImageView;
 
-public class ZoomOutReceiver {
+public class ZoomOutReceiver implements ZoomOutHandler {
     protected ZoomOutHandler handler;
 
     protected ZoomOutReceiver(ZoomOutHandler handler) {
@@ -19,6 +19,7 @@ public class ZoomOutReceiver {
         return new ZoomOutReceiver(handler);
     }
 
+    @Override
     public void zoomOut(ImageView imageView) {
         handler.zoomOut(imageView);
     }

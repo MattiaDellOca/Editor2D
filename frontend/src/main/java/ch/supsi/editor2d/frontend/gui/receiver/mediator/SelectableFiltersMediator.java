@@ -1,15 +1,16 @@
-package ch.supsi.editor2d.frontend.gui.receiver;
+package ch.supsi.editor2d.frontend.gui.receiver.mediator;
 
 import ch.supsi.editor2d.backend.model.filter.Filter;
 import ch.supsi.editor2d.frontend.gui.event.ImageLoadedEvent;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import ch.supsi.editor2d.frontend.gui.model.Observable;
+import ch.supsi.editor2d.frontend.gui.receiver.AbstractReceiver;
 import javafx.scene.control.ListView;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class SelectableFiltersMediator<T extends Observable> extends AbstractController<DataModel> implements PropertyChangeListener {
+public class SelectableFiltersMediator<T extends Observable> extends AbstractReceiver<DataModel> implements PropertyChangeListener {
     private final ListView<Filter> selectableFilters;
 
     protected SelectableFiltersMediator(DataModel model, ListView<Filter> selectableFilters) {

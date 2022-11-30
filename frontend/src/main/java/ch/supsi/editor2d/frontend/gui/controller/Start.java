@@ -6,11 +6,14 @@ import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.backend.model.task.Task;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
 import ch.supsi.editor2d.frontend.gui.command.*;
+import ch.supsi.editor2d.frontend.gui.receiver.mediator.RunPipelineMediator;
+import ch.supsi.editor2d.frontend.gui.receiver.mediator.SelectableFiltersMediator;
 import ch.supsi.editor2d.frontend.gui.model.*;
 import ch.supsi.editor2d.frontend.gui.receiver.ExitDialogReceiver;
-import ch.supsi.editor2d.frontend.gui.receiver.ToolbarMediator;
+import ch.supsi.editor2d.frontend.gui.receiver.mediator.ToolbarMediator;
 import ch.supsi.editor2d.frontend.gui.receiver.UndoRedoReceiver;
 import ch.supsi.editor2d.frontend.gui.receiver.*;
+import ch.supsi.editor2d.frontend.gui.receiver.mediator.ZoomMediator;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -74,7 +77,6 @@ public class Start extends Application {
         FXMLLoader filterSelectionViewLoader = new FXMLLoader(getClass().getResource("/view/filtersListView.fxml"));
         Parent filterSelectionView = filterSelectionViewLoader.load();
         FiltersSelectionViewController filtersSelectionViewController = filterSelectionViewLoader.getController();
-        ListView<Filter> selectableFilters = filtersSelectionViewController.getFilterSelectionList();
 
         //Pipeline View page
         FXMLLoader pipelineViewLoader = new FXMLLoader(getClass().getResource("/view/pipelineView.fxml"));
@@ -90,13 +92,22 @@ public class Start extends Application {
          */
         MenuItem undoMenuItem = mainViewController.getUndoMenuItem();
         MenuItem redoMenuItem = mainViewController.getRedoMenuItem();
-        MenuItem runPipelineMenuItem = mainViewController.getRunPipelineMenuItem();
-        Button runPipelineButton = pipelineViewController.getRunPipeline();
-        ToolbarMediator<DataModel> toolbarMediator = ToolbarMediator.create(model, undoMenuItem, redoMenuItem, runPipelineMenuItem, runPipelineButton);
+        ToolbarMediator<DataModel> toolbarMediator = ToolbarMediator.create(model, undoMenuItem, redoMenuItem);
         model.addPropertyChangeListener(toolbarMediator);
 
+        ListView<Filter> selectableFilters = filtersSelectionViewController.getFilterSelectionList();
         SelectableFiltersMediator<DataModel> selectableFiltersMediator = SelectableFiltersMediator.create(model, selectableFilters);
         model.addPropertyChangeListener(selectableFiltersMediator);
+
+        MenuItem runPipelineMenuItem = mainViewController.getRunPipelineMenuItem();
+        Button runPipelineButton = pipelineViewController.getRunPipeline();
+        RunPipelineMediator<DataModel> runPipelineMediator = RunPipelineMediator.create(model, runPipelineMenuItem, runPipelineButton);
+        model.addPropertyChangeListener(runPipelineMediator);
+
+        Button zoomInButton = mainViewController.zoomInButton;
+        Button zoomOutButton = mainViewController.zoomOutButton;
+        ZoomMediator<DataModel> zoomMediator = ZoomMediator.create(model, zoomInButton, zoomOutButton);
+        model.addPropertyChangeListener(zoomMediator);
 
         /*
         ==================================
@@ -141,6 +152,7 @@ public class Start extends Application {
             Task<ImageWrapper, FilterTaskResult> selectedTask = pipelineViewController.getSelectedTask();
             removeFilterCommand.execute(selectedTask);
         });
+
         // Selectable filters
         ObservableList<Filter> filters = FXCollections.observableArrayList(FILTERS);
         selectableFilters.setItems(filters);
