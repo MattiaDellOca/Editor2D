@@ -55,18 +55,16 @@
               <right>
                   <HBox spacing="10.0" BorderPane.alignment="CENTER">
                       <BorderPane.margin>
-                          <Insets top="10.0"/>
+                          <Insets top="10.0" />
                       </BorderPane.margin>
-                      <Button mnemonicParsing="false" onAction="#close" style="-fx-background-color: #DE1A1A#DE1A1A;" text="Abort"
-                              textFill="WHITE">
+                      <Button mnemonicParsing="false" onAction="#close" style="-fx-background-color: #DE1A1A#DE1A1A;" text="Abort" textFill="WHITE">
                           <font>
-                              <Font name="System Bold" size="13.0"/>
+                              <Font name="System Bold" size="13.0" />
                           </font>
                       </Button>
-                      <Button mnemonicParsing="false" onAction="#exportImage" style="-fx-background-color: #1983CA;"
-                              text="Export image" textFill="WHITE">
+                      <Button fx:id="exportButton" mnemonicParsing="false" style="-fx-background-color: #1983CA;" text="Export image" textFill="WHITE">
                           <font>
-                              <Font name="System Bold" size="13.0"/>
+                              <Font name="System Bold" size="13.0" />
                           </font>
                       </Button>
                   </HBox>

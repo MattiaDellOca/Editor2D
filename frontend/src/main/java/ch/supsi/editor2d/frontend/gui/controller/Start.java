@@ -4,7 +4,6 @@ import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.model.filter.*;
 import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.backend.model.task.Task;
-import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
 import ch.supsi.editor2d.frontend.gui.command.*;
 import ch.supsi.editor2d.frontend.gui.handler.*;
 import ch.supsi.editor2d.frontend.gui.receiver.mediator.*;
@@ -25,6 +24,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -72,6 +72,7 @@ public class Start extends Application {
         FXMLLoader mainViewLoader = new FXMLLoader(getClass().getResource("/view/mainView.fxml"));
         Parent mainView = mainViewLoader.load();
         MainViewController mainViewController = mainViewLoader.getController();
+        mainViewController.initModel(model);
 
         // Filter selection View page
         FXMLLoader filterSelectionViewLoader = new FXMLLoader(getClass().getResource("/view/filtersListView.fxml"));
@@ -84,6 +85,14 @@ public class Start extends Application {
         PipelineViewController pipelineViewController = pipelineViewLoader.getController();
         pipelineViewController.initModel(model);
         Button removeFilterButton = pipelineViewController.getRemoveFilter();
+
+
+        // Export stage page
+        FXMLLoader exportLoader = new FXMLLoader(getClass().getResource("/view/exportView.fxml"));
+        Stage exportStage = new Stage();
+        exportStage.setTitle("Export Image");
+        exportStage.setScene(new Scene(exportLoader.load()));
+        ExportViewController exportViewController = exportLoader.getController();
 
         // Set imageView.fxml inside mainView.fxml
         AnchorPane imagePane = mainViewController.getImagePane();
@@ -125,6 +134,7 @@ public class Start extends Application {
         Button zoomOutButton = mainViewController.getZoomOutButton();
         MenuItem openMenuItem = mainViewController.getOpenMenuItem();
         MenuItem exportMenuItem = mainViewController.getExportMenuItem();
+        Button exportButton = exportViewController.getExportButton();
 
         /*
         ==================================
@@ -140,6 +150,7 @@ public class Start extends Application {
         AddFilterReceiver<DataModel> addFilterReceiver = AddFilterReceiver.create(model);
         RemoveFilterReceiver<DataModel> removeFilterReceiver = RemoveFilterReceiver.create(model);
         OpenFileReceiver<DataModel> openFileReceiver = OpenFileReceiver.create(model);
+        ExportReceiver exportReceiver = ExportReceiver.create(model);
 
         /*
         ==================================
@@ -162,6 +173,8 @@ public class Start extends Application {
         ZoomOutCommand zoomOutCommand = ZoomOutCommand.create(zoomOutReceiver);
 
         OpenFileCommand openFileCommand = OpenFileCommand.create(openFileReceiver);
+        ExportPageCommand exportPageCommand = ExportPageCommand.create(exportReceiver);
+        ExportImageCommand exportImageCommand = ExportImageCommand.create(exportReceiver);
 
         // Set commands
         exitDialogReceiver.setCancelCommand(cancelCommand);
@@ -173,7 +186,8 @@ public class Start extends Application {
             removeFilterCommand.execute(selectedTask);
         });
         openMenuItem.setOnAction(actionEvent -> openFileCommand.execute());
-
+        exportMenuItem.setOnAction(actionEvent -> exportPageCommand.execute(exportStage));
+        exportButton.setOnAction(actionEvent -> exportImageCommand.execute(exportViewController.exportImage()));
 
         // Selectable filters
         ObservableList<Filter> filters = FXCollections.observableArrayList(FILTERS);
@@ -193,22 +207,7 @@ public class Start extends Application {
         mainViewController.getZoomOutButton().setOnAction(actionEvent ->
                 zoomOutCommand.execute(imageViewLoader.<ImageViewController>getController().getImageView()));
 
-        mainViewController.init(model, SUPPORTED_FORMATS);
-
         pipelineViewController.getRunPipeline().setOnAction(actionEvent -> runPipelineCommand.execute());
-        // Export stage page
-        FXMLLoader exportLoader = new FXMLLoader(getClass().getResource("/view/exportView.fxml"));
-        Stage exportStage = new Stage();
-        exportStage.setTitle("Export Image");
-        exportStage.setScene(new Scene(exportLoader.load()));
-        ExportViewController exportViewController = exportLoader.getController();
-        exportViewController.init(SUPPORTED_FORMATS);
-        exportViewController.setOnExport(event -> {
-            // Close the export stage
-            exportStage.close();
-            // Start exporting image
-            model.exportImage(event.getExport());
-        });
 
          /*
         ==================================
@@ -250,24 +249,6 @@ public class Start extends Application {
         model.addPropertyChangeListener(runPipelineMediator);
         model.addPropertyChangeListener(zoomMediator);
         model.addPropertyChangeListener(zoomShortcutMediator);
-
-        /*
-        ==================================
-        =========  OTHER SETUP  ==========
-        ==================================
-         */
-
-        // Export handling
-        mainViewController.setOnExportClicked(e -> {
-            // Check if image is load
-            if (model.getImageData() != null) {
-                // Show export stage
-                exportStage.show();
-            } else {
-                ErrorAlert.showError("Please load an image before exporting it.");
-            }
-        });
-
 
         // Set main window title + show page
         stage.setTitle("Editor2D");

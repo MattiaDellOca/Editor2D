@@ -2,10 +2,8 @@ package ch.supsi.editor2d.frontend.gui.controller;
 
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
 import ch.supsi.editor2d.frontend.gui.event.util.FileExport;
-import ch.supsi.editor2d.frontend.gui.event.FileExportEvent;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -13,7 +11,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 
 import java.io.File;
-import java.util.Collection;
 
 public class ExportViewController {
 
@@ -21,40 +18,38 @@ public class ExportViewController {
      * The filename field (FXML injected)
      */
     @FXML
-    public TextField filename;
+    private TextField filename;
 
     /**
      * The destination directory object
      */
-    public File destinationDir;
+    private File destinationDir;
 
     /**
      * The file format combo box (FXML injected)
      */
     @FXML
-    public ComboBox<String> extension;
+    private ComboBox<String> extension;
 
     /**
      * The export button (FXML injected)
      */
     @FXML
-    public Button browseDir;
+    private Button browseDir;
 
     /**
      * The export directory path  (FXML injected)
      */
     @FXML
-    public TextField exportDirectory;
+    private TextField exportDirectory;
+
+    @FXML
+    private Button exportButton;
 
     /**
      * List of the supported export file formats (empty by default)
      */
     private final ObservableList<String> supportedFormats = FXCollections.observableArrayList();
-
-    /**
-     * The event handler to be called when the user clicks on the export button.
-     */
-    private EventHandler<FileExportEvent> onExport = event -> {};
 
     /**
      * Directory chooser used to select the destination directory
@@ -63,11 +58,11 @@ public class ExportViewController {
 
     /**
      * Initialize the controller
-     * @param supportedFormat the supported export file formats
      */
-    public void init (Collection<String> supportedFormat) {
+    @FXML
+    public void initialize() {
         // Setup supported formats
-        setSupportedFormat(supportedFormat);
+        setSupportedFormat();
 
         // Setup Directory picker
         chooser = new DirectoryChooser();
@@ -87,10 +82,14 @@ public class ExportViewController {
         });
     }
 
+    public Button getExportButton() {
+        return exportButton;
+    }
+
     /**
      * Export image action
      */
-    public void exportImage() {
+    public FileExport exportImage() {
         if (chooser == null) {
             throw new IllegalArgumentException("CRITICAL ERROR! Controller not initialized!");
         } else {
@@ -112,41 +111,33 @@ public class ExportViewController {
                                 destinationDir,
                                 extension.getValue()
                         );
-                        // Fire the event + target is the current instance
-                        onExport.handle(new FileExportEvent(export, browseDir.getScene().getWindow()));
-
                         // Close the window
                         close();
+                        // Return the export object
+                        return export;
                     }
                 }
             }
         }
+        return null;
     }
 
     /**
      * Set the supported file formats
-     * @param supportedFormat the supported file formats
      */
-    public void setSupportedFormat(Collection<String> supportedFormat) {
+    private void setSupportedFormat() {
         // Set the supported file formats
-        this.supportedFormats.addAll(supportedFormat);
+        this.supportedFormats.addAll(Start.SUPPORTED_FORMATS);
         // Set the supported file formats
         extension.setItems(supportedFormats);
-        this.extension.setValue(supportedFormat.iterator().next());
-    }
-
-    /**
-     * Set the event handler to be called when the user clicks on the export button.
-     * @param handler the event handler
-     */
-    public void setOnExport(EventHandler<FileExportEvent> handler) {
-        this.onExport = handler;
+        this.extension.setValue(Start.SUPPORTED_FORMATS.iterator().next());
     }
 
     /**
      * Close export window
      */
-    public void close() {
+    @FXML
+    private void close() {
         // Close window
         filename.getScene().getWindow().hide();
 

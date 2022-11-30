@@ -89,7 +89,7 @@
        <MenuBar BorderPane.alignment="CENTER">
            <Menu mnemonicParsing="false" text="File">
                <MenuItem fx:id="openMenuItem" mnemonicParsing="false" text="Open" />
-               <MenuItem fx:id="exportMenuItem" mnemonicParsing="false" onAction="#onExport" text="Export image" />
+               <MenuItem fx:id="exportMenuItem" mnemonicParsing="false" text="Export image" />
                <MenuItem fx:id="exitMenuItem" mnemonicParsing="false" text="Close" />
            </Menu>
            <Menu mnemonicParsing="false" text="Edit">

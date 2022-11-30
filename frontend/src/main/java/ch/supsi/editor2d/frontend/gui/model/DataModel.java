@@ -27,7 +27,7 @@ import static ch.supsi.editor2d.frontend.gui.controller.Start.SUPPORTED_FORMATS;
  * Data model that holds the application data and login throughout the application.
  */
 public class DataModel extends Observable implements RunPipelineHandler, AboutHandler,
-        ZoomInHandler, ZoomOutHandler, UndoRedoHandler, AddFilterHandler, RemoveFilterHandler, OpenFileHandler {
+        ZoomInHandler, ZoomOutHandler, UndoRedoHandler, AddFilterHandler, RemoveFilterHandler, OpenFileHandler, ExportHandler {
 
     // Value used for zoom in/out functions
     private static final double ZOOM_FACTOR = 1.1;
@@ -99,23 +99,7 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
         }
     }
 
-    /**
-     * Export the current image to a file with a specific format and path
-     * @param exportReq export request object, containing all the needed information
-     */
-    public void exportImage (FileExport exportReq) {
-        try {
-            // Try to export image into selected directory
-            imageController.exportImage(exportReq.getFilename(), exportReq.getExtension(), exportReq.getDestination(), imageData);
 
-            // the image has been successfully saved, therefore there aren't any pending changes
-            setChanged(false);
-        } catch (FileWritingException e) {
-            //Show Alert
-            System.err.println(e.getMessage());
-            ErrorAlert.showError(e.getMessage());
-        }
-    }
 
     @Override
     public void addFilter(Filter filter) {
@@ -166,6 +150,34 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
     @Override
     public void about(Stage aboutStage) {
         aboutStage.show();
+    }
+
+    /**
+     * Show the "export stage"
+     * @param exportStage stage to be shown
+     */
+    @Override
+    public void exportPage(Stage exportStage) {
+        exportStage.show();
+    }
+
+    /**
+     * Export the current image to a file with a specific format and path
+     * @param exportReq export request object, containing all the needed information
+     */
+    @Override
+    public void exportImage (FileExport exportReq) {
+        try {
+            // Try to export image into selected directory
+            imageController.exportImage(exportReq.getFilename(), exportReq.getExtension(), exportReq.getDestination(), imageData);
+
+            // the image has been successfully saved, therefore there aren't any pending changes
+            setChanged(false);
+        } catch (FileWritingException e) {
+            //Show Alert
+            System.err.println(e.getMessage());
+            ErrorAlert.showError(e.getMessage());
+        }
     }
 
     /**

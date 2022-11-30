@@ -5,6 +5,7 @@ import javafx.event.EventType;
 
 import java.io.File;
 
+//TODO: delete this class
 public class FileOpenEvent extends Event {
 
     public static final EventType<FileOpenEvent> FILE_DROPPED = new EventType<>(Event.ANY, "FILE_DROPPED");

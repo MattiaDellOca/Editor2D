@@ -1,28 +1,22 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
-import ch.supsi.editor2d.backend.model.ColorWrapper;
-import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.frontend.gui.event.FileOpenEvent;
 import ch.supsi.editor2d.frontend.gui.event.ImageLoadedEvent;
 import ch.supsi.editor2d.frontend.gui.event.RedoneEvent;
 import ch.supsi.editor2d.frontend.gui.event.UndoneEvent;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 
 import java.beans.PropertyChangeEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
+
+import static ch.supsi.editor2d.frontend.gui.controller.Start.SUPPORTED_FORMATS;
 
 /**
  * Main view controller that handles the main view logic.
@@ -48,13 +42,6 @@ public class MainViewController extends AbstractFXMLController {
     @FXML
     private Button zoomOutButton;
 
-
-
-    /**
-     * List of supported file extensions
-     */
-    private Collection<String> SUPPORTED_FORMATS;
-
     /**
      * Scroll pane for filter selection FXML
      */
@@ -77,13 +64,6 @@ public class MainViewController extends AbstractFXMLController {
      */
     private EventHandler<FileOpenEvent> onFileOpened = event -> {
     };
-
-    /**
-     * Export file action event handler
-     */
-    private EventHandler<ActionEvent> onExportClicked = event -> {
-    };
-
 
     /**
      * Image pane reference
@@ -129,20 +109,15 @@ public class MainViewController extends AbstractFXMLController {
 
     /**
      * Initialize the model reference and set all the event handlers
-     *
      * @param model Data model
-     * @param supportedFormats List of supported file extensions
      */
-    public void init(DataModel model, final Collection<String> supportedFormats) {
+    public void initModel(DataModel model) {
 
         // ensure model is only set once
         if (this.model != null) {
             throw new IllegalStateException("Model can only be initialized once");
         }
         this.model = model;
-
-        // Setup supported formats
-        this.SUPPORTED_FORMATS = supportedFormats;
 
         // set event handlers + load about view
         try {
@@ -186,6 +161,7 @@ public class MainViewController extends AbstractFXMLController {
             // If drop was successful, open the file
             if (success) {
                 // Fire file dropped event
+
                 onFileOpened.handle(new FileOpenEvent(dragEvent.getDragboard().getFiles().get(0), imagePane));
             }
 
@@ -212,15 +188,6 @@ public class MainViewController extends AbstractFXMLController {
     }
 
     /**
-     * Set the export clicked event handler
-     * @param event Export clicked event
-     */
-    public void setOnExportClicked(EventHandler<ActionEvent> event) {
-        this.onExportClicked = event;
-    }
-
-
-    /**
      * Get the image pane reference
      *
      * @return Image pane
@@ -241,13 +208,6 @@ public class MainViewController extends AbstractFXMLController {
         return pipelinePane;
     }
 
-
-    /**
-     * Handle image export action
-     */
-    public void onExport(ActionEvent e) {
-        onExportClicked.handle(e);
-    }
 
     @Override
     public void propertyChange(PropertyChangeEvent event) {
