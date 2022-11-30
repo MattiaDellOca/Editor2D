@@ -6,28 +6,31 @@ import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.backend.model.task.Task;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
 import ch.supsi.editor2d.frontend.gui.command.*;
-import ch.supsi.editor2d.frontend.gui.receiver.mediator.RunPipelineMediator;
-import ch.supsi.editor2d.frontend.gui.receiver.mediator.SelectableFiltersMediator;
+import ch.supsi.editor2d.frontend.gui.receiver.mediator.*;
 import ch.supsi.editor2d.frontend.gui.model.*;
 import ch.supsi.editor2d.frontend.gui.receiver.ExitDialogReceiver;
-import ch.supsi.editor2d.frontend.gui.receiver.mediator.ToolbarMediator;
 import ch.supsi.editor2d.frontend.gui.receiver.UndoRedoReceiver;
 import ch.supsi.editor2d.frontend.gui.receiver.*;
-import ch.supsi.editor2d.frontend.gui.receiver.mediator.ZoomMediator;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
+import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.util.Arrays;
 import java.util.Collection;
+
+import static javafx.scene.input.KeyEvent.KEY_PRESSED;
 
 public class Start extends Application {
 
@@ -85,29 +88,45 @@ public class Start extends Application {
         pipelineViewController.initModel(model);
         Button removeFilterButton = pipelineViewController.getRemoveFilter();
 
+        // Set imageView.fxml inside mainView.fxml
+        AnchorPane imagePane = mainViewController.getImagePane();
+        imagePane.getChildren().add(imageView);
+        AnchorPane.setBottomAnchor(imageView, 0.0);
+        AnchorPane.setTopAnchor(imageView, 0.0);
+        AnchorPane.setLeftAnchor(imageView, 0.0);
+        AnchorPane.setRightAnchor(imageView, 0.0);
+
+        // Set FilterSelectionView inside mainView
+        AnchorPane filtersSelectionPane = mainViewController.getFiltersListPane();
+        filtersSelectionPane.getChildren().setAll(filterSelectionView);
+        AnchorPane.setBottomAnchor(filterSelectionView, 0.0);
+        AnchorPane.setTopAnchor(filterSelectionView, 0.0);
+        AnchorPane.setLeftAnchor(filterSelectionView, 0.0);
+        AnchorPane.setRightAnchor(filterSelectionView, 0.0);
+
+
+        // Set PipelineView inside mainView
+        AnchorPane pipelinePane = mainViewController.getPipelinePane();
+        pipelinePane.getChildren().setAll(pipelineView);
+        AnchorPane.setBottomAnchor(pipelineView, 0.0);
+        AnchorPane.setTopAnchor(pipelineView, 0.0);
+        AnchorPane.setLeftAnchor(pipelineView, 0.0);
+        AnchorPane.setRightAnchor(pipelineView, 0.0);
+
+
         /*
         ==================================
-        =========  MEDIATOR SETUP  =======
+        ===========  COMPONENTS  =========
         ==================================
          */
         MenuItem undoMenuItem = mainViewController.getUndoMenuItem();
         MenuItem redoMenuItem = mainViewController.getRedoMenuItem();
-        ToolbarMediator<DataModel> toolbarMediator = ToolbarMediator.create(model, undoMenuItem, redoMenuItem);
-        model.addPropertyChangeListener(toolbarMediator);
-
         ListView<Filter> selectableFilters = filtersSelectionViewController.getFilterSelectionList();
-        SelectableFiltersMediator<DataModel> selectableFiltersMediator = SelectableFiltersMediator.create(model, selectableFilters);
-        model.addPropertyChangeListener(selectableFiltersMediator);
-
         MenuItem runPipelineMenuItem = mainViewController.getRunPipelineMenuItem();
         Button runPipelineButton = pipelineViewController.getRunPipeline();
-        RunPipelineMediator<DataModel> runPipelineMediator = RunPipelineMediator.create(model, runPipelineMenuItem, runPipelineButton);
-        model.addPropertyChangeListener(runPipelineMediator);
-
         Button zoomInButton = mainViewController.zoomInButton;
         Button zoomOutButton = mainViewController.zoomOutButton;
-        ZoomMediator<DataModel> zoomMediator = ZoomMediator.create(model, zoomInButton, zoomOutButton);
-        model.addPropertyChangeListener(zoomMediator);
+
 
         /*
         ==================================
@@ -142,6 +161,7 @@ public class Start extends Application {
         AboutCommand aboutCommand = AboutCommand.create(aboutReceiver);
         ZoomInCommand zoomInCommand = ZoomInCommand.create(zoomInReceiver);
         ZoomOutCommand zoomOutCommand = ZoomOutCommand.create(zoomOutReceiver);
+
 
         // Set commands
         exitDialogReceiver.setCancelCommand(cancelCommand);
@@ -188,13 +208,51 @@ public class Start extends Application {
             model.exportImage(event.getExport());
         });
 
-        // Set imageView.fxml inside mainView.fxml
-        AnchorPane imagePane = mainViewController.getImagePane();
-        imagePane.getChildren().add(imageView);
-        AnchorPane.setBottomAnchor(imageView, 0.0);
-        AnchorPane.setTopAnchor(imageView, 0.0);
-        AnchorPane.setLeftAnchor(imageView, 0.0);
-        AnchorPane.setRightAnchor(imageView, 0.0);
+         /*
+        ==================================
+        =========  SHORTCUTS SETUP  ======
+        ==================================
+         */
+
+        KeyCombination undoKeyCombination = new KeyCodeCombination(KeyCode.Z, KeyCombination.CONTROL_DOWN);
+        KeyCombination redoKeyCombination = new KeyCodeCombination(KeyCode.Y, KeyCombination.CONTROL_DOWN);
+        KeyCombination zoomInKeyCombination = new KeyCodeCombination(KeyCode.ADD, KeyCombination.CONTROL_DOWN);
+        KeyCombination zoomOutKeyCombination = new KeyCodeCombination(KeyCode.SUBTRACT, KeyCombination.CONTROL_DOWN);
+
+        /*
+        ==================================
+        =========  MEDIATOR SETUP  =======
+        ==================================
+         */
+        ToolbarMediator<DataModel> toolbarMediator = ToolbarMediator.create(model, undoMenuItem, redoMenuItem);
+        SelectableFiltersMediator<DataModel> selectableFiltersMediator = SelectableFiltersMediator.create(model, selectableFilters);
+        RunPipelineMediator<DataModel> runPipelineMediator = RunPipelineMediator.create(model, runPipelineMenuItem, runPipelineButton);
+        ZoomMediator<DataModel> zoomMediator = ZoomMediator.create(model, zoomInButton, zoomOutButton);
+        ZoomShortcutMediator<DataModel> zoomShortcutMediator = ZoomShortcutMediator.create(model, mainView, zoomInKeyCombination, zoomOutKeyCombination, zoomInCommand, zoomOutCommand, imageViewLoader.getController());
+
+        /*
+        ==================================
+        =======  OBSERVER SETUP  =========
+        ==================================
+         */
+
+        model.addPropertyChangeListener(imageViewLoader.getController());
+        model.addPropertyChangeListener(mainViewLoader.getController());
+        model.addPropertyChangeListener(pipelineViewLoader.getController());
+
+        //mediator listener
+        model.addPropertyChangeListener(toolbarMediator);
+        model.addPropertyChangeListener(selectableFiltersMediator);
+        model.addPropertyChangeListener(runPipelineMediator);
+        model.addPropertyChangeListener(zoomMediator);
+        model.addPropertyChangeListener(zoomShortcutMediator);
+
+        /*
+        ==================================
+        =========  OTHER SETUP  ==========
+        ==================================
+         */
+
 
         // File visualization handling
         mainViewController.setOnFileOpen(e -> {
@@ -215,32 +273,19 @@ public class Start extends Application {
             }
         });
 
-        // Set FilterSelectionView inside mainView
-        AnchorPane filtersSelectionPane = mainViewController.getFiltersListPane();
-        filtersSelectionPane.getChildren().setAll(filterSelectionView);
-        AnchorPane.setBottomAnchor(filterSelectionView, 0.0);
-        AnchorPane.setTopAnchor(filterSelectionView, 0.0);
-        AnchorPane.setLeftAnchor(filterSelectionView, 0.0);
-        AnchorPane.setRightAnchor(filterSelectionView, 0.0);
-
-
-        // Set PipelineView inside mainView
-        AnchorPane pipelinePane = mainViewController.getPipelinePane();
-        pipelinePane.getChildren().setAll(pipelineView);
-        AnchorPane.setBottomAnchor(pipelineView, 0.0);
-        AnchorPane.setTopAnchor(pipelineView, 0.0);
-        AnchorPane.setLeftAnchor(pipelineView, 0.0);
-        AnchorPane.setRightAnchor(pipelineView, 0.0);
 
         // Set main window title + show page
         stage.setTitle("Editor2D");
         stage.setScene(new Scene(mainView));
         stage.show();
 
-        // observers
-        model.addPropertyChangeListener(imageViewLoader.getController());
-        model.addPropertyChangeListener(mainViewLoader.getController());
-        model.addPropertyChangeListener(pipelineViewLoader.getController());
+
+        // Override close request
+        Platform.setImplicitExit(false);
+        stage.setOnCloseRequest(windowEvent -> {
+            windowEvent.consume();
+            exitCommand.execute();
+        });
     }
 
     public static void main(String[] args) {
