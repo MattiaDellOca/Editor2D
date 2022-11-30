@@ -1,11 +1,7 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
-import ch.supsi.editor2d.frontend.gui.event.FileOpenEvent;
-import ch.supsi.editor2d.frontend.gui.event.ImageLoadedEvent;
 import ch.supsi.editor2d.frontend.gui.event.RedoneEvent;
 import ch.supsi.editor2d.frontend.gui.event.UndoneEvent;
-import ch.supsi.editor2d.frontend.gui.model.DataModel;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
@@ -15,9 +11,6 @@ import javafx.stage.DirectoryChooser;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
-import java.io.IOException;
-
-import static ch.supsi.editor2d.frontend.gui.controller.Start.SUPPORTED_FORMATS;
 
 /**
  * Main view controller that handles the main view logic.
@@ -54,12 +47,6 @@ public class MainViewController implements PropertyChangeListener {
      */
     @FXML
     private AnchorPane pipelinePane;
-
-    /**
-     * File drop event handler
-     */
-    private EventHandler<FileOpenEvent> onFileOpened = event -> {
-    };
 
     /**
      * Image pane reference
@@ -107,70 +94,10 @@ public class MainViewController implements PropertyChangeListener {
     @FXML
     public void initialize() {
         // set event handlers + load about view
-        try {
-            initEventHandlers();
-        } catch (IOException e) {
-            throw new IllegalStateException("Unable to load about view, please check the resources folder");
-        }
-    }
-
-    private void initEventHandlers() throws IOException {
-
-        // Open directory chooser
-        DirectoryChooser directoryChooser = new DirectoryChooser();
-        directoryChooser.setTitle("Export location");
-        directoryChooser.setInitialDirectory(
-                new File(System.getProperty("user.home"))
-        );
-
-        // Enable drag and drop to imagePane component
-        imagePane.setOnDragOver(dragEvent -> {
-            if (
-                    dragEvent.getGestureSource() != imagePane
-                            && dragEvent.getDragboard().hasFiles()
-                            && isSupportedFormat(dragEvent.getDragboard().getFiles().get(0))
-            ) {
-                dragEvent.acceptTransferModes(javafx.scene.input.TransferMode.COPY_OR_MOVE);
-            }
-            dragEvent.consume();
-        });
-
-        // Handle image drop
-        imagePane.setOnDragDropped(dragEvent -> {
-            boolean success = dragEvent.getDragboard().hasFiles()
-                    && dragEvent.getDragboard().getFiles().size() == 1
-                    && isSupportedFormat(dragEvent.getDragboard().getFiles().get(0));
-
-            // handle response
-            dragEvent.setDropCompleted(success);
-
-            // If drop was successful, open the file
-            if (success) {
-                // Fire file dropped event
-
-                onFileOpened.handle(new FileOpenEvent(dragEvent.getDragboard().getFiles().get(0), imagePane));
-            }
-
-            // Consume event
-            dragEvent.consume();
-        });
-    }
-
-    /**
-     * Check if the file extension is supported
-     *
-     * @param file File to check
-     * @return true if the file extension is supported, false otherwise
-     */
-    private boolean isSupportedFormat(File file) {
-        // Check if file is supported
-        String extension = file.getName().substring(file.getName().lastIndexOf(".") + 1);
-        for (String format : SUPPORTED_FORMATS) {
-            if (extension.equals(format)) {
-                return true;
-            }
-        }
-        return false;
+            // Open directory chooser
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            directoryChooser.setTitle("Export location");
+            directoryChooser.setInitialDirectory(new File(System.getProperty("user.home")));
     }
 
     /**
@@ -188,6 +115,7 @@ public class MainViewController implements PropertyChangeListener {
 
     /**
      * Get the pipeline pane reference
+     *
      * @return Pipeline Pane
      */
     public AnchorPane getPipelinePane() {
@@ -197,12 +125,12 @@ public class MainViewController implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent event) {
-        if(event instanceof UndoneEvent) {
+        if (event instanceof UndoneEvent) {
             // TODO: 26/11/2022 Implement undone operation through memento pattern
             System.out.println("Something was undone!");
         }
 
-        if(event instanceof RedoneEvent) {
+        if (event instanceof RedoneEvent) {
             // TODO: 26/11/2022 Implement redone operation through memento pattern
             System.out.println("Something was redone!");
         }
