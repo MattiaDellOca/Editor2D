@@ -2,6 +2,7 @@ package ch.supsi.editor2d.frontend.gui.receiver.mediator;
 
 import ch.supsi.editor2d.frontend.gui.event.AddedFilterEvent;
 import ch.supsi.editor2d.frontend.gui.event.RedoneEvent;
+import ch.supsi.editor2d.frontend.gui.event.RemovedFilterEvent;
 import ch.supsi.editor2d.frontend.gui.event.UndoneEvent;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import ch.supsi.editor2d.frontend.gui.model.Observable;
@@ -45,9 +46,10 @@ public class ToolbarMediator<T extends Observable> extends AbstractReceiver<Data
     public void propertyChange(PropertyChangeEvent event) {
         if (event instanceof AddedFilterEvent) {
             this.enableDisableButtons();
+        }else if (event instanceof RemovedFilterEvent) {
+            this.enableDisableButtons();
         } else if (event instanceof UndoneEvent) {
             this.enableDisableButtons();
-
         } else if (event instanceof RedoneEvent) {
             this.enableDisableButtons();
         }

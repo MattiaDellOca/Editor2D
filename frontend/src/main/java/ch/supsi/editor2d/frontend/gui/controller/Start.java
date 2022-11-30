@@ -225,6 +225,7 @@ public class Start extends Application {
         ==================================
          */
         ToolbarMediator<DataModel> toolbarMediator = ToolbarMediator.create(model, undoMenuItem, redoMenuItem);
+        MementoShortcutMediator<DataModel> mementoShortcutMediator = MementoShortcutMediator.create(model, mainView, undoKeyCombination, redoKeyCombination, undoCommand, redoCommand);
         SelectableFiltersMediator<DataModel> selectableFiltersMediator = SelectableFiltersMediator.create(model, selectableFilters);
         RunPipelineMediator<DataModel> runPipelineMediator = RunPipelineMediator.create(model, runPipelineMenuItem, runPipelineButton);
         ZoomMediator<DataModel> zoomMediator = ZoomMediator.create(model, zoomInButton, zoomOutButton);
@@ -242,6 +243,7 @@ public class Start extends Application {
 
         //mediator listener
         model.addPropertyChangeListener(toolbarMediator);
+        model.addPropertyChangeListener(mementoShortcutMediator);
         model.addPropertyChangeListener(selectableFiltersMediator);
         model.addPropertyChangeListener(runPipelineMediator);
         model.addPropertyChangeListener(zoomMediator);
