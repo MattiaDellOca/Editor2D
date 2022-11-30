@@ -141,16 +141,16 @@ public class Start extends Application {
         =========  RECEIVER SETUP  =======
         ==================================
          */
-        RunPipelineReceiver runPipelineReceiver = RunPipelineReceiver.create(model);
-        AboutReceiver aboutReceiver = AboutReceiver.create(model);
-        ZoomInReceiver zoomInReceiver = ZoomInReceiver.create(model);
-        ZoomOutReceiver zoomOutReceiver = ZoomOutReceiver.create(model);
-        ExitDialogReceiver<Observable> exitDialogReceiver = ExitDialogReceiver.create(model, exitStage, stage);
+        RunPipelineReceiver<DataModel> runPipelineReceiver = RunPipelineReceiver.create(model);
+        AboutReceiver<DataModel> aboutReceiver = AboutReceiver.create(model);
+        ZoomInReceiver<DataModel> zoomInReceiver = ZoomInReceiver.create(model);
+        ZoomOutReceiver<DataModel> zoomOutReceiver = ZoomOutReceiver.create(model);
+        ExitDialogReceiver<DataModel> exitDialogReceiver = ExitDialogReceiver.create(model, exitStage, stage);
         UndoRedoReceiver<DataModel> undoRedoReceiver = UndoRedoReceiver.create(model);
         AddFilterReceiver<DataModel> addFilterReceiver = AddFilterReceiver.create(model);
         RemoveFilterReceiver<DataModel> removeFilterReceiver = RemoveFilterReceiver.create(model);
         OpenFileReceiver<DataModel> openFileReceiver = OpenFileReceiver.create(model);
-        ExportReceiver exportReceiver = ExportReceiver.create(model);
+        ExportReceiver<DataModel> exportReceiver = ExportReceiver.create(model);
 
         /*
         ==================================
@@ -167,14 +167,14 @@ public class Start extends Application {
         AddFilterCommand<AddFilterHandler> addFilterCommand = AddFilterCommand.create(addFilterReceiver);
         RemoveFilterCommand<RemoveFilterHandler> removeFilterCommand = RemoveFilterCommand.create(removeFilterReceiver);
 
-        RunPipelineCommand runPipelineCommand = RunPipelineCommand.create(runPipelineReceiver);
-        AboutCommand aboutCommand = AboutCommand.create(aboutReceiver);
-        ZoomInCommand zoomInCommand = ZoomInCommand.create(zoomInReceiver);
-        ZoomOutCommand zoomOutCommand = ZoomOutCommand.create(zoomOutReceiver);
+        RunPipelineCommand<RunPipelineHandler> runPipelineCommand = RunPipelineCommand.create(runPipelineReceiver);
+        AboutCommand<AboutHandler> aboutCommand = AboutCommand.create(aboutReceiver);
+        ZoomInCommand<ZoomInHandler> zoomInCommand = ZoomInCommand.create(zoomInReceiver);
+        ZoomOutCommand<ZoomOutHandler> zoomOutCommand = ZoomOutCommand.create(zoomOutReceiver);
 
-        OpenFileCommand openFileCommand = OpenFileCommand.create(openFileReceiver);
-        ExportPageCommand exportPageCommand = ExportPageCommand.create(exportReceiver);
-        ExportImageCommand exportImageCommand = ExportImageCommand.create(exportReceiver);
+        OpenFileCommand<OpenFileHandler> openFileCommand = OpenFileCommand.create(openFileReceiver);
+        ExportPageCommand<ExportHandler> exportPageCommand = ExportPageCommand.create(exportReceiver);
+        ExportImageCommand<ExportHandler> exportImageCommand = ExportImageCommand.create(exportReceiver);
 
         // Set commands
         exitDialogReceiver.setCancelCommand(cancelCommand);

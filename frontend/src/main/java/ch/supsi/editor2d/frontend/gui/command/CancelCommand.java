@@ -2,7 +2,7 @@ package ch.supsi.editor2d.frontend.gui.command;
 
 import ch.supsi.editor2d.frontend.gui.handler.CancelHandler;
 
-public class CancelCommand<T extends CancelHandler> extends AbstractCommand<CancelHandler> implements Command {
+public class CancelCommand<T extends CancelHandler> extends AbstractCommand<CancelHandler>  {
 
     protected CancelCommand(T handler) {
         super(handler);

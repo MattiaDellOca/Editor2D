@@ -2,7 +2,7 @@ package ch.supsi.editor2d.frontend.gui.command;
 
 import ch.supsi.editor2d.frontend.gui.handler.OkHandler;
 
-public class OkCommand<T extends OkHandler> extends AbstractCommand<OkHandler> implements Command {
+public class OkCommand<T extends OkHandler> extends AbstractCommand<OkHandler>  {
     protected OkCommand(OkHandler handler) {
         super(handler);
     }

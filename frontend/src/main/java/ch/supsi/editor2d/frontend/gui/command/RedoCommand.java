@@ -2,7 +2,7 @@ package ch.supsi.editor2d.frontend.gui.command;
 
 import ch.supsi.editor2d.frontend.gui.handler.UndoRedoHandler;
 
-public class RedoCommand<T extends UndoRedoHandler> extends AbstractCommand<UndoRedoHandler> implements Command {
+public class RedoCommand<T extends UndoRedoHandler> extends AbstractCommand<UndoRedoHandler>  {
 
     protected RedoCommand(T handler) {
         super(handler);

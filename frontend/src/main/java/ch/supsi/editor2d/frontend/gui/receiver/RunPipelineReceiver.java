@@ -1,27 +1,25 @@
 package ch.supsi.editor2d.frontend.gui.receiver;
 
+import ch.supsi.editor2d.frontend.gui.handler.Observable;
 import ch.supsi.editor2d.frontend.gui.handler.RunPipelineHandler;
+import ch.supsi.editor2d.frontend.gui.model.DataModel;
 
-public class RunPipelineReceiver implements RunPipelineHandler {
+public class RunPipelineReceiver<T extends Observable> extends AbstractReceiver<DataModel> implements RunPipelineHandler {
 
-    protected RunPipelineHandler handler;
-
-    protected RunPipelineReceiver(RunPipelineHandler handler) {
-        this.handler = handler;
+    protected RunPipelineReceiver(DataModel model) {
+        super(model);
     }
-
     //factory method
-    public static RunPipelineReceiver create(RunPipelineHandler handler) throws InstantiationException {
-        if (handler == null) {
-            throw new InstantiationException("receiver handler cannot be null!");
+public static RunPipelineReceiver<DataModel> create(DataModel model) throws InstantiationException {
+        if (model == null) {
+            throw new InstantiationException("controller model cannot be null!");
         }
-
-        return new RunPipelineReceiver(handler);
+        return new RunPipelineReceiver<>(model);
     }
 
     @Override
     public void runPipeline() {
-        handler.runPipeline();
+        model.runPipeline();
     }
 }
 

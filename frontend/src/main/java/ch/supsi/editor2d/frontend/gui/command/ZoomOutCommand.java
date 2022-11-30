@@ -1,27 +1,27 @@
 package ch.supsi.editor2d.frontend.gui.command;
 
+import ch.supsi.editor2d.frontend.gui.handler.OkHandler;
+import ch.supsi.editor2d.frontend.gui.handler.ZoomOutHandler;
 import ch.supsi.editor2d.frontend.gui.receiver.ZoomOutReceiver;
 import javafx.scene.image.ImageView;
 
-public class ZoomOutCommand implements CommandParam<ImageView> {
-    protected ZoomOutReceiver receiver;
+public class ZoomOutCommand<T extends ZoomOutHandler> extends AbstractCommandParam<ZoomOutHandler, ImageView> {
 
-    protected ZoomOutCommand(ZoomOutReceiver receiver) {
-        super();
-        this.receiver = receiver;
+    protected ZoomOutCommand(ZoomOutHandler handler) {
+        super(handler);
     }
 
     // factory method
-    public static ZoomOutCommand create(ZoomOutReceiver receiver) throws InstantiationException {
-        if (receiver == null) {
-            throw new InstantiationException("command receiver cannot be null!");
+    public static ZoomOutCommand<ZoomOutHandler> create(ZoomOutHandler handler) throws InstantiationException {
+        if (handler == null) {
+            throw new InstantiationException("command handler cannot be null!");
         }
 
-        return new ZoomOutCommand(receiver);
+        return new ZoomOutCommand<>(handler);
     }
 
     @Override
     public void execute(ImageView imageView) {
-        receiver.zoomOut(imageView);
+        handler.zoomOut(imageView);
     }
 }

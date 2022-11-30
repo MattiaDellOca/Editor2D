@@ -2,7 +2,7 @@ package ch.supsi.editor2d.frontend.gui.command;
 
 import ch.supsi.editor2d.frontend.gui.handler.ExitHandler;
 
-public class ExitCommand<T extends ExitHandler> extends AbstractCommand<ExitHandler> implements Command {
+public class ExitCommand<T extends ExitHandler> extends AbstractCommand<ExitHandler>  {
 
     protected ExitCommand(ExitHandler handler) {
         super(handler);

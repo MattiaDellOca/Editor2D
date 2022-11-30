@@ -5,8 +5,7 @@ import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.backend.model.task.Task;
 import ch.supsi.editor2d.frontend.gui.handler.RemoveFilterHandler;
 
-public class RemoveFilterCommand<T extends RemoveFilterHandler> extends AbstractCommandParam<RemoveFilterHandler, Task<ImageWrapper, FilterTaskResult>>
-        implements CommandParam<Task<ImageWrapper, FilterTaskResult>> {
+public class RemoveFilterCommand<T extends RemoveFilterHandler> extends AbstractCommandParam<RemoveFilterHandler, Task<ImageWrapper, FilterTaskResult>> {
 
     protected RemoveFilterCommand(RemoveFilterHandler handler) {
         super(handler);

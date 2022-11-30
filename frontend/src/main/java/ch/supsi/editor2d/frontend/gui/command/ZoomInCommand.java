@@ -1,27 +1,26 @@
 package ch.supsi.editor2d.frontend.gui.command;
 
+import ch.supsi.editor2d.frontend.gui.handler.ZoomInHandler;
 import ch.supsi.editor2d.frontend.gui.receiver.ZoomInReceiver;
 import javafx.scene.image.ImageView;
 
-public class ZoomInCommand implements CommandParam<ImageView> {
-    protected ZoomInReceiver receiver;
+public class ZoomInCommand<T extends ZoomInHandler> extends AbstractCommandParam<ZoomInHandler,ImageView> {
 
-    protected ZoomInCommand(ZoomInReceiver receiver) {
-        super();
-        this.receiver = receiver;
+    protected ZoomInCommand(ZoomInHandler handler) {
+        super(handler);
     }
 
     // factory method
-    public static ZoomInCommand create(ZoomInReceiver receiver) throws InstantiationException {
-        if (receiver == null) {
-            throw new InstantiationException("command receiver cannot be null!");
+    public static ZoomInCommand<ZoomInHandler> create(ZoomInHandler handler) throws InstantiationException {
+        if (handler == null) {
+            throw new InstantiationException("command handler cannot be null!");
         }
 
-        return new ZoomInCommand(receiver);
+        return new ZoomInCommand<>(handler);
     }
 
     @Override
     public void execute(ImageView imageView) {
-        receiver.zoomIn(imageView);
+        handler.zoomIn(imageView);
     }
 }

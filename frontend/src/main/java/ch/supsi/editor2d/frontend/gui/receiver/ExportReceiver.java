@@ -1,30 +1,32 @@
 package ch.supsi.editor2d.frontend.gui.receiver;
 
 import ch.supsi.editor2d.frontend.gui.event.util.FileExport;
+import ch.supsi.editor2d.frontend.gui.handler.AddFilterHandler;
 import ch.supsi.editor2d.frontend.gui.handler.ExportHandler;
+import ch.supsi.editor2d.frontend.gui.handler.Observable;
+import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.stage.Stage;
 
-public class ExportReceiver {
-    protected ExportHandler handler;
+public class ExportReceiver<T extends Observable> extends AbstractReceiver<DataModel> implements ExportHandler {
 
-    protected ExportReceiver(ExportHandler handler) {
-        this.handler = handler;
+    protected ExportReceiver(DataModel model) {
+        super(model);
     }
 
     //factory method
-    public static ExportReceiver create(ExportHandler handler) throws InstantiationException {
-        if (handler == null) {
-            throw new InstantiationException("receiver handler cannot be null!");
+    public static ExportReceiver<DataModel> create(DataModel model) throws InstantiationException {
+        if (model == null) {
+            throw new InstantiationException("controller model cannot be null!");
         }
 
-        return new ExportReceiver(handler);
+        return new ExportReceiver<>(model);
     }
 
     public void exportPage(Stage exportStage) {
-        handler.exportPage(exportStage);
+        model.exportPage(exportStage);
     }
 
     public void exportImage(FileExport exportReq) {
-        handler.exportImage(exportReq);
+        model.exportImage(exportReq);
     }
 }

@@ -6,17 +6,17 @@ import ch.supsi.editor2d.frontend.gui.handler.OpenFileHandler;
 
 public class OpenFileReceiver<T extends Observable> extends AbstractReceiver<OpenFileHandler> implements OpenFileHandler {
 
-    protected OpenFileReceiver(OpenFileHandler handler) {
-        super(handler);
+    protected OpenFileReceiver(DataModel model) {
+        super(model);
     }
 
     // factory method
-    public static OpenFileReceiver<DataModel> create(OpenFileHandler handler) throws InstantiationException {
-        if (handler == null) {
-            throw new InstantiationException("command handler cannot be null!");
+    public static OpenFileReceiver<DataModel> create(DataModel model) throws InstantiationException {
+        if (model == null) {
+            throw new InstantiationException("controller model cannot be null!");
         }
 
-        return new OpenFileReceiver<>(handler);
+        return new OpenFileReceiver<>(model);
     }
 
     @Override

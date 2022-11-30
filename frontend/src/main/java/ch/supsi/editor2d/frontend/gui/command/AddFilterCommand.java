@@ -3,8 +3,7 @@ package ch.supsi.editor2d.frontend.gui.command;
 import ch.supsi.editor2d.backend.model.filter.Filter;
 import ch.supsi.editor2d.frontend.gui.handler.AddFilterHandler;
 
-public class AddFilterCommand<T extends AddFilterHandler> extends AbstractCommandParam<AddFilterHandler, Filter>
-        implements CommandParam<Filter> {
+public class AddFilterCommand<T extends AddFilterHandler> extends AbstractCommandParam<AddFilterHandler, Filter> {
 
     protected AddFilterCommand(AddFilterHandler handler) {
         super(handler);

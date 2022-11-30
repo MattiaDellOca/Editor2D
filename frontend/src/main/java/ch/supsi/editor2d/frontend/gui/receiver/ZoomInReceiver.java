@@ -1,26 +1,26 @@
 package ch.supsi.editor2d.frontend.gui.receiver;
 
+import ch.supsi.editor2d.frontend.gui.handler.Observable;
 import ch.supsi.editor2d.frontend.gui.handler.ZoomInHandler;
+import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.scene.image.ImageView;
 
-public class ZoomInReceiver implements ZoomInHandler {
-    protected ZoomInHandler handler;
+public class ZoomInReceiver  <T extends Observable> extends AbstractReceiver<DataModel>  implements ZoomInHandler {
 
-    protected ZoomInReceiver(ZoomInHandler handler) {
-        this.handler = handler;
+    protected ZoomInReceiver(DataModel model) {
+        super(model);
     }
-
     //factory method
-    public static ZoomInReceiver create(ZoomInHandler handler) throws InstantiationException {
-        if (handler == null) {
-            throw new InstantiationException("receiver handler cannot be null!");
+    public static ZoomInReceiver<DataModel> create(DataModel model) throws InstantiationException {
+        if (model == null) {
+            throw new InstantiationException("controller model cannot be null!");
         }
 
-        return new ZoomInReceiver(handler);
+        return new ZoomInReceiver<>(model);
     }
 
     @Override
     public void zoomIn(ImageView imageView) {
-        handler.zoomIn(imageView);
+        model.zoomIn(imageView);
     }
 }

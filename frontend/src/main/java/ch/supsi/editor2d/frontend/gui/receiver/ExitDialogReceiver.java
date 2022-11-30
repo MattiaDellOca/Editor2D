@@ -6,6 +6,7 @@ import ch.supsi.editor2d.frontend.gui.handler.CancelHandler;
 import ch.supsi.editor2d.frontend.gui.handler.ExitHandler;
 import ch.supsi.editor2d.frontend.gui.handler.Observable;
 import ch.supsi.editor2d.frontend.gui.handler.OkHandler;
+import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
@@ -23,7 +24,7 @@ public class ExitDialogReceiver<T extends Observable> extends AbstractReceiver<O
     }
 
     // factory method
-    public static ExitDialogReceiver<Observable> create(Observable model, Stage exitStage, Stage mainStage)
+    public static ExitDialogReceiver<DataModel> create(DataModel model, Stage exitStage, Stage mainStage)
             throws InstantiationException {
         if(model == null) {
             throw new InstantiationException("controller model cannot be null!");
