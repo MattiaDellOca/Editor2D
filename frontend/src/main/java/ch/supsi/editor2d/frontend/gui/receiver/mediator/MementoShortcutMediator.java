@@ -67,6 +67,7 @@ public class MementoShortcutMediator<T extends Observable> extends AbstractRecei
         }
     }
 
+    //TODO: when implement memento pattern check this method to enable/disable shortcuts
     private void enableShortcuts() {
 
         // undo

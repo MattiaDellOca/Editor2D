@@ -1,10 +1,16 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
+import ch.supsi.editor2d.backend.model.ColorWrapper;
+import ch.supsi.editor2d.backend.model.ImageWrapper;
+import ch.supsi.editor2d.frontend.gui.event.ImageLoadedEvent;
 import ch.supsi.editor2d.frontend.gui.event.ImageUpdatedEvent;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
 
 import java.beans.PropertyChangeEvent;
 
@@ -33,7 +39,7 @@ public class ImageViewController extends AbstractFXMLController {
     /**
      * Initialize the components
      */
-    public void initModel(DataModel model){
+    public void initModel(DataModel model) {
         // ensure model is only set once
         if (this.model != null) {
             throw new IllegalStateException("Model can only be initialized once");
@@ -47,21 +53,34 @@ public class ImageViewController extends AbstractFXMLController {
         this.model = model;
     }
 
-    /**
-     * This method is called every time the window is resized: the ImageView is resized accordingly
-     */
-    public void refresh(){
+    @Override
+    public void propertyChange(PropertyChangeEvent event) {
+        if (event instanceof ImageLoadedEvent || event instanceof ImageUpdatedEvent) {
+            drawImage();
+        }
+    }
+
+    private void drawImage() {
+        // Create a new WritableImage
+        ImageWrapper imageWrapper = model.getImageData();
+
+        WritableImage writableImage = new WritableImage(imageWrapper.getWidth(), imageWrapper.getHeight());
+        PixelWriter pixelWriter = writableImage.getPixelWriter();
+
+        // Draw the image
+        for (int h = 0; h < imageWrapper.getHeight(); h++) {
+            for (int w = 0; w < imageWrapper.getWidth(); w++) {
+                ColorWrapper tempColor = imageWrapper.getData()[h][w];
+                pixelWriter.setColor(w, h, Color.color(tempColor.getRed(), tempColor.getGreen(), tempColor.getBlue()));
+            }
+        }
+
+        // Display image on ImageView component
+        imageView.setImage(writableImage);
+
         // Set container size
-        imageView.setImage(model.getImageComponent().getImage());
         imageView.setPreserveRatio(true);
         imageView.setSmooth(false);
         imageView.setCache(false);
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent event) {
-        if (event instanceof ImageUpdatedEvent) {
-            refresh();
-        }
     }
 }

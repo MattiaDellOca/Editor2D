@@ -1,6 +1,9 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
+import ch.supsi.editor2d.backend.model.ColorWrapper;
+import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.frontend.gui.event.FileOpenEvent;
+import ch.supsi.editor2d.frontend.gui.event.ImageLoadedEvent;
 import ch.supsi.editor2d.frontend.gui.event.RedoneEvent;
 import ch.supsi.editor2d.frontend.gui.event.UndoneEvent;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
@@ -9,7 +12,10 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
@@ -22,17 +28,25 @@ import java.util.Collection;
  * Main view controller that handles the main view logic.
  */
 public class MainViewController extends AbstractFXMLController {
-    /**
-     *
-     */
-    public MenuItem runPipelineMenuItem;
-    public MenuItem exitMenuItem;
-    public MenuItem aboutMenuItem;
-    public MenuItem undoMenuItem;
-    public MenuItem redoMenuItem;
 
-    public Button zoomInButton;
-    public Button zoomOutButton;
+    @FXML
+    private MenuItem runPipelineMenuItem;
+    @FXML
+    private MenuItem exitMenuItem;
+    @FXML
+    private MenuItem aboutMenuItem;
+    @FXML
+    private MenuItem undoMenuItem;
+    @FXML
+    private MenuItem redoMenuItem;
+    @FXML
+    private MenuItem openMenuItem;
+    @FXML
+    private MenuItem exportMenuItem;
+    @FXML
+    private Button zoomInButton;
+    @FXML
+    private Button zoomOutButton;
 
 
 
@@ -70,21 +84,12 @@ public class MainViewController extends AbstractFXMLController {
     private EventHandler<ActionEvent> onExportClicked = event -> {
     };
 
-    /**
-     * Refresh image callback
-     */
-    private EventHandler<ActionEvent> onPipelineFinishedRunning = event -> {};
 
     /**
      * Image pane reference
      */
     @FXML
     private AnchorPane imagePane;
-
-    /**
-     * File chooser reference
-     */
-    private FileChooser fileChooser;
 
     public MenuItem getUndoMenuItem() {
         return undoMenuItem;
@@ -94,8 +99,24 @@ public class MainViewController extends AbstractFXMLController {
         return redoMenuItem;
     }
 
+    public MenuItem getExitMenuItem() {
+        return exitMenuItem;
+    }
+
+    public MenuItem getAboutMenuItem() {
+        return aboutMenuItem;
+    }
+
     public MenuItem getRunPipelineMenuItem() {
         return runPipelineMenuItem;
+    }
+
+    public MenuItem getOpenMenuItem() {
+        return openMenuItem;
+    }
+
+    public MenuItem getExportMenuItem() {
+        return exportMenuItem;
     }
 
     public Button getZoomInButton() {
@@ -133,18 +154,6 @@ public class MainViewController extends AbstractFXMLController {
 
     private void initEventHandlers() throws IOException {
 
-        // Load file chooser
-        fileChooser = new FileChooser();
-        fileChooser.setTitle("Open picture");
-        fileChooser.setInitialDirectory(
-                new File(System.getProperty("user.home"))
-        );
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter(
-                        "Image Files",
-                        SUPPORTED_FORMATS.stream().map(s -> "*." + s).toArray(String[]::new)
-                )
-        );
 
         // Open directory chooser
         DirectoryChooser directoryChooser = new DirectoryChooser();
@@ -203,15 +212,6 @@ public class MainViewController extends AbstractFXMLController {
     }
 
     /**
-     * Set the file dropped event handler
-     *
-     * @param event File drop event
-     */
-    public void setOnFileOpen(EventHandler<FileOpenEvent> event) {
-        this.onFileOpened = event;
-    }
-
-    /**
      * Set the export clicked event handler
      * @param event Export clicked event
      */
@@ -243,22 +243,6 @@ public class MainViewController extends AbstractFXMLController {
 
 
     /**
-     * Handle the open menu action
-     */
-    public void onOpen() {
-        // Open file browser
-        File file = fileChooser.showOpenDialog(imagePane.getScene().getWindow());
-
-        // additional file extension check
-        if (file != null && isSupportedFormat(file)) {
-            // Fire file dropped event
-            onFileOpened.handle(new FileOpenEvent(file, imagePane));
-            // Then, refresh the image
-            onPipelineFinishedRunning.handle(new ActionEvent());
-        }
-    }
-
-    /**
      * Handle image export action
      */
     public void onExport(ActionEvent e) {
@@ -266,15 +250,17 @@ public class MainViewController extends AbstractFXMLController {
     }
 
     @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if(evt instanceof UndoneEvent) {
+    public void propertyChange(PropertyChangeEvent event) {
+        if(event instanceof UndoneEvent) {
             // TODO: 26/11/2022 Implement undone operation through memento pattern
             System.out.println("Something was undone!");
         }
 
-        if(evt instanceof RedoneEvent) {
+        if(event instanceof RedoneEvent) {
             // TODO: 26/11/2022 Implement redone operation through memento pattern
             System.out.println("Something was redone!");
         }
     }
+
+
 }

@@ -17,18 +17,23 @@ import ch.supsi.editor2d.frontend.gui.event.*;
 import ch.supsi.editor2d.frontend.gui.event.util.FileExport;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
+
+import static ch.supsi.editor2d.frontend.gui.controller.Start.SUPPORTED_FORMATS;
 
 /**
  * Data model that holds the application data and login throughout the application.
  */
 public class DataModel extends Observable implements RunPipelineHandler, AboutHandler,
-        ZoomInHandler, ZoomOutHandler, UndoRedoHandler, AddFilterHandler, RemoveFilterHandler {
+        ZoomInHandler, ZoomOutHandler, UndoRedoHandler, AddFilterHandler, RemoveFilterHandler, OpenFileHandler {
 
     // Value used for zoom in/out functions
     private static final double ZOOM_FACTOR = 1.1;
@@ -39,10 +44,6 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
      */
     private final ImageController imageController;
 
-    /**
-     * Image showed
-     */
-    private final ImageView imageComponent;
 
     /**
      * Image wrapper containing the image data
@@ -69,7 +70,6 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
      * Constructor that initializes the data model.
      */
     public DataModel() {
-        this.imageComponent = new ImageView();
         this.imageController = new ImageController();
         this.filterPipeline = new FilterPipeline();
     }
@@ -94,8 +94,10 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
             // Save the initial image data
             imageInitialData = img;
 
-            // Draw image (passing copy)
-            drawImage(new ImageWrapper(img));
+            // Set the image data
+            imageData = img;
+
+            // Throw event
             getPropertyChangeSupport().firePropertyChange(new ImageLoadedEvent(this));
         } catch (FileReadingException e) {
             System.err.println(e.getMessage());
@@ -119,30 +121,6 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
             System.err.println(e.getMessage());
             ErrorAlert.showError(e.getMessage());
         }
-    }
-
-    /**
-     * Draw the image on the image component
-     * @param imageWrapper image to draw
-     */
-    private void drawImage(ImageWrapper imageWrapper) {
-        // Save current image
-        imageData = imageWrapper;
-
-        // Create a new WritableImage
-        WritableImage writableImage = new WritableImage(imageWrapper.getWidth(), imageWrapper.getHeight());
-        PixelWriter pixelWriter = writableImage.getPixelWriter();
-
-        // Draw the image
-        for (int h = 0; h < imageWrapper.getHeight(); h++) {
-            for (int w = 0; w < imageWrapper.getWidth(); w++) {
-                ColorWrapper tempColor = imageWrapper.getData()[h][w];
-                pixelWriter.setColor(w, h, Color.color(tempColor.getRed(),tempColor.getGreen(),tempColor.getBlue()));
-            }
-        }
-
-        // Display image on ImageView component
-        imageComponent.setImage(writableImage);
     }
 
     @Override
@@ -174,7 +152,7 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
     public void runPipeline()  {
         try {
             imageData = filterPipeline.run(imageInitialData).getResult();
-            drawImage(imageData);
+            //drawImage(imageData);
 
             this.setChanged(true);
 
@@ -238,11 +216,42 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
         getPropertyChangeSupport().firePropertyChange(new RedoneEvent(this));
     }
 
-    /**
-     * Clear the pipeline, called when uploading a new image
-     */
-    public void clearPipeline() {
-        filterPipeline.clear();
+    @Override
+    public void openFile() {
+        // Load file chooser
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open picture");
+        fileChooser.setInitialDirectory(
+                new File(System.getProperty("user.home"))
+        );
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter(
+                        "Image Files",
+                        SUPPORTED_FORMATS.stream().map(s -> "*." + s).toArray(String[]::new)
+                )
+        );
+
+        File file = fileChooser.showOpenDialog(null);
+
+        // additional file extension check
+        if (file != null) {
+            // Check if the file is supported - redundant check
+            boolean isSupportedFormat = false;
+            String extension = file.getName().substring(file.getName().lastIndexOf(".") + 1);
+            for (String format : SUPPORTED_FORMATS) {
+                if (extension.equals(format)) {
+                    isSupportedFormat =  true;
+                }
+            }
+
+            if(isSupportedFormat){
+                //Clear the pipeline
+                filterPipeline.clear();
+                //Load image
+                loadImage(file.getAbsolutePath());
+            }
+
+        }
     }
 
     /**
@@ -261,14 +270,6 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
      */
     public void moveDownFilterPipeline(Task<ImageWrapper, FilterTaskResult> task) throws PipelineException {
         filterPipeline.invertAfterPositionTask(task);
-    }
-
-    /**
-     * Get the image component used to show the image
-     * @return image component
-     */
-    public ImageView getImageComponent() {
-        return imageComponent;
     }
 
     /**

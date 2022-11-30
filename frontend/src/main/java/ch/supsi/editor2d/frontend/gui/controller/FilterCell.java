@@ -31,7 +31,7 @@ public class FilterCell extends ListCell<Filter> {
             setGraphic(null);
         } else {
             FilterPresentable filterPresentable = new FilterPresentable();
-            filterCellViewController.setFilterName(filterPresentable.present(filter)); //TODO not the best solution
+            filterCellViewController.setFilterName(filterPresentable.present(filter));
             setGraphic(root);
         }
     }

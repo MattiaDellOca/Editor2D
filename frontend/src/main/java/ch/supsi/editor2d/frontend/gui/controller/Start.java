@@ -27,6 +27,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -34,7 +35,7 @@ import static javafx.scene.input.KeyEvent.KEY_PRESSED;
 
 public class Start extends Application {
 
-    private static final Collection<String> SUPPORTED_FORMATS = Arrays.asList("ppm", "pgm", "pbm", "tga");
+    public static final Collection<String> SUPPORTED_FORMATS = Arrays.asList("ppm", "pgm", "pbm");
 
     private static final Collection<Filter> FILTERS = Arrays.asList(new FlipFilter(), new GrayscaleFilter(),
             new SepiaFilter(), new SharpenFilter());
@@ -124,9 +125,10 @@ public class Start extends Application {
         ListView<Filter> selectableFilters = filtersSelectionViewController.getFilterSelectionList();
         MenuItem runPipelineMenuItem = mainViewController.getRunPipelineMenuItem();
         Button runPipelineButton = pipelineViewController.getRunPipeline();
-        Button zoomInButton = mainViewController.zoomInButton;
-        Button zoomOutButton = mainViewController.zoomOutButton;
-
+        Button zoomInButton = mainViewController.getZoomInButton();
+        Button zoomOutButton = mainViewController.getZoomOutButton();
+        MenuItem openMenuItem = mainViewController.getOpenMenuItem();
+        MenuItem exportMenuItem = mainViewController.getExportMenuItem();
 
         /*
         ==================================
@@ -141,6 +143,7 @@ public class Start extends Application {
         UndoRedoReceiver<DataModel> undoRedoReceiver = UndoRedoReceiver.create(model);
         AddFilterReceiver<DataModel> addFilterReceiver = AddFilterReceiver.create(model);
         RemoveFilterReceiver<DataModel> removeFilterReceiver = RemoveFilterReceiver.create(model);
+        OpenFileReceiver<DataModel> openFileReceiver = OpenFileReceiver.create(model);
 
         /*
         ==================================
@@ -162,6 +165,7 @@ public class Start extends Application {
         ZoomInCommand zoomInCommand = ZoomInCommand.create(zoomInReceiver);
         ZoomOutCommand zoomOutCommand = ZoomOutCommand.create(zoomOutReceiver);
 
+        OpenFileCommand openFileCommand = OpenFileCommand.create(openFileReceiver);
 
         // Set commands
         exitDialogReceiver.setCancelCommand(cancelCommand);
@@ -172,6 +176,8 @@ public class Start extends Application {
             Task<ImageWrapper, FilterTaskResult> selectedTask = pipelineViewController.getSelectedTask();
             removeFilterCommand.execute(selectedTask);
         });
+        openMenuItem.setOnAction(actionEvent -> openFileCommand.execute());
+
 
         // Selectable filters
         ObservableList<Filter> filters = FXCollections.observableArrayList(FILTERS);
@@ -183,12 +189,12 @@ public class Start extends Application {
         });
 
 
-        mainViewController.runPipelineMenuItem.setOnAction(actionEvent -> runPipelineCommand.execute());
-        mainViewController.exitMenuItem.setOnAction(actionEvent -> exitCommand.execute());
-        mainViewController.aboutMenuItem.setOnAction(actionEvent -> aboutCommand.execute(aboutStage));
-        mainViewController.zoomInButton.setOnAction(actionEvent ->
+        mainViewController.getRunPipelineMenuItem().setOnAction(actionEvent -> runPipelineCommand.execute());
+        mainViewController.getExitMenuItem().setOnAction(actionEvent -> exitCommand.execute());
+        mainViewController.getAboutMenuItem().setOnAction(actionEvent -> aboutCommand.execute(aboutStage));
+        mainViewController.getZoomInButton().setOnAction(actionEvent ->
                 zoomInCommand.execute(imageViewLoader.<ImageViewController>getController().getImageView()));
-        mainViewController.zoomOutButton.setOnAction(actionEvent ->
+        mainViewController.getZoomOutButton().setOnAction(actionEvent ->
                 zoomOutCommand.execute(imageViewLoader.<ImageViewController>getController().getImageView()));
 
         mainViewController.init(model, SUPPORTED_FORMATS);
@@ -254,15 +260,6 @@ public class Start extends Application {
         =========  OTHER SETUP  ==========
         ==================================
          */
-
-
-        // File visualization handling
-        mainViewController.setOnFileOpen(e -> {
-            // Load image + refresh view
-            model.loadImage(e.getFile().getAbsolutePath());
-            model.clearPipeline();
-            imageViewLoader.<ImageViewController>getController().refresh();
-        });
 
         // Export handling
         mainViewController.setOnExportClicked(e -> {
