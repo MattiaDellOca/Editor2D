@@ -19,7 +19,7 @@
          <AnchorPane maxHeight="50.0" prefHeight="34.0" prefWidth="300.0" style="-fx-background-color: #ffd7b5;" BorderPane.alignment="CENTER">
             <Label alignment="CENTER" contentDisplay="CENTER" text="Pipeline" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <font>
-                  <Font name="Arial Bold" size="18.0" />
+                  <Font size="18.0" />
                </font>
             </Label>
          </AnchorPane>
@@ -31,70 +31,62 @@
       </center>
       <bottom>
          <AnchorPane prefHeight="50.0" prefWidth="300.0" BorderPane.alignment="CENTER">
-            <children>
-               <GridPane prefHeight="50.0" prefWidth="271.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                  <columnConstraints>
-                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                     <ColumnConstraints />
-                     <ColumnConstraints minWidth="10.0" prefWidth="100.0" />
-                  </columnConstraints>
-                  <rowConstraints>
-                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-                  </rowConstraints>
-                  <children>
-                     <Button fx:id="moveUpFilter" mnemonicParsing="false" prefHeight="50.0" prefWidth="55.0">
-                        <graphic>
-                           <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                              <image>
-                                 <Image url="@images/arrowTop.png" />
-                              </image>
-                           </ImageView>
-                        </graphic>
-                        <GridPane.margin>
-                           <Insets bottom="5.0" left="10.0" top="5.0" />
-                        </GridPane.margin>
-                     </Button>
-                     <Button fx:id="moveDownFilter" mnemonicParsing="false" prefHeight="50.0" prefWidth="55.0" GridPane.columnIndex="1">
-                        <graphic>
-                           <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                              <image>
-                                 <Image url="@images/arrowBottom.png" />
-                              </image>
-                           </ImageView>
-                        </graphic>
-                        <GridPane.margin>
-                           <Insets bottom="5.0" left="10.0" top="5.0" />
-                        </GridPane.margin>
-                     </Button>
-                     <Button fx:id="removeFilter" mnemonicParsing="false" prefHeight="50.0" prefWidth="55.0" GridPane.columnIndex="2" GridPane.columnSpan="2">
-                        <graphic>
-                           <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                              <image>
-                                 <Image url="@images/delete.png" />
-                              </image>
-                           </ImageView>
-                        </graphic>
-                        <GridPane.margin>
-                           <Insets bottom="5.0" left="10.0" top="5.0" />
-                        </GridPane.margin>
-                     </Button>
-                     <Button fx:id="runPipeline" mnemonicParsing="false" prefHeight="50.0" prefWidth="55.0" GridPane.columnIndex="4">
-                        <graphic>
-                           <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                              <image>
-                                 <Image url="@images/play.png" />
-                              </image>
-                           </ImageView>
-                        </graphic>
-                        <GridPane.margin>
-                           <Insets bottom="5.0" left="10.0" top="5.0" />
-                        </GridPane.margin>
-                     </Button>
-                  </children>
-               </GridPane>
-            </children>
+            <GridPane prefHeight="50.0" prefWidth="271.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                      AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                  <ColumnConstraints/>
+                  <ColumnConstraints minWidth="10.0" prefWidth="100.0"/>
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
+               </rowConstraints>
+               <Button fx:id="moveUpFilter" mnemonicParsing="false" prefHeight="50.0" prefWidth="55.0">
+                  <graphic>
+                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@images/arrowTop.png"/>
+                     </ImageView>
+                  </graphic>
+                  <GridPane.margin>
+                     <Insets bottom="5.0" left="10.0" top="5.0"/>
+                  </GridPane.margin>
+               </Button>
+               <Button fx:id="moveDownFilter" mnemonicParsing="false" prefHeight="50.0" prefWidth="55.0"
+                       GridPane.columnIndex="1">
+                  <graphic>
+                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@images/arrowBottom.png"/>
+                     </ImageView>
+                  </graphic>
+                  <GridPane.margin>
+                     <Insets bottom="5.0" left="10.0" top="5.0"/>
+                  </GridPane.margin>
+               </Button>
+               <Button fx:id="removeFilter" mnemonicParsing="false" prefHeight="50.0" prefWidth="55.0"
+                       GridPane.columnIndex="2" GridPane.columnSpan="2">
+                  <graphic>
+                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@images/delete.png"/>
+                     </ImageView>
+                  </graphic>
+                  <GridPane.margin>
+                     <Insets bottom="5.0" left="10.0" top="5.0"/>
+                  </GridPane.margin>
+               </Button>
+               <Button fx:id="runPipeline" mnemonicParsing="false" prefHeight="50.0" prefWidth="55.0"
+                       GridPane.columnIndex="4">
+                  <graphic>
+                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@images/play.png"/>
+                     </ImageView>
+                  </graphic>
+                  <GridPane.margin>
+                     <Insets bottom="5.0" left="10.0" top="5.0"/>
+                  </GridPane.margin>
+               </Button>
+            </GridPane>
          </AnchorPane>
       </bottom>
    </BorderPane>

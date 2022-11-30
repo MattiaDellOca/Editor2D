@@ -84,7 +84,6 @@ public class Start extends Application {
         Parent pipelineView = pipelineViewLoader.load();
         PipelineViewController pipelineViewController = pipelineViewLoader.getController();
         pipelineViewController.initModel(model);
-        Button removeFilterButton = pipelineViewController.getRemoveFilter();
 
 
         // Export stage page
@@ -135,6 +134,8 @@ public class Start extends Application {
         MenuItem openMenuItem = mainViewController.getOpenMenuItem();
         MenuItem exportMenuItem = mainViewController.getExportMenuItem();
         Button exportButton = exportViewController.getExportButton();
+        Button removeFilterButton = pipelineViewController.getRemoveFilter();
+
 
         /*
         ==================================
@@ -192,10 +193,11 @@ public class Start extends Application {
         // Selectable filters
         ObservableList<Filter> filters = FXCollections.observableArrayList(FILTERS);
         selectableFilters.setItems(filters);
-        selectableFilters.setCellFactory(taskListView -> new FilterCell(model));
+        filtersSelectionViewController.getFilterSelectionList().setCellFactory(param -> new FilterCell());
         selectableFilters.setOnMouseClicked(mouseEvent -> {
             Filter filter = selectableFilters.getSelectionModel().getSelectedItem();
             addFilterCommand.execute(filter);
+            selectableFilters.getSelectionModel().clearSelection();
         });
 
 

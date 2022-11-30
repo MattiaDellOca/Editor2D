@@ -5,9 +5,6 @@ import ch.supsi.editor2d.backend.model.task.FilterTask;
 import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.backend.model.task.Task;
 import ch.supsi.editor2d.backend.objectPresentation.FilterPresentable;
-import ch.supsi.editor2d.frontend.gui.model.DataModel;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.ListCell;
@@ -17,13 +14,13 @@ import java.io.IOException;
 public class PipelineCell extends ListCell<Task<ImageWrapper, FilterTaskResult>> {
 
     private Parent root;
-    private PipelineCellViewController pipelineCellViewController;
+    private CellViewController cellViewController;
 
     public PipelineCell() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/pipelineCellView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/cellView.fxml"));
         try {
             root = loader.load();
-            pipelineCellViewController = loader.getController();
+            cellViewController = loader.getController();
         } catch (IOException ignored) {}
     }
 
@@ -36,7 +33,7 @@ public class PipelineCell extends ListCell<Task<ImageWrapper, FilterTaskResult>>
         } else {
             //Present the filter name
             FilterPresentable filterPresentable = new FilterPresentable();
-            pipelineCellViewController.setFilterName(filterPresentable.present(((FilterTask) task).getFilter()));
+            cellViewController.setFilterName(filterPresentable.present(((FilterTask) task).getFilter()));
             setGraphic(root);
         }
     }
