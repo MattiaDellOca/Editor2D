@@ -13,6 +13,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * Controller of the component entitled to show the image.
@@ -20,7 +21,7 @@ import java.beans.PropertyChangeEvent;
  * When zooming in or out, the dimension of the ImageView are changed: when the ImageView becomes bigger than the
  * ScrollPane, the latter creates a viewport (a "sub-image") of the ImageView
  */
-public class ImageViewController extends AbstractFXMLController {
+public class ImageViewController implements PropertyChangeListener {
 
     private DataModel model;
 

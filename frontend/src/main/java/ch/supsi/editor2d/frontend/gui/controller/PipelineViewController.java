@@ -17,8 +17,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class PipelineViewController extends AbstractFXMLController {
+public class PipelineViewController implements PropertyChangeListener {
 
     @FXML
     private ListView<Task<ImageWrapper, FilterTaskResult>> filterPipelineList;

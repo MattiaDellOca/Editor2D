@@ -13,6 +13,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -21,7 +22,7 @@ import static ch.supsi.editor2d.frontend.gui.controller.Start.SUPPORTED_FORMATS;
 /**
  * Main view controller that handles the main view logic.
  */
-public class MainViewController extends AbstractFXMLController {
+public class MainViewController implements PropertyChangeListener {
 
     @FXML
     private MenuItem runPipelineMenuItem;
