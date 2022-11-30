@@ -1,6 +1,6 @@
 package ch.supsi.editor2d.frontend.gui.command;
 
-import ch.supsi.editor2d.frontend.gui.model.OkHandler;
+import ch.supsi.editor2d.frontend.gui.handler.OkHandler;
 
 public class OkCommand<T extends OkHandler> extends AbstractCommand<OkHandler> implements Command {
     protected OkCommand(OkHandler handler) {

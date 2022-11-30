@@ -1,8 +1,8 @@
 package ch.supsi.editor2d.frontend.gui.receiver;
 
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
-import ch.supsi.editor2d.frontend.gui.model.Observable;
-import ch.supsi.editor2d.frontend.gui.model.UndoRedoHandler;
+import ch.supsi.editor2d.frontend.gui.handler.Observable;
+import ch.supsi.editor2d.frontend.gui.handler.UndoRedoHandler;
 
 public class UndoRedoReceiver<T extends Observable> extends AbstractReceiver<DataModel> implements UndoRedoHandler {
     protected UndoRedoReceiver(DataModel model) {

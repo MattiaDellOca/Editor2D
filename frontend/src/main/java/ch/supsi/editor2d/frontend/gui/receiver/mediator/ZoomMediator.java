@@ -2,7 +2,7 @@ package ch.supsi.editor2d.frontend.gui.receiver.mediator;
 
 import ch.supsi.editor2d.frontend.gui.event.ImageLoadedEvent;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
-import ch.supsi.editor2d.frontend.gui.model.Observable;
+import ch.supsi.editor2d.frontend.gui.handler.Observable;
 import ch.supsi.editor2d.frontend.gui.receiver.AbstractReceiver;
 import javafx.scene.control.Button;
 

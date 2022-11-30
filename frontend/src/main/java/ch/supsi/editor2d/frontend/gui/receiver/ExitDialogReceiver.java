@@ -2,10 +2,10 @@ package ch.supsi.editor2d.frontend.gui.receiver;
 
 import ch.supsi.editor2d.frontend.gui.command.CancelCommand;
 import ch.supsi.editor2d.frontend.gui.command.OkCommand;
-import ch.supsi.editor2d.frontend.gui.model.CancelHandler;
-import ch.supsi.editor2d.frontend.gui.model.ExitHandler;
-import ch.supsi.editor2d.frontend.gui.model.Observable;
-import ch.supsi.editor2d.frontend.gui.model.OkHandler;
+import ch.supsi.editor2d.frontend.gui.handler.CancelHandler;
+import ch.supsi.editor2d.frontend.gui.handler.ExitHandler;
+import ch.supsi.editor2d.frontend.gui.handler.Observable;
+import ch.supsi.editor2d.frontend.gui.handler.OkHandler;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 

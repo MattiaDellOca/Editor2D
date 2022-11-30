@@ -6,7 +6,6 @@ import ch.supsi.editor2d.backend.exception.FileReadingException;
 import ch.supsi.editor2d.backend.exception.FileWritingException;
 import ch.supsi.editor2d.backend.exception.PipelineException;
 import ch.supsi.editor2d.backend.helper.FilterPipeline;
-import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.model.filter.Filter;
 import ch.supsi.editor2d.backend.model.task.FilterTask;
@@ -15,13 +14,8 @@ import ch.supsi.editor2d.backend.model.task.Task;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
 import ch.supsi.editor2d.frontend.gui.event.*;
 import ch.supsi.editor2d.frontend.gui.event.util.FileExport;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+import ch.supsi.editor2d.frontend.gui.handler.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -240,7 +234,8 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
             String extension = file.getName().substring(file.getName().lastIndexOf(".") + 1);
             for (String format : SUPPORTED_FORMATS) {
                 if (extension.equals(format)) {
-                    isSupportedFormat =  true;
+                    isSupportedFormat = true;
+                    break;
                 }
             }
 

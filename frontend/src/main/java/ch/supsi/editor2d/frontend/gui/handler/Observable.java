@@ -1,4 +1,4 @@
-package ch.supsi.editor2d.frontend.gui.model;
+package ch.supsi.editor2d.frontend.gui.handler;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;

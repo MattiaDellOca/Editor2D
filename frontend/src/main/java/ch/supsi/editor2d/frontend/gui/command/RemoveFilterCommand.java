@@ -1,11 +1,9 @@
 package ch.supsi.editor2d.frontend.gui.command;
 
 import ch.supsi.editor2d.backend.model.ImageWrapper;
-import ch.supsi.editor2d.backend.model.filter.Filter;
 import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.backend.model.task.Task;
-import ch.supsi.editor2d.frontend.gui.model.AddFilterHandler;
-import ch.supsi.editor2d.frontend.gui.model.RemoveFilterHandler;
+import ch.supsi.editor2d.frontend.gui.handler.RemoveFilterHandler;
 
 public class RemoveFilterCommand<T extends RemoveFilterHandler> extends AbstractCommandParam<RemoveFilterHandler, Task<ImageWrapper, FilterTaskResult>>
         implements CommandParam<Task<ImageWrapper, FilterTaskResult>> {

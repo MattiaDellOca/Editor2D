@@ -1,6 +1,6 @@
 package ch.supsi.editor2d.frontend.gui.receiver;
 
-import ch.supsi.editor2d.frontend.gui.model.AboutHandler;
+import ch.supsi.editor2d.frontend.gui.handler.AboutHandler;
 import javafx.stage.Stage;
 
 public class AboutReceiver {

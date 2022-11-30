@@ -1,6 +1,6 @@
 package ch.supsi.editor2d.frontend.gui.receiver;
 
-import ch.supsi.editor2d.frontend.gui.model.RunPipelineHandler;
+import ch.supsi.editor2d.frontend.gui.handler.RunPipelineHandler;
 
 public class RunPipelineReceiver implements RunPipelineHandler {
 

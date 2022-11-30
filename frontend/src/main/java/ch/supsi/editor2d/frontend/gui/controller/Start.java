@@ -6,6 +6,7 @@ import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.backend.model.task.Task;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
 import ch.supsi.editor2d.frontend.gui.command.*;
+import ch.supsi.editor2d.frontend.gui.handler.*;
 import ch.supsi.editor2d.frontend.gui.receiver.mediator.*;
 import ch.supsi.editor2d.frontend.gui.model.*;
 import ch.supsi.editor2d.frontend.gui.receiver.ExitDialogReceiver;
@@ -15,7 +16,6 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -25,13 +25,9 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.input.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
-
-import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 
-import static javafx.scene.input.KeyEvent.KEY_PRESSED;
 
 public class Start extends Application {
 

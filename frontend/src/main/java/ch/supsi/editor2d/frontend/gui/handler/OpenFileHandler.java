@@ -1,6 +1,4 @@
-package ch.supsi.editor2d.frontend.gui.model;
-
-import java.io.File;
+package ch.supsi.editor2d.frontend.gui.handler;
 
 public interface OpenFileHandler extends Handler {
     void openFile();

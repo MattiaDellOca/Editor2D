@@ -1,6 +1,6 @@
 package ch.supsi.editor2d.frontend.gui.receiver;
 
-import ch.supsi.editor2d.frontend.gui.model.ZoomInHandler;
+import ch.supsi.editor2d.frontend.gui.handler.ZoomInHandler;
 import javafx.scene.image.ImageView;
 
 public class ZoomInReceiver implements ZoomInHandler {

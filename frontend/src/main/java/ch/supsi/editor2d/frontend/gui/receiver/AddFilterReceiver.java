@@ -1,9 +1,9 @@
 package ch.supsi.editor2d.frontend.gui.receiver;
 
 import ch.supsi.editor2d.backend.model.filter.Filter;
-import ch.supsi.editor2d.frontend.gui.model.AddFilterHandler;
+import ch.supsi.editor2d.frontend.gui.handler.AddFilterHandler;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
-import ch.supsi.editor2d.frontend.gui.model.Observable;
+import ch.supsi.editor2d.frontend.gui.handler.Observable;
 
 public class AddFilterReceiver <T extends Observable> extends AbstractReceiver<DataModel> implements AddFilterHandler {
 

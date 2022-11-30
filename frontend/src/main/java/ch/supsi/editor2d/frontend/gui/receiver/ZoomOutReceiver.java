@@ -1,6 +1,6 @@
 package ch.supsi.editor2d.frontend.gui.receiver;
 
-import ch.supsi.editor2d.frontend.gui.model.ZoomOutHandler;
+import ch.supsi.editor2d.frontend.gui.handler.ZoomOutHandler;
 import javafx.scene.image.ImageView;
 
 public class ZoomOutReceiver implements ZoomOutHandler {
