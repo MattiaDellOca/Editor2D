@@ -1,21 +1,17 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
-import ch.supsi.editor2d.frontend.gui.event.RedoneEvent;
-import ch.supsi.editor2d.frontend.gui.event.UndoneEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuItem;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.DirectoryChooser;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 
 /**
  * Main view controller that handles the main view logic.
  */
-public class MainViewController implements PropertyChangeListener {
+public class MainViewController {
 
     @FXML
     private MenuItem runPipelineMenuItem;
@@ -121,20 +117,5 @@ public class MainViewController implements PropertyChangeListener {
     public AnchorPane getPipelinePane() {
         return pipelinePane;
     }
-
-
-    @Override
-    public void propertyChange(PropertyChangeEvent event) {
-        if (event instanceof UndoneEvent) {
-            // TODO: 26/11/2022 Implement undone operation through memento pattern
-            System.out.println("Something was undone!");
-        }
-
-        if (event instanceof RedoneEvent) {
-            // TODO: 26/11/2022 Implement redone operation through memento pattern
-            System.out.println("Something was redone!");
-        }
-    }
-
 
 }

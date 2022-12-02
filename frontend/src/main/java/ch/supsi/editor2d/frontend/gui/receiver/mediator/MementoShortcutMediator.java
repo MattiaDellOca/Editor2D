@@ -67,41 +67,30 @@ public class MementoShortcutMediator<T extends Observable> extends AbstractRecei
         }
     }
 
-    //TODO: when implement memento pattern check this method to enable/disable shortcuts
     private void enableShortcuts() {
 
         // undo
-        if(model.getUndoRedoPointer() > 0){
+        if (model.canUndo()) {
             //active undo shortcut
-            parent.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-                if (undoKeyCombination.match(event)) {
-                    undoCommand.execute();
-                }
-            });
+            //check if shortcut is already active
+            if (!parent.getScene().getAccelerators().containsKey(undoKeyCombination)) {
+                parent.getScene().getAccelerators().put(undoKeyCombination, undoCommand::execute);
+            }
         } else {
             //disable undo shortcut
-            parent.removeEventHandler(KeyEvent.KEY_PRESSED, event -> {
-                if (undoKeyCombination.match(event)) {
-                    undoCommand.execute();
-                }
-            });
+            parent.getScene().getAccelerators().remove(undoKeyCombination);
         }
 
         // redo
-        if(model.getUndoRedoPointer() < model.getSavedStatesCount()){
+        if (model.canRedo()) {
             //active redo shortcut
-            parent.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-                if (redoKeyCombination.match(event)) {
-                    redoCommand.execute();
-                }
-            });
+            //check if shortcut is already active
+            if (!parent.getScene().getAccelerators().containsKey(redoKeyCombination)) {
+                parent.getScene().getAccelerators().put(redoKeyCombination, redoCommand::execute);
+            }
         } else {
             //disable redo shortcut
-            parent.removeEventHandler(KeyEvent.KEY_PRESSED, event -> {
-                if (redoKeyCombination.match(event)) {
-                    redoCommand.execute();
-                }
-            });
+            parent.getScene().getAccelerators().remove(redoKeyCombination);
         }
 
     }

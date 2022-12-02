@@ -1,8 +1,7 @@
 package ch.supsi.editor2d.frontend.gui.command;
 
-import ch.supsi.editor2d.frontend.gui.event.util.FileExport;
+import ch.supsi.editor2d.frontend.gui.model.FileExport;
 import ch.supsi.editor2d.frontend.gui.handler.ExportHandler;
-import ch.supsi.editor2d.frontend.gui.receiver.ExportReceiver;
 
 public class ExportImageCommand<T extends ExportHandler> extends AbstractCommandParam<ExportHandler, FileExport>  {
 

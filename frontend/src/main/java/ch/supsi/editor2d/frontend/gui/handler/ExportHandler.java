@@ -1,6 +1,6 @@
 package ch.supsi.editor2d.frontend.gui.handler;
 
-import ch.supsi.editor2d.frontend.gui.event.util.FileExport;
+import ch.supsi.editor2d.frontend.gui.model.FileExport;
 import javafx.stage.Stage;
 
 public interface ExportHandler extends Handler {

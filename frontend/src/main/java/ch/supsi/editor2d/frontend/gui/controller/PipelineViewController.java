@@ -5,9 +5,7 @@ import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.backend.model.task.Task;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
-import ch.supsi.editor2d.frontend.gui.event.AddedFilterEvent;
-import ch.supsi.editor2d.frontend.gui.event.ImageLoadedEvent;
-import ch.supsi.editor2d.frontend.gui.event.RemovedFilterEvent;
+import ch.supsi.editor2d.frontend.gui.event.*;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import ch.supsi.editor2d.frontend.gui.model.PipelineCell;
 import javafx.collections.FXCollections;
@@ -111,7 +109,7 @@ public class PipelineViewController implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent event) {
-        if (event instanceof AddedFilterEvent || event instanceof RemovedFilterEvent || event instanceof ImageLoadedEvent) {
+        if (event instanceof AddedFilterEvent || event instanceof RemovedFilterEvent || event instanceof ImageLoadedEvent || event instanceof UndoneEvent || event instanceof RedoneEvent) {
             updateFilterPipeline();
         }
     }

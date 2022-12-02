@@ -59,20 +59,12 @@ public class ToolbarMediator<T extends Observable> extends AbstractReceiver<Data
             exportItem.setDisable(false);
         }
     }
-    //TODO: when implement memento pattern check this method to enable/disable runPipeline
+
     private void enableDisableButtons() {
         // undo
-        if (model.getUndoRedoPointer() > 0) {
-            this.undoItem.setDisable(false);
-        } else {
-            this.undoItem.setDisable(true);
-        }
+        this.undoItem.setDisable(!model.canUndo());
 
         // redo
-        if (model.getUndoRedoPointer() < model.getSavedStatesCount()) {
-            this.redoItem.setDisable(false);
-        } else {
-            this.redoItem.setDisable(true);
-        }
+        this.redoItem.setDisable(!model.canRedo());
     }
 }

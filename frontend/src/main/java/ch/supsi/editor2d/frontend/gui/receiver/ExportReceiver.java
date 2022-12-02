@@ -1,7 +1,6 @@
 package ch.supsi.editor2d.frontend.gui.receiver;
 
-import ch.supsi.editor2d.frontend.gui.event.util.FileExport;
-import ch.supsi.editor2d.frontend.gui.handler.AddFilterHandler;
+import ch.supsi.editor2d.frontend.gui.model.FileExport;
 import ch.supsi.editor2d.frontend.gui.handler.ExportHandler;
 import ch.supsi.editor2d.frontend.gui.handler.Observable;
 import ch.supsi.editor2d.frontend.gui.model.DataModel;

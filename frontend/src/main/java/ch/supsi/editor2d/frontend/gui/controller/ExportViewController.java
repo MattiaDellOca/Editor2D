@@ -1,7 +1,7 @@
 package ch.supsi.editor2d.frontend.gui.controller;
 
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
-import ch.supsi.editor2d.frontend.gui.event.util.FileExport;
+import ch.supsi.editor2d.frontend.gui.model.FileExport;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

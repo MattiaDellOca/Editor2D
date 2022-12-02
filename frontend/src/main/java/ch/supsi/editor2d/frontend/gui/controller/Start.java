@@ -240,7 +240,6 @@ public class Start extends Application {
          */
 
         model.addPropertyChangeListener(imageViewLoader.getController());
-        model.addPropertyChangeListener(mainViewLoader.getController());
         model.addPropertyChangeListener(pipelineViewLoader.getController());
 
         //mediator listener

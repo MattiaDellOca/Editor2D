@@ -1,4 +1,4 @@
-package ch.supsi.editor2d.frontend.gui.event.util;
+package ch.supsi.editor2d.frontend.gui.model;
 
 import java.io.File;
 

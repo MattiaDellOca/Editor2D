@@ -13,8 +13,9 @@ import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import ch.supsi.editor2d.backend.model.task.Task;
 import ch.supsi.editor2d.frontend.gui.alert.ErrorAlert;
 import ch.supsi.editor2d.frontend.gui.event.*;
-import ch.supsi.editor2d.frontend.gui.event.util.FileExport;
 import ch.supsi.editor2d.frontend.gui.handler.*;
+import ch.supsi.editor2d.frontend.gui.memento.Memento;
+import ch.supsi.editor2d.frontend.gui.memento.MementoCaretaker;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -52,13 +53,12 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
     /**
      * Filter pipeline containing the currently selected filter list
      */
-    private final FilterPipeline filterPipeline;
+    private FilterPipeline filterPipeline;
 
     /**
-     * Undo/redo fields
+     * Memento caretaker used for undo/redo operations
      */
-    private int savedStatesCount;
-    private int undoRedoPointer;
+    private final MementoCaretaker<FilterPipeline> filterPipelineCaretaker;
 
     //Singleton
     private static DataModel instance;
@@ -76,14 +76,17 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
     private DataModel() {
         this.imageController = new ImageController();
         this.filterPipeline = new FilterPipeline();
+        this.filterPipelineCaretaker = new MementoCaretaker<>();
+        // first memento state is the empty filter pipeline
+        filterPipelineCaretaker.addMemento(new Memento<>(cloneFilterPipeline(filterPipeline)));
     }
 
-    public int getSavedStatesCount() {
-        return savedStatesCount;
+    public boolean canUndo() {
+        return filterPipelineCaretaker.canUndo();
     }
 
-    public int getUndoRedoPointer() {
-        return undoRedoPointer;
+    public boolean canRedo() {
+        return filterPipelineCaretaker.canRedo();
     }
 
     /**
@@ -109,13 +112,27 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
         }
     }
 
-
+    /**
+     * Clone the FilterPipeline
+     * @param filterPipeline pipeline to clone
+     */
+    private FilterPipeline cloneFilterPipeline(FilterPipeline filterPipeline) {
+        FilterPipeline clone = new FilterPipeline();
+        for (Task<ImageWrapper, FilterTaskResult> task : filterPipeline.getTasks()) {
+            clone.add(task);
+        }
+        return clone;
+    }
 
     @Override
     public void addFilter(Filter filter) {
-        savedStatesCount ++;
-        undoRedoPointer ++;
+        // Create a new task
         filterPipeline.add(new FilterTask(filter));
+
+        // Save the state
+        Memento<FilterPipeline> memento = new Memento<>(cloneFilterPipeline(filterPipeline));
+        filterPipelineCaretaker.addMemento(memento);
+
 
         getPropertyChangeSupport().firePropertyChange(new AddedFilterEvent(this));
     }
@@ -126,8 +143,12 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
      */
     @Override
     public void removeFilter(Task<ImageWrapper, FilterTaskResult> filter) {
-        //TODO: memento
+        // Remove the filter
         filterPipeline.remove(filter);
+
+        // Save the state
+        Memento<FilterPipeline> memento = new Memento<>(cloneFilterPipeline(filterPipeline));
+        filterPipelineCaretaker.addMemento(memento);
 
         getPropertyChangeSupport().firePropertyChange(new RemovedFilterEvent(this));
     }
@@ -218,17 +239,21 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
 
     @Override
     public void undo() {
-        // TODO: 26/11/2022 Use memento pattern here
+        // Redundant check (already checked by mediator)
+        if(filterPipelineCaretaker.canUndo()){
+            // Get the previous state
+            filterPipeline = filterPipelineCaretaker.undo().getState();
+        }
 
-        undoRedoPointer --;
         getPropertyChangeSupport().firePropertyChange(new UndoneEvent(this));
     }
 
     @Override
     public void redo() {
-        // TODO: 26/11/2022 Use memento pattern here
-
-        undoRedoPointer ++;
+        // Redundant check (already checked by mediator)
+        if(filterPipelineCaretaker.canRedo()){
+            filterPipeline = filterPipelineCaretaker.redo().getState();
+        }
         getPropertyChangeSupport().firePropertyChange(new RedoneEvent(this));
     }
 
