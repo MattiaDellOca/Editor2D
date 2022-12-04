@@ -55,9 +55,12 @@ public class ImageRepositoryPBMHandler extends ImageRepositoryHandler {
                 ColorWrapper[][] data = new ColorWrapper[height][width];
                 DataValuesParser parser = new DataValuesParser(bufferedReader);
 
+                ColorWrapper white = new ColorWrapper(255, 255, 255);
+                ColorWrapper black = new ColorWrapper(0, 0, 0);
+
                 for (int h = 0; h < height; h++) {
                     for (int w = 0; w < width; w++) {
-                        data[h][w] = parser.getNext() == 0 ? ColorWrapper.WHITE : ColorWrapper.BLACK;
+                        data[h][w] = parser.getNext() == 0 ? white : black;
                     }
                 }
 

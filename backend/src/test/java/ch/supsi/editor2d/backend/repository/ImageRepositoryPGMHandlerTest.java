@@ -3,12 +3,14 @@ package ch.supsi.editor2d.backend.repository;
 import ch.supsi.editor2d.backend.exception.FileReadingException;
 import ch.supsi.editor2d.backend.exception.FileWritingException;
 import ch.supsi.editor2d.backend.helper.ColorInterpolation;
+import ch.supsi.editor2d.backend.model.ColorTest;
 import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImagePGM;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -17,9 +19,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class ImageRepositoryPGMHandlerTest {
 
     private ImageRepositoryPGMHandler imageRepositoryPGMHandler;
-    private final String pathImageTestPGMOk = Objects.requireNonNull(getClass().getClassLoader().getResource("PGM/testPGMOk.pgm")).getPath();
-    private final String pathImageTestPGMWrongMagicNumber = Objects.requireNonNull(getClass().getClassLoader().getResource("PGM/testPGMWrongMagicNumber.pgm")).getPath();
-    private final String pathImageTestPGMMalformedBody = Objects.requireNonNull(getClass().getClassLoader().getResource("PGM/testPGMMalformedBody.pgm")).getPath();
+    private final String pathImageTestPGMOk = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("PGM/testPGMOk.pgm")).getFile()).getAbsolutePath();
+    private final String pathImageTestPGMWrongMagicNumber = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("PGM/testPGMWrongMagicNumber.pgm")).getFile()).getAbsolutePath();
+    private final String pathImageTestPGMMalformedBody = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("PGM/testPGMMalformedBody.pgm")).getFile()).getAbsolutePath();
 
     @BeforeEach
     void init(){
@@ -110,15 +112,15 @@ class ImageRepositoryPGMHandlerTest {
         for(int i = 0; i < 10; i ++)
             expected.add(new ColorWrapper(0.06666667f, 0.06666667f, 0.06666667f));
         for(int i = 0; i < 10; i ++)
-            expected.add(ColorWrapper.BLACK);
+            expected.add(ColorTest.BLACK);
         for(int i = 0; i < 10; i ++)
             expected.add(new ColorWrapper(0.32941177f, 0.32941177f, 0.32941177f));
         for(int i = 0; i < 10; i ++)
-            expected.add(ColorWrapper.BLACK);
+            expected.add(ColorTest.BLACK);
         for(int i = 0; i < 10; i ++)
             expected.add(new ColorWrapper(0.6627451f, 0.6627451f, 0.6627451f));
         for(int i = 0; i < 10; i ++)
-            expected.add(ColorWrapper.BLACK);
+            expected.add(ColorTest.BLACK);
 
         assertEquals(obtainedResult.getWidth(), pgmImage.getWidth());
         assertEquals(obtainedResult.getHeight(), pgmImage.getHeight());

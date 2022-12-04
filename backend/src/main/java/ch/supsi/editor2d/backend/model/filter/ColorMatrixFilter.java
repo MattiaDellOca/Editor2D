@@ -13,7 +13,7 @@ public abstract class ColorMatrixFilter extends MatrixFilter {
     }
 
     @Override
-    public ImageWrapper apply(ImageWrapper image) throws FilterApplyException {
+    public ImageWrapper apply(ImageWrapper image)  {
         return MatrixMultiplier.applyColorFilter(image, this);
     }
 }

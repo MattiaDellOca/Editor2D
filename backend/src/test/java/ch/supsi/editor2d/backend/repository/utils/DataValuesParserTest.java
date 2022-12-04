@@ -10,7 +10,7 @@ import java.util.Objects;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DataValuesParserTest {
-    private String path = Objects.requireNonNull(getClass().getClassLoader().getResource("utils/buffered_reader_values.txt")).getPath();
+    private final String path = Objects.requireNonNull(getClass().getClassLoader().getResource("utils/buffered_reader_values.txt")).getPath();
 
     @Test
     void getNext() {

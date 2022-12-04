@@ -3,6 +3,7 @@ package ch.supsi.editor2d.backend.service;
 import ch.supsi.editor2d.backend.exception.FileReadingException;
 import ch.supsi.editor2d.backend.model.ImagePBM;
 import ch.supsi.editor2d.backend.model.ImagePGM;
+import ch.supsi.editor2d.backend.model.ImagePPM;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,6 +17,7 @@ class ImageServiceTest {
     private ImageService imageService;
     private final String pathImageTestPBMOk = Objects.requireNonNull(getClass().getClassLoader().getResource("PBM/testPBMOk.pbm")).getPath();
     private final String pathImageTestPGMOk = Objects.requireNonNull(getClass().getClassLoader().getResource("PGM/testPGMOk.pgm")).getPath();
+    private final String pathImageTestPPMOk = Objects.requireNonNull(getClass().getClassLoader().getResource("PPM/testPPMOk.ppm")).getPath();
 
     @BeforeEach
     void init(){
@@ -39,9 +41,11 @@ class ImageServiceTest {
         try {
             ImageWrapper PBM = imageService.getImage(pathImageTestPBMOk);
             ImageWrapper PGM = imageService.getImage(pathImageTestPGMOk);
+            ImageWrapper PPM = imageService.getImage(pathImageTestPPMOk);
 
             assertEquals(ImagePBM.class, PBM.getClass());
             assertEquals(ImagePGM.class, PGM.getClass());
+            assertEquals(ImagePPM.class, PPM.getClass());
         } catch (FileReadingException ignored){}
     }
 }

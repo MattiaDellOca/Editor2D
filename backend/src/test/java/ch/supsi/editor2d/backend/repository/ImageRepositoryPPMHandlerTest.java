@@ -2,12 +2,14 @@ package ch.supsi.editor2d.backend.repository;
 
 import ch.supsi.editor2d.backend.exception.FileReadingException;
 import ch.supsi.editor2d.backend.exception.FileWritingException;
+import ch.supsi.editor2d.backend.model.ColorTest;
 import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImagePPM;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -16,9 +18,9 @@ import static org.junit.jupiter.api.Assertions.*;
 class ImageRepositoryPPMHandlerTest {
 
     private ImageRepositoryPPMHandler imageRepositoryPPMHandler;
-    private final String pathImageTestPPMOk = Objects.requireNonNull(getClass().getClassLoader().getResource("PPM/testPPMOk.ppm")).getPath();
-    private final String pathImageTestPPMWrongMagicNumber = Objects.requireNonNull(getClass().getClassLoader().getResource("PPM/testPPMWrongMagicNumber.ppm")).getPath();
-    private final String pathImageTestPPMMalformedBody = Objects.requireNonNull(getClass().getClassLoader().getResource("PPM/testPPMMalformedBody.ppm")).getPath();
+    private final String pathImageTestPPMOk = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("PPM/testPPMOk.ppm")).getFile()).getAbsolutePath();
+    private final String pathImageTestPPMWrongMagicNumber = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("PPM/testPPMWrongMagicNumber.ppm")).getFile()).getAbsolutePath();
+    private final String pathImageTestPPMMalformedBody = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("PPM/testPPMMalformedBody.ppm")).getFile()).getAbsolutePath();
 
     @BeforeEach
     void init(){
@@ -34,9 +36,9 @@ class ImageRepositoryPPMHandlerTest {
 
 
         ColorWrapper[][] data = new ColorWrapper [][]{
-                { ColorWrapper.RED, ColorWrapper.GREEN, ColorWrapper.BLUE },
-                { ColorWrapper.YELLOW, ColorWrapper.WHITE, ColorWrapper.BLACK },
-                { ColorWrapper.CYAN, new ColorWrapper(75, 75, 75), new ColorWrapper(127, 127, 127) },
+                {ColorTest.RED, ColorTest.GREEN, ColorTest.BLUE },
+                {ColorTest.YELLOW, ColorTest.WHITE, ColorTest.BLACK },
+                {ColorTest.CYAN, new ColorWrapper(75, 75, 75), new ColorWrapper(127, 127, 127) },
                 { new ColorWrapper(150, 150, 150), new ColorWrapper(150, 150, 150), new ColorWrapper(150, 150, 150) }
         };
 
@@ -93,9 +95,9 @@ class ImageRepositoryPPMHandlerTest {
 
         ImageWrapper obtainedResult = imageRepositoryPPMHandler.handleLoad("PPM", exportedPath);
 
-        List<ColorWrapper> expected = List.of(ColorWrapper.RED, ColorWrapper.GREEN, ColorWrapper.BLUE ,
-                ColorWrapper.YELLOW, ColorWrapper.WHITE, ColorWrapper.BLACK,
-                ColorWrapper.CYAN, new ColorWrapper(75, 75, 75), new ColorWrapper(127, 127, 127),
+        List<ColorWrapper> expected = List.of(ColorTest.RED, ColorTest.GREEN, ColorTest.BLUE ,
+                ColorTest.YELLOW, ColorTest.WHITE, ColorTest.BLACK,
+                ColorTest.CYAN, new ColorWrapper(75, 75, 75), new ColorWrapper(127, 127, 127),
                 new ColorWrapper(150, 150, 150), new ColorWrapper(150, 150, 150), new ColorWrapper(150, 150, 150));
 
         assertEquals(obtainedResult.getWidth(), ppmImage.getWidth());

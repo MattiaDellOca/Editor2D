@@ -7,6 +7,7 @@ import ch.supsi.editor2d.backend.model.ImageWrapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -15,15 +16,18 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ImageRepositoryPBMHandlerTest {
 
     private ImageRepositoryPBMHandler imageRepositoryPBMHandler;
-    private final String pathImageTestPBMOk = Objects.requireNonNull(getClass().getClassLoader().getResource("PBM/testPBMOk.pbm")).getPath();
-    private final String pathImageTestPBMWrongMagicNumber = Objects.requireNonNull(getClass().getClassLoader().getResource("PBM/testPBMWrongMagicNumber.pbm")).getPath();
-    private final String pathImageTestPBMMalformedBody = Objects.requireNonNull(getClass().getClassLoader().getResource("PBM/testPBMMalformedBody.pbm")).getPath();
+    private final String pathImageTestPBMOk = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("PBM/testPBMOk.pbm")).getFile()).getAbsolutePath();
+    private final String pathImageTestPBMWrongMagicNumber = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("PBM/testPBMWrongMagicNumber.pbm")).getFile()).getAbsolutePath();
+    private final String pathImageTestPBMMalformedBody = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("PBM/testPBMMalformedBody.pbm")).getFile()).getAbsolutePath();
 
     @BeforeEach
     void init(){
         imageRepositoryPBMHandler = new ImageRepositoryPBMHandler();
     }
 
+    /**
+     * Test the method handleLoad
+     */
     @Test
     void handleLoadResultCorrect() {
         //result desired creation
