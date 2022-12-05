@@ -86,7 +86,6 @@ public class ImageRepositoryPGMHandler extends ImageRepositoryHandler {
                 // Print the width and height
                 bufferedWriter.write(data.getWidth() + " " + data.getHeight() + "\n");
 
-                // TODO: try to cast the ImageWrapper
                 // Print the RGB scale
                 bufferedWriter.write(255 + "\n");
 

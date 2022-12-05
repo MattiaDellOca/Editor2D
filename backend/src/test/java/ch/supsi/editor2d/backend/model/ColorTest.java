@@ -14,5 +14,4 @@ public class ColorTest {
     public static final ColorWrapper MAGENTA = new ColorWrapper(255, 0, 255);
     public static final ColorWrapper CYAN = new ColorWrapper(0, 255, 255);
     public static final ColorWrapper BLUE = new ColorWrapper(0, 0, 255);
-
 }
