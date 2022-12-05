@@ -195,7 +195,9 @@ public class Start extends Application {
         filtersSelectionViewController.getFilterSelectionList().setCellFactory(param -> new FilterCell());
         selectableFilters.setOnMouseClicked(mouseEvent -> {
             Filter filter = selectableFilters.getSelectionModel().getSelectedItem();
-            addFilterCommand.execute(filter);
+            if(filter != null) {
+                addFilterCommand.execute(filter);
+            }
             selectableFilters.getSelectionModel().clearSelection();
         });
 

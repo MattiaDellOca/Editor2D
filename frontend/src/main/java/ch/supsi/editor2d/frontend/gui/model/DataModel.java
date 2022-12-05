@@ -81,14 +81,6 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
         filterPipelineCaretaker.addMemento(new Memento<>(cloneFilterPipeline(filterPipeline)));
     }
 
-    public boolean canUndo() {
-        return filterPipelineCaretaker.canUndo();
-    }
-
-    public boolean canRedo() {
-        return filterPipelineCaretaker.canRedo();
-    }
-
     /**
      * Load an image from a given path
      * @param path the path of the image
@@ -112,6 +104,20 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
         }
     }
 
+    public boolean canUndo() {
+        return filterPipelineCaretaker.canUndo();
+    }
+
+    public boolean canRedo() {
+        return filterPipelineCaretaker.canRedo();
+    }
+
+    private void savePipelineState(){
+        // Save the state
+        Memento<FilterPipeline> memento = new Memento<>(cloneFilterPipeline(filterPipeline));
+        filterPipelineCaretaker.addMemento(memento);
+    }
+
     /**
      * Clone the FilterPipeline
      * @param filterPipeline pipeline to clone
@@ -130,9 +136,7 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
         filterPipeline.add(new FilterTask(filter));
 
         // Save the state
-        Memento<FilterPipeline> memento = new Memento<>(cloneFilterPipeline(filterPipeline));
-        filterPipelineCaretaker.addMemento(memento);
-
+        savePipelineState();
 
         getPropertyChangeSupport().firePropertyChange(new AddedFilterEvent(this));
     }
@@ -147,8 +151,7 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
         filterPipeline.remove(filter);
 
         // Save the state
-        Memento<FilterPipeline> memento = new Memento<>(cloneFilterPipeline(filterPipeline));
-        filterPipelineCaretaker.addMemento(memento);
+        savePipelineState();
 
         getPropertyChangeSupport().firePropertyChange(new RemovedFilterEvent(this));
     }
@@ -303,6 +306,10 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
      */
     public void moveUpFilterPipeline(Task<ImageWrapper, FilterTaskResult> task) throws PipelineException {
         filterPipeline.invertBeforePositionTask(task);
+
+        // Save the state
+        savePipelineState();
+
     }
 
     /**
@@ -312,6 +319,10 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
      */
     public void moveDownFilterPipeline(Task<ImageWrapper, FilterTaskResult> task) throws PipelineException {
         filterPipeline.invertAfterPositionTask(task);
+
+        // Save the state
+        savePipelineState();
+
     }
 
     /**
