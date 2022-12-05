@@ -7,7 +7,6 @@ import ch.supsi.editor2d.frontend.gui.model.DataModel;
 import javafx.stage.Stage;
 
 public class AboutReceiver <T extends Observable> extends AbstractReceiver<DataModel> implements AboutHandler {
-    protected AboutHandler handler;
 
     protected AboutReceiver(DataModel model) {
         super(model);
@@ -22,6 +21,6 @@ public class AboutReceiver <T extends Observable> extends AbstractReceiver<DataM
     }
 
     public void about(Stage aboutStage) {
-        handler.about(aboutStage);
+        model.about(aboutStage);
     }
 }
