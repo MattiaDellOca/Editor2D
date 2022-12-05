@@ -1,11 +1,13 @@
 package ch.supsi.editor2d.backend.helper;
 
 import ch.supsi.editor2d.backend.exception.PipelineException;
+import ch.supsi.editor2d.backend.model.ColorTest;
 import ch.supsi.editor2d.backend.model.ColorWrapper;
 import ch.supsi.editor2d.backend.model.ImageWrapper;
 import ch.supsi.editor2d.backend.model.filter.FlipFilter;
 import ch.supsi.editor2d.backend.model.filter.GrayscaleFilter;
 import ch.supsi.editor2d.backend.model.filter.SepiaFilter;
+import ch.supsi.editor2d.backend.model.filter.SharpenFilter;
 import ch.supsi.editor2d.backend.model.task.FilterTask;
 import ch.supsi.editor2d.backend.model.task.FilterTaskResult;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,22 +54,31 @@ public class FilterPipelineTest {
     }
 
     @Test
+    void addRemoveTasksIntoQueue() {
+        // Try to add a couple of tasks into the pipeline
+        // and check if the queue is not empty
+        pipeline.add(new FilterTask(new FlipFilter()));
+
+        FilterTask willBeRemoved = new FilterTask(new SharpenFilter());
+        pipeline.add(willBeRemoved);
+        pipeline.remove(willBeRemoved);
+
+        pipeline.add(new FilterTask(new SepiaFilter()));
+
+        assert pipeline.getTasks().size() == 2;
+    }
+
+    @Test
     void runPipelineFlipFilter() {
         // Get image sample
         ImageWrapper sample = getImageWrapperSample();
         pipeline.add(new FilterTask(new FlipFilter()));
-
-        // Expected result
-        final ColorWrapper[][] expectedData = new ColorWrapper[][]{
-                {ColorWrapper.WHITE, ColorWrapper.YELLOW, ColorWrapper.BLACK},
-                {ColorWrapper.WHITE, ColorWrapper.RED, ColorWrapper.BLACK},
-                {ColorWrapper.WHITE, ColorWrapper.YELLOW, ColorWrapper.BLACK}
-        };
+        pipeline.add(new FilterTask(new FlipFilter()));
 
         // Run the pipeline using the
         try {
             FilterTaskResult result = pipeline.run(sample);
-            assert Arrays.deepEquals(result.getResult().getData(), expectedData);
+            assert Arrays.deepEquals(result.getResult().getData(), sample.getData());
 
         } catch (PipelineException e) {
             fail();
@@ -75,11 +86,11 @@ public class FilterPipelineTest {
     }
 
 
-    public ImageWrapper getImageWrapperSample () {
-        return new ImageWrapper(3,3, new ColorWrapper[][]{
-            {ColorWrapper.BLACK, ColorWrapper.YELLOW, ColorWrapper.WHITE},
-            {ColorWrapper.BLACK, ColorWrapper.RED, ColorWrapper.WHITE},
-            {ColorWrapper.BLACK, ColorWrapper.YELLOW, ColorWrapper.WHITE}
+    public ImageWrapper getImageWrapperSample() {
+        return new ImageWrapper(3, 3, new ColorWrapper[][]{
+                {ColorTest.BLACK, ColorTest.YELLOW, ColorTest.WHITE},
+                {ColorTest.BLACK, ColorTest.RED, ColorTest.WHITE},
+                {ColorTest.BLACK, ColorTest.YELLOW, ColorTest.WHITE}
         });
     }
 }
