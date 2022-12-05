@@ -30,8 +30,6 @@ public final class FilterPipeline extends Pipeline<ImageWrapper, FilterTaskResul
             } catch (FilterApplyException e) {
                 throw new FilterApplyException("impossible to apply filter: \n The image must be at least 3x3");
             }
-            // TODO: check if result is error
-
             // Save image result for next task
             image = result.getResult();
         }

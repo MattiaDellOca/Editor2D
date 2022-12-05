@@ -17,7 +17,6 @@ import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-// FIXME: Add tests for observers
 public class FilterPipelineTest {
 
     private FilterPipeline pipeline;
