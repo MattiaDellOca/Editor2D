@@ -81,6 +81,11 @@ public class DataModel extends Observable implements RunPipelineHandler, AboutHa
         filterPipelineCaretaker.addMemento(new Memento<>(cloneFilterPipeline(filterPipeline)));
     }
 
+    public void reset() {
+        // Replace current instance with a new one
+        instance = new DataModel();
+    }
+
     /**
      * Load an image from a given path
      * @param path the path of the image
