@@ -1,19 +1,19 @@
 
-#listView {
+.filterPipeline {
     -fx-padding: 0px;
 }
 
-#listView .list-cell{
+.filterPipeline .list-cell{
     -fx-border-width:  0 0 0.2 0 ;
     -fx-border-color: gray;
 }
 
-#listView .list-cell .label{
+.filterPipeline .list-cell .label{
     -fx-text-fill: black;
 }
 
 
-#listView .list-cell:empty{
+.filterPipeline .list-cell:empty{
     -fx-background-color: white;
     -fx-border-width: 0;
 }
