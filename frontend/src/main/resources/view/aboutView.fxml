@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="251.0" prefWidth="430.0" xmlns="http://javafx.com/javafx/18">
+<BorderPane prefHeight="251.0" prefWidth="430.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
    <top>
       <Label text="Editor 2D" BorderPane.alignment="CENTER">
          <font>
@@ -29,7 +29,7 @@
                <Font size="21.0" />
             </font>
          </Label>
-           <GridPane gridLinesVisible="true" style="-fx-padding: 20px;">
+           <GridPane fx:id="aboutPage" gridLinesVisible="true" style="-fx-padding: 20px;">
                <columnConstraints>
                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="201.0" minWidth="10.0" prefWidth="176.0" />
                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="302.0" minWidth="10.0" prefWidth="214.0" />

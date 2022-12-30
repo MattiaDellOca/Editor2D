@@ -26,7 +26,7 @@
       </top>
       <center>
          <AnchorPane prefHeight="550.0" prefWidth="300.0" BorderPane.alignment="CENTER">
-            <ListView id="listView" stylesheets="@pipelineStyle.css" fx:id="filterSelectionList" prefHeight="373.0"
+            <ListView stylesheets="@pipelineStyle.css" fx:id="filterSelectionList" prefHeight="373.0"
                       prefWidth="300.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
                       AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"/>
          </AnchorPane>
