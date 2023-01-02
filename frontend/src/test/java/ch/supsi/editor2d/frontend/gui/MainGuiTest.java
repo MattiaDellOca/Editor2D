@@ -34,8 +34,8 @@ public class MainGuiTest {
 
     /*
      * FIXME: TESTS TO ADD
-     * - test memento (undo/redo)
      * - find a way to test the image export
+     * - find a wat to test application close action
      *
      * - New ideas????
      */
@@ -44,6 +44,8 @@ public class MainGuiTest {
     private DataModel model;
 
     private static final List<Filter> FILTERS = Arrays.asList(new FlipFilter(), new GrayscaleFilter(), new SepiaFilter(), new SharpenFilter());
+
+    private final static long SLEEP_TIME = 100;
 
     private final String PPM_PATH = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("images/PPM/testPPMOk.ppm")).getFile()).getAbsolutePath();
     private final String PBM_PATH = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("images/PBM/testPBMOk.pbm")).getFile()).getAbsolutePath();
@@ -87,9 +89,10 @@ public class MainGuiTest {
         // Assert that list view "filterPipelineList" is empty
         FxAssert.verifyThat("#filterPipelineList", (ListView<String> listView) -> listView.getItems().isEmpty());
 
-        // Verify that the export dialog and about dialog don't exist yet
+        // Verify that the export dialog, about dialog and exit dialog don't exist yet
         Assertions.assertFalse(robot.lookup("#exportDialog").tryQuery().isPresent());
         Assertions.assertFalse(robot.lookup("#aboutPage").tryQuery().isPresent());
+        Assertions.assertFalse(robot.lookup("#exitDialog").tryQuery().isPresent());
     }
 
 
@@ -244,10 +247,10 @@ public class MainGuiTest {
                 // Select the first filter
                 ((ListView<?>) listView).getSelectionModel().select(i);
                 robot.clickOn();
-                robot.sleep(1000);
+                robot.sleep(SLEEP_TIME);
             }
         }, () -> Assertions.fail("Could not find filter selection list"));
-        robot.sleep(1000);
+        robot.sleep(SLEEP_TIME);
 
         // Now, check that the move up / move down buttons work correctly. There are 3 possible cases:
         robot.clickOn("#filterPipelineList");
@@ -311,10 +314,10 @@ public class MainGuiTest {
                 // Select the first filter
                 ((ListView<?>) listView).getSelectionModel().select(i);
                 robot.clickOn();
-                robot.sleep(1000);
+                robot.sleep(SLEEP_TIME);
             }
         }, () -> Assertions.fail("Could not find filter selection list"));
-        robot.sleep(1000);
+        robot.sleep(SLEEP_TIME);
 
         // Now, check that the move up / move down buttons work correctly. There are 3 possible cases:
         robot.clickOn("#filterPipelineList");
@@ -349,6 +352,7 @@ public class MainGuiTest {
      * @param robot the robot used to interact with the GUI. Automatically injected by the TestFX framework.
      */
     @Test
+    @Order(7)
     public void pipelineRunTest (FxRobot robot) {
         // Load image
         robot.interact(() -> model.loadImage(PPM_PATH));
@@ -365,10 +369,10 @@ public class MainGuiTest {
                 // Select the first filter
                 ((ListView<?>) listView).getSelectionModel().select(i);
                 robot.clickOn();
-                robot.sleep(1000);
+                robot.sleep(SLEEP_TIME);
             }
         }, () -> Assertions.fail("Could not find filter selection list"));
-        robot.sleep(1000);
+        robot.sleep(SLEEP_TIME);
 
         // Now, run the pipeline
         robot.clickOn("#runPipeline");
@@ -384,7 +388,7 @@ public class MainGuiTest {
                 // Select the first filter
                 ((ListView<?>) listView).getSelectionModel().select(i);
                 robot.clickOn();
-                robot.sleep(1000);
+                robot.sleep(SLEEP_TIME);
             }
         }, () -> Assertions.fail("Could not find filter selection list"));
 
@@ -401,7 +405,7 @@ public class MainGuiTest {
      * @param robot the robot used to interact with the GUI. Automatically injected by the TestFX framework.
      */
     @Test
-    @Order(7)
+    @Order(8)
     public void exportDialogFormTest(FxRobot robot) {
         // Load PPM image from resources
         robot.interact(() -> model.loadImage(PPM_PATH));
@@ -419,7 +423,7 @@ public class MainGuiTest {
      * @param robot the robot used to interact with the GUI. Automatically injected by the TestFX framework.
      */
     @Test
-    @Order(8)
+    @Order(9)
     public void exportDialogAbortFormTest(FxRobot robot) {
         robot.interact(() -> model.loadImage(PPM_PATH));
 
@@ -445,7 +449,8 @@ public class MainGuiTest {
     }
 
     @Test
-    @Order(9)
+    @Disabled
+    @Order(10)
     // FIXME: Cannot set the DirectoryChooser directory to a specific path (field is read-only)
     public void exportImageToAny (FxRobot robot) {
         // Export image to any supported format
@@ -467,11 +472,11 @@ public class MainGuiTest {
     }
 
     /**
-     * This test is used to verify that the application does not crash when the user tries to open the about dialog.
+     * This test is used to verify that the application does not crash when the user tries to open the "about" dialog.
      * @param robot the robot used to interact with the GUI. Automatically injected by the TestFX framework.
      */
     @Test
-    @Order(10)
+    @Order(11)
     public void aboutPageTest (FxRobot robot) {
         // Click on the Help menu
         robot.clickOn("#helpMenu").clickOn("#aboutMenuItem");
@@ -489,7 +494,7 @@ public class MainGuiTest {
      */
     @Test
     @Disabled
-    @Order(11)
+    @Order(12)
     // FIXME: This test cannot be completed since the "Close" menu item kills the application before the test can complete
     public void closeActionTest (FxRobot robot) {
         // Ensure that the main window is visible
@@ -497,5 +502,98 @@ public class MainGuiTest {
 
         // Now, click on the "Exit" menu item
         robot.clickOn("File").clickOn("#exitMenuItem");
+    }
+
+    /**
+     * This test is used to verify that the "undo" and "redo" operation work as expected.
+     * @param robot the robot used to interact with the GUI. Automatically injected by the TestFX framework.
+     */
+    @Test
+    @Order(13)
+    public void undoRedoActionsTest (FxRobot robot) {
+        // Load image
+        robot.interact(() -> model.loadImage(PPM_PATH));
+
+        // Then, add some filters
+        robot.clickOn("#filterSelectionList");
+        robot.lookup("#filterSelectionList").tryQuery().ifPresentOrElse(listView -> {
+            for (int i = 0; i < 2; i++) {
+                // Select the first filter
+                ((ListView<?>) listView).getSelectionModel().select(i);
+                robot.clickOn();
+                robot.sleep(SLEEP_TIME);
+            }
+        }, () -> Assertions.fail("Could not find filter selection list"));
+        robot.sleep(SLEEP_TIME);
+
+        robot.lookup("#filterPipelineList").tryQuery().ifPresentOrElse(listView -> {
+            // Select the first filter
+            ListView<FilterTask> temp = (ListView<FilterTask>) listView;
+
+            // Save filter reference to the second filter
+            temp.getSelectionModel().select(1);
+            FilterTask secondFilter = temp.getSelectionModel().getSelectedItem();
+
+            // Now, remove the last inserted filter
+            robot.clickOn("#editMenu").clickOn("#undoMenuItem");
+            // Now, check that the list has only 1 item
+            Assertions.assertEquals(1, temp.getItems().size());
+
+            // Select the first filter again and check that it is the second filter
+            temp.getSelectionModel().select(0);
+            FilterTask firstFilter = temp.getSelectionModel().getSelectedItem();
+
+            // Now, remove the first inserted filter
+            robot.clickOn("#editMenu").clickOn("#undoMenuItem");
+            // Now, check that the list is empty
+            Assertions.assertEquals(0, temp.getItems().size());
+
+            // Let's now test the 'redo' operation
+            robot.clickOn("#editMenu").clickOn("#redoMenuItem");
+            Assertions.assertEquals(1, temp.getItems().size());
+            temp.getSelectionModel().select(0);
+            Assertions.assertEquals(firstFilter, temp.getSelectionModel().getSelectedItem());
+            robot.clickOn("#editMenu").clickOn("#redoMenuItem");
+            Assertions.assertEquals(2, temp.getItems().size());
+            temp.getSelectionModel().select(1);
+            Assertions.assertEquals(secondFilter, temp.getSelectionModel().getSelectedItem());
+        }, () -> Assertions.fail("Could not find filter selection list"));
+    }
+
+    /**
+     * This test is used to verify that a confirmation is asked when trying to close the app with unsaved changes.
+     * @param robot the robot used to interact with the GUI. Automatically injected by the TestFX framework.
+     */
+    @Test
+    @Order(14)
+    public void closeConfirmationTest (FxRobot robot) {
+        // Load image and apply some filters
+        robot.interact(() -> model.loadImage(PPM_PATH));
+        robot.clickOn("#filterSelectionList");
+        robot.lookup("#filterSelectionList").tryQuery().ifPresentOrElse(listView -> {
+            for (int i = 0; i < 2; i++) {
+                // Select the first filter
+                ((ListView<?>) listView).getSelectionModel().select(i);
+                robot.clickOn();
+                robot.sleep(SLEEP_TIME);
+            }
+        }, () -> Assertions.fail("Could not find filter selection list"));
+        robot.sleep(SLEEP_TIME);
+
+        // Now, run the pipeline
+        robot.clickOn("#runPipeline");
+
+        // Then verify that a confirmation dialog is launched when trying to close the application
+        robot.clickOn("File").clickOn("#exitMenuItem");
+        FxAssert.verifyThat("#exitDialog", Node::isVisible);
+
+        // Now, click the on "cancel" button
+        robot.clickOn("#cancelBtn");
+
+        // Verify that the exit dialog has been closed
+        Assertions.assertTrue(robot.lookup("#exitDialog").tryQuery().isEmpty());
+
+        // Verify that the main window is still visible
+        FxAssert.verifyThat("#mainWindow", Node::isVisible);
     }
 }
