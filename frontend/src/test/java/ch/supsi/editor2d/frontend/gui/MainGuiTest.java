@@ -34,7 +34,6 @@ public class MainGuiTest {
 
     /*
      * FIXME: TESTS TO ADD
-     * - find a way to test the image export
      * - find a wat to test application close action
      *
      * - New ideas????
@@ -448,35 +447,12 @@ public class MainGuiTest {
         FxAssert.verifyThat("#extension", (n) -> ((ComboBox<?>) n).getSelectionModel().getSelectedItem().equals("ppm"));
     }
 
-    @Test
-    @Disabled
-    @Order(10)
-    // FIXME: Cannot set the DirectoryChooser directory to a specific path (field is read-only)
-    public void exportImageToAny (FxRobot robot) {
-        // Export image to any supported format
-        robot.interact(() -> model.loadImage(PPM_PATH));
-        FxAssert.verifyThat("#imageView", Node::isVisible);
-
-        // Export image to any supported format
-        robot.clickOn("#fileMenu").clickOn("#exportMenuItem");
-        FxAssert.verifyThat("#exportDialog", Node::isVisible);
-
-        // Now fill in the dialog with a generated file name
-        robot.clickOn("#filename").write("test");
-        robot.clickOn("#extension").type(KeyCode.DOWN).type(KeyCode.ENTER);
-        robot.clickOn("#exportButton");
-
-        // Ensure that an error dialog has been shown
-        FxAssert.verifyThat("#errorDialog", Node::isVisible);
-        robot.clickOn("#errorDialog").type(KeyCode.ENTER);
-    }
-
     /**
      * This test is used to verify that the application does not crash when the user tries to open the "about" dialog.
      * @param robot the robot used to interact with the GUI. Automatically injected by the TestFX framework.
      */
     @Test
-    @Order(11)
+    @Order(10)
     public void aboutPageTest (FxRobot robot) {
         // Click on the Help menu
         robot.clickOn("#helpMenu").clickOn("#aboutMenuItem");
@@ -494,7 +470,7 @@ public class MainGuiTest {
      */
     @Test
     @Disabled
-    @Order(12)
+    @Order(11)
     // FIXME: This test cannot be completed since the "Close" menu item kills the application before the test can complete
     public void closeActionTest (FxRobot robot) {
         // Ensure that the main window is visible
@@ -509,7 +485,7 @@ public class MainGuiTest {
      * @param robot the robot used to interact with the GUI. Automatically injected by the TestFX framework.
      */
     @Test
-    @Order(13)
+    @Order(12)
     public void undoRedoActionsTest (FxRobot robot) {
         // Load image
         robot.interact(() -> model.loadImage(PPM_PATH));
@@ -565,7 +541,7 @@ public class MainGuiTest {
      * @param robot the robot used to interact with the GUI. Automatically injected by the TestFX framework.
      */
     @Test
-    @Order(14)
+    @Order(13)
     public void closeConfirmationTest (FxRobot robot) {
         // Load image and apply some filters
         robot.interact(() -> model.loadImage(PPM_PATH));

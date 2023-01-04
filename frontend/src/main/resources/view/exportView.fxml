@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="exportDialog" minWidth="350.0" style="-fx-padding: 10px;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.supsi.editor2d.frontend.gui.controller.ExportViewController">
+<BorderPane fx:id="exportDialog" minWidth="350.0" style="-fx-padding: 10px;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.supsi.editor2d.frontend.gui.controller.ExportViewController">
    <top>
        <Pane prefHeight="20.0" prefWidth="200.0" BorderPane.alignment="CENTER">
            <BorderPane.margin>
@@ -47,7 +47,7 @@
                <Label text="File extension" GridPane.rowIndex="1" />
                <ComboBox fx:id="extension" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                   <TextField fx:id="exportDirectory" editable="false" />
+                   <TextField fx:id="exportDirectory" />
                    <Button fx:id="browseDir" mnemonicParsing="false" text="..." />
                </HBox>
            </GridPane>
