@@ -39,8 +39,6 @@ public class MainGuiTest {
     private final static long SLEEP_TIME = 100;
 
     private final String PPM_PATH = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("images/PPM/testPPMOk.ppm")).getFile()).getAbsolutePath();
-    private final String PBM_PATH = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("images/PBM/testPBMOk.pbm")).getFile()).getAbsolutePath();
-    private final String PGM_PATH = new File(Objects.requireNonNull(getClass().getClassLoader().getResource("images/PGM/testPGMOk.pgm")).getFile()).getAbsolutePath();
 
     /**
      * This method is used to start the application.
