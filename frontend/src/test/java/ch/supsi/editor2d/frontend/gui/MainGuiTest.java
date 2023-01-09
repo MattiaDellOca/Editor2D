@@ -32,14 +32,6 @@ import java.util.Objects;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class MainGuiTest {
 
-    /*
-     * FIXME: TESTS TO ADD
-     * - find a wat to test application close action
-     *
-     * - New ideas????
-     */
-
-
     private DataModel model;
 
     private static final List<Filter> FILTERS = Arrays.asList(new FlipFilter(), new GrayscaleFilter(), new SepiaFilter(), new SharpenFilter());
