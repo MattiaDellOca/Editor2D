@@ -47,7 +47,7 @@
                <Label text="File extension" GridPane.rowIndex="1" />
                <ComboBox fx:id="extension" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                   <TextField fx:id="exportDirectory" />
+                   <TextField fx:id="exportDirectory" editable="false" />
                    <Button fx:id="browseDir" mnemonicParsing="false" text="..." />
                </HBox>
            </GridPane>
